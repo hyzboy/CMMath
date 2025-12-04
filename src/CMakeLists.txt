@@ -51,6 +51,7 @@ SET(CMMATH_SOURCE   Math/LAtan.cpp
 SET(CMMATH_GEOMETRY_SOURCE  Geometry/Plane.cpp
                             Geometry/AABB.cpp
                             Geometry/OBB.cpp
+                            Geometry/OBB_SetFromPoints_AVX2.cpp
                             Geometry/BoundingSphere.cpp
                             Geometry/BoundingVolumes.cpp
                             Geometry/Ray.cpp

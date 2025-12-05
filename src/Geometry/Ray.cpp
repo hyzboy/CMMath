@@ -2,6 +2,7 @@
 #include<hgl/math/geometry/Sphere.h>
 #include<hgl/math/geometry/AABB.h>
 #include<hgl/math/geometry/OBB.h>
+#include<hgl/graph/CameraInfo.h>
 
 namespace hgl::math
 {
@@ -48,6 +49,31 @@ namespace hgl::math
 
         origin=near_point;
         direction=glm::normalize(far_point-near_point);
+    }
+
+    /**
+    * 设置屏幕坐标产生拾取射线
+    * @param mp 屏幕点坐标
+    * @param camera_info 摄像机信息
+    */
+    void Ray::SetFromViewportPoint(const Vector2i &mp,const graph::CameraInfo *ci,const Vector2u &vp_size)
+    {
+        //新方案
+
+        RayUnProjectZO(origin,direction,mp,ci->inverse_vp,vp_size);
+
+        //由于near/far的xy一样，而near.z又是0。所以省去了direction=normalize(far-near)的计算
+
+        //旧标准方案
+
+        //Vector3f pos(mp.x,mp.y,0);
+        //Vector4i vp(0,0,camera_info->viewport_resolution.x,camera_info->viewport_resolution.y);
+
+        //origin      =glm::unProject(pos,camera_info->view,camera_info->projection,vp);        //射线最近点
+
+        //pos.z=1.0f;
+
+        //direction   =glm::unProject(pos,camera_info->view,camera_info->projection,vp);        //射线最远点
     }
 
     void Ray::ClosestPoint(Vector3f &point_on_ray,Vector3f &point_on_segment,const Vector3f &line_segment_start,const Vector3f &line_segment_end)const

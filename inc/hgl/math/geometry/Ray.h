@@ -3,10 +3,13 @@
 #include<hgl/math/geometry/LineSegment.h>
 #include<hgl/math/geometry/Triangle.h>
 
-namespace hgl::math
+namespace hgl::graph
 {
     struct CameraInfo;
+}
 
+namespace hgl::math
+{
     class Sphere;
     class EllipseSphere;
     class AABB;
@@ -34,7 +37,7 @@ namespace hgl::math
             direction=d;
         }
 
-        void SetFromViewportPoint(const Vector2i &,const CameraInfo *,const Vector2u &viewport_size);
+        void SetFromViewportPoint(const Vector2i &,const graph::CameraInfo *,const Vector2u &viewport_size);
 
         /**
         * 取得与原点指定距离的点

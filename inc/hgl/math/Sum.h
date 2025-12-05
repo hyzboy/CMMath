@@ -7,7 +7,7 @@
 
 #pragma once
 
-namespace hgl
+namespace hgl::math
 {
     /**
      * 求一批数的和

@@ -2,7 +2,7 @@
 #include<vector>
 #include<glm/gtc/quaternion.hpp>
 
-namespace hgl::graph
+namespace hgl::math
 {
     void OBB::SetFromPointsMinVolumeFloat(const float *points,size_t count,uint32_t component_count,float coarseStepDeg,float fineStepDeg,float ultraStepDeg)
     {
@@ -212,4 +212,4 @@ namespace hgl::graph
     {
         SetFromPointsMinVolumeFloat(points,count,component_count,coarseStepDeg,fineStepDeg,ultraStepDeg);
     }
-}//namespace hgl::graph
+}//namespace hgl::math

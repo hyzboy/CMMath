@@ -14,9 +14,9 @@
 // Recipe:  04 Preparing a perspective projection matrix
 // Recipe:  05 Preparing an orthographic projection matrix
 
-namespace hgl
+namespace hgl::math
 {
-    Matrix4f OrthoMatrix( float left,
+    math::Matrix4f OrthoMatrix( float left,
                     float right,
                     float bottom,
                     float top,
@@ -53,7 +53,7 @@ namespace hgl
      * @param znear 近平面z值
      * @param zfar 远平台z值
      */
-    Matrix4f OrthoMatrix(float width,float height,float znear,float zfar)
+    math::Matrix4f OrthoMatrix(float width,float height,float znear,float zfar)
     {
         return OrthoMatrix(0.0f,width,height,0.0f,znear,zfar);
     }
@@ -63,7 +63,7 @@ namespace hgl
      * @param width 宽
      * @param height 高
      */
-    Matrix4f OrthoMatrix(float width,float height)
+    math::Matrix4f OrthoMatrix(float width,float height)
     {
         return OrthoMatrix(width,height,0.0f,1.0f);
     }
@@ -75,7 +75,7 @@ namespace hgl
      * @param znear 近截面
      * @param zfar 远截面
      */
-    Matrix4f PerspectiveMatrix( float field_of_view,
+    math::Matrix4f PerspectiveMatrix( float field_of_view,
                                 float aspect_ratio,
                                 float znear,
                                 float zfar)
@@ -105,11 +105,11 @@ namespace hgl
         );
     }
 
-    Matrix4f LookAtMatrix(const Vector3f &eye,const Vector3f &target,const Vector3f &up)
+    math::Matrix4f LookAtMatrix(const math::Vector3f &eye,const math::Vector3f &target,const math::Vector3f &up)
     {
-        Vector3f forward=normalize(target-eye);
-        Vector3f right  =normalize(cross(forward,up));
-        Vector3f nup    =cross(right,forward);
+        math::Vector3f forward=normalize(target-eye);
+        math::Vector3f right  =normalize(cross(forward,up));
+        math::Vector3f nup    =cross(right,forward);
 
         return Matrix4f(   right.x,
                              nup.x,
@@ -136,19 +136,19 @@ namespace hgl
     }
 
     Vector2i ProjectToScreen(
-        const Vector3f &world_pos,
-        const Matrix4f &view,
-        const Matrix4f &projection,
-        const Vector2u &vp_size)
+        const math::Vector3f &world_pos,
+        const math::Matrix4f &view,
+        const math::Matrix4f &projection,
+        const math::Vector2u &vp_size)
     {
         // 1. 世界坐标 -> 裁剪空间
-        Vector4f clip = projection * view * Vector4f(world_pos.x,world_pos.y,world_pos.z, 1.0f);       //需要转换到OPENGL坐标系
+        math::Vector4f clip = projection * view * math::Vector4f(world_pos.x,world_pos.y,world_pos.z, 1.0f);       //需要转换到OPENGL坐标系
 
         // 2. 齐次除法，得到 NDC（注意Z为0~1）
         if (clip.w == 0.0f)
             return Vector2i(0, 0);
 
-        Vector3f ndc;
+        math::Vector3f ndc;
 
         ndc.x = clip.x / clip.w;
         ndc.y = clip.y / clip.w;
@@ -161,11 +161,11 @@ namespace hgl
         return Vector2i(screen_x, screen_y);
     }
 
-    Vector3f UnProjectToWorld(
-        const Vector2i &win_pos,
-        const Matrix4f &view,
-        const Matrix4f &projection,
-        const Vector2u &vp_size)
+    math::Vector3f UnProjectToWorld(
+        const math::Vector2i &win_pos,
+        const math::Matrix4f &view,
+        const math::Matrix4f &projection,
+        const math::Vector2u &vp_size)
     {
         // 1. 归一化到 NDC（[-1, 1]）
         float ndc_x = (2.0f * float(win_pos.x)) / float(vp_size.x) - 1.0f;
@@ -173,11 +173,11 @@ namespace hgl
         // 这里假设在近平面（z=0），如需支持深度可加参数
         float ndc_z = 0.0f;
 
-        Vector4f ndc_pos(ndc_x, ndc_y, ndc_z, 1.0f);
+        math::Vector4f ndc_pos(ndc_x, ndc_y, ndc_z, 1.0f);
 
         // 2. 逆变换到世界空间
-        Matrix4f inv_proj_view = inverse(projection * view);
-        Vector4f world_pos = inv_proj_view * ndc_pos;
+        math::Matrix4f inv_proj_view = inverse(projection * view);
+        math::Vector4f world_pos = inv_proj_view * ndc_pos;
 
         // 3. 齐次除法
         if (world_pos.w == 0.0f)
@@ -187,7 +187,7 @@ namespace hgl
     }
 
     // 函数用于从 glm::mat4 中提取平移、旋转和缩放
-    bool DecomposeTransform(const Matrix4f & transform, Vector3f & outTranslation, Quatf & outRotation, Vector3f & outScale)
+    bool DecomposeTransform(const math::Matrix4f & transform, Vector3f & outTranslation, Quatf & outRotation, Vector3f & outScale)
     {
         using namespace glm;
         mat4 LocalMatrix(transform);
@@ -222,9 +222,9 @@ namespace hgl
     /**
     * 计算一个方向旋转成另一个方向的变换矩阵
     */
-    const Matrix4f GetRotateMatrix(const Vector3f &world_position,const Vector3f &old_direction,const Vector3f &new_direction)
+    const math::Matrix4f GetRotateMatrix(const math::Vector3f &world_position,const math::Vector3f &old_direction,const math::Vector3f &new_direction)
     {
-        Vector3f axis=glm::cross(old_direction,new_direction);
+        math::Vector3f axis=glm::cross(old_direction,new_direction);
 
         if(glm::length2(axis)<0.0001)
             return Matrix4f(1.0f);
@@ -239,9 +239,9 @@ namespace hgl
     /**
     * 计算一个方向旋转成另一个方向的四元数
     */
-    const Quatf GetRotateQuat(const Vector3f &world_position,const Vector3f &old_direction,const Vector3f &new_direction)
+    const math::Quatf GetRotateQuat(const math::Vector3f &world_position,const math::Vector3f &old_direction,const math::Vector3f &new_direction)
     {
-        Vector3f axis=glm::cross(old_direction,new_direction);
+        math::Vector3f axis=glm::cross(old_direction,new_direction);
 
         if(glm::length2(axis)<0.0001)
             return Quatf(1.0f,0.0f,0.0f,0.0f);
@@ -252,4 +252,4 @@ namespace hgl
 
         return glm::angleAxis(angle,axis);
     }
-}//namespace hgl
+}//namespace hgl::math

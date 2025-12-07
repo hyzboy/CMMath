@@ -8,12 +8,12 @@ namespace hgl::math
     */
     class Sphere
     {
-        Vector3f center;
+        math::Vector3f center;
         float radius;
 
     public:
 
-        const Vector3f &GetCenter()const{return center;}
+        const math::Vector3f &GetCenter()const{return center;}
         float GetRadius()const{return radius;}
 
     public:
@@ -23,12 +23,12 @@ namespace hgl::math
             Set(Vector3f(0,0,0),1);
         }
 
-        Sphere(const Vector3f &c,float r)
+        Sphere(const math::Vector3f &c,float r)
         {
             Set(c,r);
         }
 
-        void Set(const Vector3f &c,float r)
+        void Set(const math::Vector3f &c,float r)
         {
             center=c;
             radius=r;
@@ -42,7 +42,7 @@ namespace hgl::math
         /**
         * 取得指定方向上的点
         */
-        Vector3f GetPoint(const Vector3f &direction)const
+        math::Vector3f GetPoint(const math::Vector3f &direction)const
         {
             return center+direction*radius;
         }
@@ -53,13 +53,13 @@ namespace hgl::math
     */
     class EllipseSphere
     {
-        Vector3f center;
-        Vector3f radius;
+        math::Vector3f center;
+        math::Vector3f radius;
 
     public:
 
-        const Vector3f &GetCenter()const{return center;}
-        const Vector3f &GetRadius()const{return radius;}
+        const math::Vector3f &GetCenter()const{return center;}
+        const math::Vector3f &GetRadius()const{return radius;}
 
     public:
 
@@ -68,12 +68,12 @@ namespace hgl::math
             Set(Vector3f(0,0,0),Vector3f(1,1,1));
         }
 
-        EllipseSphere(const Vector3f&c,const Vector3f&r)
+        EllipseSphere(const math::Vector3f&c,const math::Vector3f&r)
         {
             Set(c,r);
         }
 
-        void Set(const Vector3f&c,const Vector3f&r)
+        void Set(const math::Vector3f&c,const math::Vector3f&r)
         {
             center=c;
             radius=r;
@@ -87,7 +87,7 @@ namespace hgl::math
         /**
         * 取得指定方向上的点
         */
-        Vector3f GetPoint(const Vector3f &direction)const
+        math::Vector3f GetPoint(const math::Vector3f &direction)const
         {
             return center+direction*radius;
         }

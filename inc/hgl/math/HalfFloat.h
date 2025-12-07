@@ -3,7 +3,7 @@
 #include<hgl/math/Clamp.h>
 #include<hgl/CoreType.h>
 
-namespace hgl
+namespace hgl::math
 {
     /**
      * Half Float (16位浮点数) 转换函数
@@ -87,4 +87,4 @@ namespace hgl
             ++input;
         }
     }
-}//namespace hgl
+}//namespace hgl::math

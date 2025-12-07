@@ -17,11 +17,11 @@
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtx/euler_angles.hpp>
 
-namespace hgl
+namespace hgl::math
 {
     // ==================== 平移矩阵 ====================
     
-    inline Matrix4f TranslateMatrix(const Vector3f &v)
+    inline Matrix4f TranslateMatrix(const math::Vector3f &v)
     {
         return glm::translate(Matrix4f(1.0f),v);
     }
@@ -38,7 +38,7 @@ namespace hgl
 
     // ==================== 缩放矩阵 ====================
     
-    inline Matrix4f ScaleMatrix(const Vector3f &v)
+    inline Matrix4f ScaleMatrix(const math::Vector3f &v)
     {
         return glm::scale(Matrix4f(1.0f),v);
     }
@@ -92,7 +92,7 @@ namespace hgl
      * @param rad 旋转弧度
      * @param axis 旋转轴向量
      */
-    inline Matrix4f AxisRotate(float rad,const Vector3f &axis)
+    inline Matrix4f AxisRotate(float rad,const math::Vector3f &axis)
     {
         return glm::rotate(Matrix4f(1.0f),rad,axis);
     }
@@ -107,7 +107,7 @@ namespace hgl
         return AxisRotate(rad,x,y,1.0f);
     }
 
-    inline Matrix4f AxisRotate(float rad,const Vector4f &axis)
+    inline Matrix4f AxisRotate(float rad,const math::Vector4f &axis)
     {
         return AxisRotate(rad,Vector3f(axis.x,axis.y,axis.z));
     }
@@ -119,7 +119,7 @@ namespace hgl
      * @param rad 旋转弧度
      * @param axis 旋转轴向量
      */
-    inline Matrix3f AxisRotate3(float rad,const Vector3f &axis)
+    inline Matrix3f AxisRotate3(float rad,const math::Vector3f &axis)
     {
         return glm::mat3(glm::rotate(Matrix4f(1.0f), rad, axis));
     }
@@ -134,7 +134,7 @@ namespace hgl
         return AxisRotate3(rad, Vector3f(x,y,1.0f));
     }
 
-    inline Matrix3f AxisRotate3(float rad,const Vector4f &axis)
+    inline Matrix3f AxisRotate3(float rad,const math::Vector4f &axis)
     {
         return AxisRotate3(rad, Vector3f(axis.x, axis.y, axis.z));
     }
@@ -146,7 +146,7 @@ namespace hgl
      * @param deg 旋转度数
      * @param axis 旋转轴向量
      */
-    inline Matrix3f AxisRotate3Deg(float deg,const Vector3f &axis)
+    inline Matrix3f AxisRotate3Deg(float deg,const math::Vector3f &axis)
     {
         return AxisRotate3(glm::radians(deg), axis);
     }
@@ -156,7 +156,7 @@ namespace hgl
         return AxisRotate3Deg(deg, Vector3f(x,y,z));
     }
 
-    inline Matrix3f AxisRotate3Deg(float deg,const Vector4f &axis)
+    inline Matrix3f AxisRotate3Deg(float deg,const math::Vector4f &axis)
     {
         return AxisRotate3Deg(deg, Vector3f(axis.x, axis.y, axis.z));
     }
@@ -169,9 +169,9 @@ namespace hgl
      * @param rad 旋转弧度
      * @param axis 旋转轴
      */
-    inline Vector3f AxisRotate(const Vector3f &v3f,float rad,const Vector3f &axis)
+    inline math::Vector3f AxisRotate(const math::Vector3f &v3f,float rad,const math::Vector3f &axis)
     {
-        Vector4f result = AxisRotate(rad, axis)*Vector4f(v3f, 1.0f);
+        math::Vector4f result = AxisRotate(rad, axis)*Vector4f(v3f, 1.0f);
         return Vector3f(result.x,result.y,result.z);
     }
 
@@ -183,7 +183,7 @@ namespace hgl
      * @param rotate_quat 旋转四元数
      * @param scale_xyz 缩放向量
      */
-    inline Matrix4f MakeMatrix(const Vector3f &move,const Quatf &rotate_quat,const Vector3f &scale_xyz)
+    inline Matrix4f MakeMatrix(const math::Vector3f &move,const math::Quatf &rotate_quat,const math::Vector3f &scale_xyz)
     {
         return glm::translate(Identity4f,move)
               *glm::toMat4(rotate_quat)
@@ -197,7 +197,7 @@ namespace hgl
      * @param rotate_angle 旋转角度（度数）
      * @param scale_xyz 缩放向量
      */
-    inline Matrix4f MakeMatrix(const Vector3f &move,const Vector3f &rotate_axis,const float &rotate_angle,const Vector3f &scale_xyz)
+    inline Matrix4f MakeMatrix(const math::Vector3f &move,const math::Vector3f &rotate_axis,const float &rotate_angle,const math::Vector3f &scale_xyz)
     {
         return glm::translate(Identity4f,move)
               *glm::rotate(Identity4f,glm::radians(rotate_angle),rotate_axis)
@@ -211,7 +211,7 @@ namespace hgl
      * @param self_matrix 自身矩阵
      * @param reference_matrix 参照矩阵
      */
-    inline Matrix4f RelativeMatrix(const Matrix4f &self_matrix,const Matrix4f &reference_matrix)
+    inline Matrix4f RelativeMatrix(const math::Matrix4f &self_matrix,const math::Matrix4f &reference_matrix)
     {
         return inverse(reference_matrix)*self_matrix;
     }
@@ -221,7 +221,7 @@ namespace hgl
     /**
      * 变换位置（考虑平移）
      */
-    inline Vector3f TransformPosition(const Matrix4f &m,const Vector3f &v)
+    inline math::Vector3f TransformPosition(const math::Matrix4f &m,const math::Vector3f &v)
     {
         return Vector3f(m*Vector4f(v,1.0f));
     }
@@ -229,7 +229,7 @@ namespace hgl
     /**
      * 变换方向（不考虑平移）
      */
-    inline Vector3f TransformDirection(const Matrix4f &m,const Vector3f &v)
+    inline math::Vector3f TransformDirection(const math::Matrix4f &m,const math::Vector3f &v)
     {
         return Vector3f(m*Vector4f(v,0.0f));
     }
@@ -237,7 +237,7 @@ namespace hgl
     /**
      * 变换法线（使用逆转置矩阵）
      */
-    inline Vector3f TransformNormal(const Matrix4f &m,const Vector3f &v)
+    inline math::Vector3f TransformNormal(const math::Matrix4f &m,const math::Vector3f &v)
     {
         return normalize(Vector3f(transpose(inverse(m))*Vector4f(v,0.0f)));
     }
@@ -245,7 +245,7 @@ namespace hgl
     /**
      * 变换法线（3x3矩阵版本）
      */
-    inline Vector3f TransformNormal(const Matrix3f &m,const Vector3f &v)
+    inline math::Vector3f TransformNormal(const Matrix3f &m,const math::Vector3f &v)
     {
         return normalize(m*v);
     }
@@ -258,7 +258,7 @@ namespace hgl
      * @param old_direction 旧方向向量
      * @param new_direction 新方向向量
      */
-    const Matrix4f GetRotateMatrix(const Vector3f &world_position,const Vector3f &old_direction,const Vector3f &new_direction);    
+    const math::Matrix4f GetRotateMatrix(const math::Vector3f &world_position,const math::Vector3f &old_direction,const math::Vector3f &new_direction);    
 
     /**
      * 分解变换矩阵为平移、旋转、缩放
@@ -268,5 +268,5 @@ namespace hgl
      * @param outScale 输出：缩放向量
      * @return 是否成功分解
      */
-    bool DecomposeTransform(const Matrix4f & transform, Vector3f & outTranslation, Quatf & outRotation, Vector3f & outScale);
-}//namespace hgl
+    bool DecomposeTransform(const math::Matrix4f & transform, Vector3f & outTranslation, Quatf & outRotation, Vector3f & outScale);
+}//namespace hgl::math

@@ -9,7 +9,7 @@ namespace hgl
     /**
     * 将float3型法线数据压缩为float2型
     */
-    inline Vector2f Normal3to2(const Vector3f &input)
+    inline Vector2f Normal3to2(const math::Vector3f &input)
     {
         float f=sqrt(8.0f*input.z+8.0f);
 
@@ -31,9 +31,9 @@ namespace hgl
     /**
     * 解压float2型法线数据
     */
-    inline Vector3f Normal2to3(const Vector2f &input)
+    inline math::Vector3f Normal2to3(const math::Vector2f &input)
     {
-        Vector2f fenc(input*4.0f-2.0f);
+        math::Vector2f fenc(input*4.0f-2.0f);
 
         float f=dot(fenc,fenc);
         float g=sqrt(1.0f-f/4.0f);
@@ -53,7 +53,7 @@ namespace hgl
         return ClampU8((value+1.0f)*127.5f);
     }
 
-    inline Vector3f normal_vec3(const uint8 *input)
+    inline math::Vector3f normal_vec3(const uint8 *input)
     {
         return Vector3f(normal_float(input[0]),
                         normal_float(input[1]),
@@ -66,7 +66,7 @@ namespace hgl
                         normal_float(input[1]));
     }
 
-    inline uint8 *normal_vec3(uint8 *output,const Vector3f &input)
+    inline uint8 *normal_vec3(uint8 *output,const math::Vector3f &input)
     {
         *output=normal_u8(input.x);
         ++output;
@@ -78,7 +78,7 @@ namespace hgl
         return output;
     }
 
-    inline uint8 *normal_vec2(uint8 *output,const Vector2f &input)
+    inline uint8 *normal_vec2(uint8 *output,const math::Vector2f &input)
     {
         *output=normal_u8(input.x);
         ++output;

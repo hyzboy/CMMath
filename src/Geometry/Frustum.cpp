@@ -2,7 +2,7 @@
 
 namespace hgl::math
 {
-    void GetFrustumPlanes(FrustumPlanes &planes,const Matrix4f &mvp)
+    void GetFrustumPlanes(FrustumPlanes &planes,const math::Matrix4f &mvp)
     {
         // @see https://github.com/SaschaWillems/Vulkan/base/frustum.hpp
         // 注意我们的向上轴和向前轴和上面的不同
@@ -45,7 +45,7 @@ namespace hgl::math
         }
     }
 
-    void Frustum::SetMatrix(const Matrix4f &mvp)
+    void Frustum::SetMatrix(const math::Matrix4f &mvp)
     {
         FrustumPlanes planes;
 
@@ -54,7 +54,7 @@ namespace hgl::math
         for(int i=0;i<6;i++)pl[i].Set(planes[i]);         // 设置平面
     }
 
-    Frustum::Scope Frustum::PointIn(const Vector3f &p) const
+    Frustum::Scope Frustum::PointIn(const math::Vector3f &p) const
     {
         Frustum::Scope result = Frustum::Scope::INSIDE;
 
@@ -65,7 +65,7 @@ namespace hgl::math
         return(result);
     }
 
-    Frustum::Scope Frustum::SphereIn(const Vector3f &p, float radius) const
+    Frustum::Scope Frustum::SphereIn(const math::Vector3f &p, float radius) const
     {
         Frustum::Scope result = Frustum::Scope::INSIDE;
         float distance;

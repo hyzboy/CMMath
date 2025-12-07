@@ -17,7 +17,7 @@
 //注：GLM/CML(OpenGLMode)是列矩阵,计算坐标matrix*pos
 //   而MGL是行矩阵，需要反过来pos*matrix
 
-namespace hgl
+namespace hgl::math
 {
     /**
      * 矩阵类型定义宏
@@ -31,7 +31,7 @@ namespace hgl
 #define DEFINE_MATRIX(num)  using Matrix##num##f=glm::mat##num;  \
                             constexpr const size_t Matrix##num##fBytes=sizeof(Matrix##num##f); \
                             const Matrix##num##f Identity##num##f=Matrix##num##f(1.0f); \
-                            inline bool IsIdentityMatrix(const Matrix##num##f &m){return(hgl_cmp(m,Identity##num##f)==0);}  \
+                            inline bool IsIdentityMatrix(const Matrix##num##f &m){return(mem_compare(m,Identity##num##f)==0);}  \
                             inline bool IsNearlyEqual(const Matrix##num##f &m1,const Matrix##num##f &m2,const float err=HGL_FLOAT_ERROR)    \
                             {   \
                                 float *f1=(float *)&m1;\
@@ -39,7 +39,7 @@ namespace hgl
                             \
                                 for(int i=0;i<sizeof(Matrix##num##f)/sizeof(float);i++)  \
                                 {   \
-                                    if(!IsNearlyEqual(*f1,*f2,err))  \
+                                    if(!math::IsNearlyEqual(*f1,*f2,err))  \
                                         return(false);  \
                             \
                                     ++f1;++f2;  \
@@ -60,4 +60,4 @@ namespace hgl
     DEFINE_MATRIX(4x3)
 
 //#undef DEFINE_MATRIX
-}//namespace hgl
+}//namespace hgl::math

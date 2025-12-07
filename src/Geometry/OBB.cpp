@@ -12,12 +12,12 @@ namespace hgl::math
         planes[5].Set(center - axis[2] * half_length.z, -axis[2]);      // axis[2] 的负方向面
     }
 
-    void OBB::Set(const Vector3f &c,const Vector3f &hl)
+    void OBB::Set(const math::Vector3f &c,const math::Vector3f &hl)
     {
         Set(c,Vector3f(1,0,0),Vector3f(0,1,0),Vector3f(0,0,1),hl);
     }
 
-    void OBB::Set(const Vector3f &c,const Vector3f &a0,const Vector3f &a1,const Vector3f &a2,const Vector3f &hl)
+    void OBB::Set(const math::Vector3f &c,const math::Vector3f &a0,const math::Vector3f &a1,const math::Vector3f &a2,const math::Vector3f &hl)
     {
         center=c;
         axis[0]=a0;
@@ -28,7 +28,7 @@ namespace hgl::math
         ComputePlanes();
     }
 
-    const Matrix4f OBB::GetMatrix(const float cube_size)const
+    const math::Matrix4f OBB::GetMatrix(const float cube_size)const
     {
         // 这段代码也是正确的，留着做参考吧！
         {        
@@ -39,7 +39,7 @@ namespace hgl::math
             //return translate_matrix*rotate_matrix*scale_matrix;
         }
 
-        Matrix4f result(axis);
+        math::Matrix4f result(axis);
 
         const float scale=cube_size/0.5f;
 
@@ -68,7 +68,7 @@ namespace hgl::math
         out[7]=center+ex+ey+ez;
     }
 
-    OBB OBB::Transformed(const Matrix4f &m)const
+    OBB OBB::Transformed(const math::Matrix4f &m)const
     {
         if(IsEmpty()) return *this;
         OBB out;

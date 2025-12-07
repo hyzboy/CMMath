@@ -33,7 +33,7 @@ namespace hgl::math
         const glm::vec3 az = glm::abs(obb.GetAxis(2));
         
         // Calculate the extent by projecting OBB half-lengths onto world axes
-        const Vector3f half_extent = obb.GetHalfExtend();
+        const math::Vector3f half_extent = obb.GetHalfExtend();
         const glm::vec3 e = ax * half_extent.x + ay * half_extent.y + az * half_extent.z;
 
         AABB aabb;
@@ -48,10 +48,10 @@ namespace hgl::math
         return obb;
     }
 
-    OBB ToOBB(const AABB &aabb, const Matrix4f &transform)
+    OBB ToOBB(const AABB &aabb, const math::Matrix4f &transform)
     {
         // Transform the center
-        Vector3f center = Vector3f(transform * Vector4f(aabb.GetCenter(), 1.0f));
+        math::Vector3f center = Vector3f(transform * math::Vector4f(aabb.GetCenter(), 1.0f));
         
         // Extract rotation and scale from transform
         const float s0 = glm::length(glm::vec3(transform[0]));
@@ -59,12 +59,12 @@ namespace hgl::math
         const float s2 = glm::length(glm::vec3(transform[2]));
 
         // Extract and normalize axes
-        Vector3f a0 = (s0 > 0.0f) ? (glm::vec3(transform[0]) / s0) : Vector3f(1, 0, 0);
-        Vector3f a1 = (s1 > 0.0f) ? (glm::vec3(transform[1]) / s1) : Vector3f(0, 1, 0);
-        Vector3f a2 = (s2 > 0.0f) ? (glm::vec3(transform[2]) / s2) : Vector3f(0, 0, 1);
+        math::Vector3f a0 = (s0 > 0.0f) ? (glm::vec3(transform[0]) / s0) : Vector3f(1, 0, 0);
+        math::Vector3f a1 = (s1 > 0.0f) ? (glm::vec3(transform[1]) / s1) : Vector3f(0, 1, 0);
+        math::Vector3f a2 = (s2 > 0.0f) ? (glm::vec3(transform[2]) / s2) : Vector3f(0, 0, 1);
 
         // Apply scale to half extents
-        Vector3f half_length = aabb.GetLength() * 0.5f * Vector3f(s0, s1, s2);
+        math::Vector3f half_length = aabb.GetLength() * 0.5f * Vector3f(s0, s1, s2);
 
         OBB obb;
         obb.Set(center, a0, a1, a2, half_length);
@@ -115,13 +115,13 @@ namespace hgl::math
             return;
 
         bounds->aabb.SetMinMax(Vector3f(aabbMin[0], aabbMin[1], aabbMin[2]),
-                              Vector3f(aabbMax[0], aabbMax[1], aabbMax[2]));
+                              math::Vector3f(aabbMax[0], aabbMax[1], aabbMax[2]));
         
         bounds->obb.Set(Vector3f(obbCenter[0], obbCenter[1], obbCenter[2]),
-                       Vector3f(obbAxisX[0], obbAxisX[1], obbAxisX[2]),
-                       Vector3f(obbAxisY[0], obbAxisY[1], obbAxisY[2]),
-                       Vector3f(obbAxisZ[0], obbAxisZ[1], obbAxisZ[2]),
-                       Vector3f(obbHalfSize[0], obbHalfSize[1], obbHalfSize[2]));
+                       math::Vector3f(obbAxisX[0], obbAxisX[1], obbAxisX[2]),
+                       math::Vector3f(obbAxisY[0], obbAxisY[1], obbAxisY[2]),
+                       math::Vector3f(obbAxisZ[0], obbAxisZ[1], obbAxisZ[2]),
+                       math::Vector3f(obbHalfSize[0], obbHalfSize[1], obbHalfSize[2]));
 
         bounds->bsphere.center = Vector3f(sphereCenter[0], sphereCenter[1], sphereCenter[2]);
         bounds->bsphere.radius = sphereRadius;

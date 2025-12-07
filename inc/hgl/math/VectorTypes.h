@@ -3,7 +3,7 @@
 #include<glm/glm.hpp>
 #include<glm/gtc/constants.hpp>
 
-namespace hgl
+namespace hgl::math
 {
     /**
      * 向量类型定义
@@ -65,4 +65,4 @@ namespace hgl
 
         return Vector3f(0,0,0);
     }
-}//namespace hgl
+}//namespace hgl::math

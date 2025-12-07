@@ -2,9 +2,9 @@
 
 namespace hgl::math
 {
-    Vector3f AABB::GetVertexP(const Vector3f &normal) const
+    math::Vector3f AABB::GetVertexP(const math::Vector3f &normal) const
     {
-        Vector3f res = minPoint;
+        math::Vector3f res = minPoint;
 
         if (normal[0] > 0)res[0] += length[0];
         if (normal[1] > 0)res[1] += length[1];
@@ -13,9 +13,9 @@ namespace hgl::math
         return(res);
     }
 
-    Vector3f AABB::GetVertexN(const Vector3f &normal) const
+    math::Vector3f AABB::GetVertexN(const math::Vector3f &normal) const
     {
-        Vector3f res = minPoint;
+        math::Vector3f res = minPoint;
 
         if (normal[0] < 0)res[0] += length[0];
         if (normal[1] < 0)res[1] += length[1];
@@ -46,13 +46,13 @@ namespace hgl::math
 
         const float *p=pts;
             
-        Vector3f minp(p[0],p[1],p[2]);
-        Vector3f maxp(p[0],p[1],p[2]);
+        math::Vector3f minp(p[0],p[1],p[2]);
+        math::Vector3f maxp(p[0],p[1],p[2]);
         p+=component_count;
 
         for(uint32_t i=1;i<count;++i)
         {
-            Vector3f v(p[0],p[1],p[2]);
+            math::Vector3f v(p[0],p[1],p[2]);
             minp=glm::min(minp,v);
             maxp=glm::max(maxp,v);
             p+=component_count;
@@ -61,27 +61,27 @@ namespace hgl::math
         SetMinMax(minp,maxp);
     }
 
-    AABB AABB::Transformed(const Matrix4f &m)const
+    AABB AABB::Transformed(const math::Matrix4f &m)const
     {
         if(IsEmpty())
             return *this;
 
-        const Vector3f corners[8]=
+        const math::Vector3f corners[8]=
         {
             minPoint,
-            Vector3f(maxPoint.x,minPoint.y,minPoint.z),
-            Vector3f(minPoint.x,maxPoint.y,minPoint.z),
-            Vector3f(maxPoint.x,maxPoint.y,minPoint.z),
-            Vector3f(minPoint.x,minPoint.y,maxPoint.z),
-            Vector3f(maxPoint.x,minPoint.y,maxPoint.z),
-            Vector3f(minPoint.x,maxPoint.y,maxPoint.z),
+            math::Vector3f(maxPoint.x,minPoint.y,minPoint.z),
+            math::Vector3f(minPoint.x,maxPoint.y,minPoint.z),
+            math::Vector3f(maxPoint.x,maxPoint.y,minPoint.z),
+            math::Vector3f(minPoint.x,minPoint.y,maxPoint.z),
+            math::Vector3f(maxPoint.x,minPoint.y,maxPoint.z),
+            math::Vector3f(minPoint.x,maxPoint.y,maxPoint.z),
             maxPoint
         };
 
-        Vector3f transformed[8];
+        math::Vector3f transformed[8];
 
         for(int i=0;i<8;++i)
-            transformed[i] = Vector3f(m * Vector4f(corners[i], 1.0f));
+            transformed[i] = Vector3f(m * math::Vector4f(corners[i], 1.0f));
 
         AABB result;
         result.SetFromPoints((const float *)&transformed,8,

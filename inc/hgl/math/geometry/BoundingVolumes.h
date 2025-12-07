@@ -33,7 +33,7 @@ namespace hgl::math
      * @note The OBB's axes are extracted from the rotation part of the transform,
      *       and scaling is applied to the half extents
      */
-    OBB ToOBB(const AABB &aabb, const Matrix4f &transform);
+    OBB ToOBB(const AABB &aabb, const math::Matrix4f &transform);
 
     struct BoundingVolumesData;
 
@@ -54,7 +54,7 @@ namespace hgl::math
         {
             aabb.Clear();
             obb.Clear();
-            hgl_zero(bsphere);
+            mem_zero(bsphere);
         }
 
         bool IsEmpty()const
@@ -72,7 +72,7 @@ namespace hgl::math
             bsphere.radius = glm::length(aabb.GetMax() - bsphere.center);
         }
 
-        void SetFromAABB(const Vector3f &min_v,const Vector3f &max_v)
+        void SetFromAABB(const math::Vector3f &min_v,const math::Vector3f &max_v)
         {
             AABB box;
             box.SetMinMax(min_v,max_v);

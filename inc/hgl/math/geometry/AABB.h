@@ -6,14 +6,14 @@
 
 namespace hgl::math
 {
-    const Vector3f AABBFaceNormal[6]=
+    const math::Vector3f AABBFaceNormal[6]=
     {
-        Vector3f(-1,  0,  0),
-        Vector3f( 1,  0,  0),
-        Vector3f( 0, -1,  0),
-        Vector3f( 0,  1,  0),
-        Vector3f( 0,  0, -1),
-        Vector3f( 0,  0,  1)
+        math::Vector3f(-1,  0,  0),
+        math::Vector3f( 1,  0,  0),
+        math::Vector3f( 0, -1,  0),
+        math::Vector3f( 0,  1,  0),
+        math::Vector3f( 0,  0, -1),
+        math::Vector3f( 0,  0,  1)
     };
 
     /**
@@ -21,12 +21,12 @@ namespace hgl::math
     */
     class AABB
     {
-        Vector3f minPoint;
-        Vector3f center;
-        Vector3f length;
-        Vector3f maxPoint;
+        math::Vector3f minPoint;
+        math::Vector3f center;
+        math::Vector3f length;
+        math::Vector3f maxPoint;
 
-        Vector3f face_center_point[6];
+        math::Vector3f face_center_point[6];
 
         Plane planes[6];
 
@@ -43,7 +43,7 @@ namespace hgl::math
             SetCornerLength(Vector3f(0,0,0),Vector3f(1,1,1));
         }
 
-        void SetCornerLength(const Vector3f &c,const Vector3f &l)               ///<按顶角和长度设置盒子范围
+        void SetCornerLength(const math::Vector3f &c,const math::Vector3f &l)               ///<按顶角和长度设置盒子范围
         {
             minPoint=c;
             length=l;
@@ -52,7 +52,7 @@ namespace hgl::math
             Update();
         }
 
-        void SetMinMax(const Vector3f &min_v,const Vector3f &max_v)             ///<按最小最大值设置盒子范围
+        void SetMinMax(const math::Vector3f &min_v,const math::Vector3f &max_v)             ///<按最小最大值设置盒子范围
         {
             minPoint=min_v;
             maxPoint=max_v;
@@ -65,12 +65,12 @@ namespace hgl::math
 
         void Clear()
         {
-            hgl_zero(minPoint);
-            hgl_zero(maxPoint);
-            hgl_zero(center);
-            hgl_zero(length);
-            hgl_zero(planes);
-            hgl_zero(face_center_point);
+            mem_zero(minPoint);
+            mem_zero(maxPoint);
+            mem_zero(center);
+            mem_zero(length);
+            mem_zero(planes);
+            mem_zero(face_center_point);
         }
 
         const   Vector3f &  GetMin      ()const{return minPoint;}
@@ -79,8 +79,8 @@ namespace hgl::math
         const   Vector3f &  GetCenter   ()const{return center;}
         const   Vector3f &  GetLength   ()const{return length;}
 
-                Vector3f    GetVertexP  (const Vector3f &)const;
-                Vector3f    GetVertexN  (const Vector3f &)const;
+                math::Vector3f    GetVertexP  (const math::Vector3f &)const;
+                math::Vector3f    GetVertexN  (const math::Vector3f &)const;
 
         void Merge(const AABB &box)
         {
@@ -96,6 +96,6 @@ namespace hgl::math
 
         void operator += (const AABB &aabb){Merge(aabb);}                       ///<融合另一个AABox
 
-        AABB Transformed(const Matrix4f &m)const;                               ///<返回变换后的AABox
+        AABB Transformed(const math::Matrix4f &m)const;                               ///<返回变换后的AABox
     };//class AABB
 }//namespace hgl::math

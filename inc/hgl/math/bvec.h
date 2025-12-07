@@ -14,9 +14,9 @@ namespace hgl
 
     public:
 
-        bool_vec()                      {hgl_zero(data);}
-        bool_vec(const bool_vec<N> &b)  {hgl_cpy(*this,b);}
-        bool_vec(const bool *ba)        {hgl_cpy<bool>(data,ba,N);}
+        bool_vec()                      {mem_zero(data);}
+        bool_vec(const bool_vec<N> &b)  {mem_copy(*this,b);}
+        bool_vec(const bool *ba)        {mem_copy<bool>(data,ba,N);}
         virtual ~bool_vec()=default;
 
         bool &operator[](const int index)
@@ -26,7 +26,7 @@ namespace hgl
 
         const bool_vec<N> &operator = (const bool_vec<N> &b)
         {
-            hgl_cpy(this->data,b.data,N);
+            mem_copy(this->data,b.data,N);
             return *this;
         }
 
@@ -66,8 +66,8 @@ namespace hgl
                             {   \
                             public: \
                                 bvec##N(){} \
-                                bvec##N(const bvec##N &b){hgl_cpy(this->data,b.data,N);}  \
-                                bvec##N(const bool *b){hgl_cpy(this->data,b,N);}    \
+                                bvec##N(const bvec##N &b){mem_copy(this->data,b.data,N);}  \
+                                bvec##N(const bool *b){mem_copy(this->data,b,N);}    \
                                 ~bvec##N()=default;
 
     #define BVEC_END        };

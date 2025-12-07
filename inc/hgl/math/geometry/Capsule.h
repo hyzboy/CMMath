@@ -11,15 +11,15 @@ namespace hgl::math
     {
     protected:
 
-        Vector3f start;
-        Vector3f end;
+        math::Vector3f start;
+        math::Vector3f end;
 
         float radius;
 
     public:
 
-        const Vector3f &GetStart()const{return start;}
-        const Vector3f &GetEnd()const{return end;}
+        const math::Vector3f &GetStart()const{return start;}
+        const math::Vector3f &GetEnd()const{return end;}
         const float GetRadius()const{return radius;}
     };//class Capsule
 }//namespace hgl::math

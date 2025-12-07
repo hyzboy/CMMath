@@ -4,9 +4,9 @@
 
 namespace hgl::math
 {
-    float DistanceBetweenPointAndRectangle3D(const Vector3f &p,const Rectangle3D &rect)
+    float DistanceBetweenPointAndRectangle3D(const math::Vector3f &p,const Rectangle3D &rect)
     {
-        Vector3f v=p-rect.center;
+        math::Vector3f v=p-rect.center;
 
         // 计算点到平面的垂直距离
         float normal_dist=abs(dot(v,rect.normal));
@@ -31,10 +31,10 @@ namespace hgl::math
         float up_len_clamped=std::clamp(up_len,-half_height,half_height);
         float right_len_clamped=std::clamp(right_len,-half_width,half_width);
 
-        Vector3f up_v=rect.up*up_len_clamped;
-        Vector3f right_v=rect.right*right_len_clamped;
+        math::Vector3f up_v=rect.up*up_len_clamped;
+        math::Vector3f right_v=rect.right*right_len_clamped;
 
-        Vector3f closest_point=rect.center+up_v+right_v;
+        math::Vector3f closest_point=rect.center+up_v+right_v;
 
         return length(p-closest_point);
     }

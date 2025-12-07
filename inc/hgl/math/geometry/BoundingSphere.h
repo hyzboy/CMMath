@@ -6,7 +6,7 @@ namespace hgl::math
 {
     struct BoundingSphere
     {
-        Vector3f center { 0.0f };
+        math::Vector3f center { 0.0f };
 
         float radius=-1.0f;
 

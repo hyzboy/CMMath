@@ -4,7 +4,7 @@
 #include<hgl/math/FloatPrecision.h>
 #include<glm/glm.hpp>
 
-namespace hgl
+namespace hgl::math
 {
     /**
      * 向量基础运算
@@ -13,83 +13,83 @@ namespace hgl
 
     // ==================== 向量比较 ====================
 
-    inline bool operator == (const Vector2f &lhs,const Vector2f &rhs)
+    inline bool operator == (const math::Vector2f &lhs,const math::Vector2f &rhs)
     {
-        if(!IsNearlyEqual(lhs.x,rhs.x))return(false);
-        if(!IsNearlyEqual(lhs.y,rhs.y))return(false);
+        if(!math::IsNearlyEqual(lhs.x,rhs.x))return(false);
+        if(!math::IsNearlyEqual(lhs.y,rhs.y))return(false);
         return(true);
     }
 
-    inline bool operator != (const Vector2f &lhs,const Vector2f &rhs)
+    inline bool operator != (const math::Vector2f &lhs,const math::Vector2f &rhs)
     {
-        if(!IsNearlyEqual(lhs.x,rhs.x))return(true);
-        if(!IsNearlyEqual(lhs.y,rhs.y))return(true);
+        if(!math::IsNearlyEqual(lhs.x,rhs.x))return(true);
+        if(!math::IsNearlyEqual(lhs.y,rhs.y))return(true);
         return(false);
     }
 
-    inline bool operator == (const Vector3f &lhs,const Vector3f &rhs)
+    inline bool operator == (const math::Vector3f &lhs,const math::Vector3f &rhs)
     {
-        if(!IsNearlyEqual(lhs.x,rhs.x))return(false);
-        if(!IsNearlyEqual(lhs.y,rhs.y))return(false);
-        if(!IsNearlyEqual(lhs.z,rhs.z))return(false);
+        if(!math::IsNearlyEqual(lhs.x,rhs.x))return(false);
+        if(!math::IsNearlyEqual(lhs.y,rhs.y))return(false);
+        if(!math::IsNearlyEqual(lhs.z,rhs.z))return(false);
         return(true);
     }
 
-    inline bool operator != (const Vector3f &lhs,const Vector3f &rhs)
+    inline bool operator != (const math::Vector3f &lhs,const math::Vector3f &rhs)
     {
-        if(!IsNearlyEqual(lhs.x,rhs.x))return(true);
-        if(!IsNearlyEqual(lhs.y,rhs.y))return(true);
-        if(!IsNearlyEqual(lhs.z,rhs.z))return(true);
+        if(!math::IsNearlyEqual(lhs.x,rhs.x))return(true);
+        if(!math::IsNearlyEqual(lhs.y,rhs.y))return(true);
+        if(!math::IsNearlyEqual(lhs.z,rhs.z))return(true);
         return(false);
     }
 
-    inline bool operator == (const Vector4f &lhs,const Vector4f &rhs)
+    inline bool operator == (const math::Vector4f &lhs,const math::Vector4f &rhs)
     {
-        if(!IsNearlyEqual(lhs.x,rhs.x))return(false);
-        if(!IsNearlyEqual(lhs.y,rhs.y))return(false);
-        if(!IsNearlyEqual(lhs.z,rhs.z))return(false);
-        if(!IsNearlyEqual(lhs.w,rhs.w))return(false);
+        if(!math::IsNearlyEqual(lhs.x,rhs.x))return(false);
+        if(!math::IsNearlyEqual(lhs.y,rhs.y))return(false);
+        if(!math::IsNearlyEqual(lhs.z,rhs.z))return(false);
+        if(!math::IsNearlyEqual(lhs.w,rhs.w))return(false);
         return(true);
     }
 
-    inline bool operator != (const Vector4f &lhs,const Vector4f &rhs)
+    inline bool operator != (const math::Vector4f &lhs,const math::Vector4f &rhs)
     {
-        if(!IsNearlyEqual(lhs.x,rhs.x))return(true);
-        if(!IsNearlyEqual(lhs.y,rhs.y))return(true);
-        if(!IsNearlyEqual(lhs.z,rhs.z))return(true);
-        if(!IsNearlyEqual(lhs.w,rhs.w))return(true);
+        if(!math::IsNearlyEqual(lhs.x,rhs.x))return(true);
+        if(!math::IsNearlyEqual(lhs.y,rhs.y))return(true);
+        if(!math::IsNearlyEqual(lhs.z,rhs.z))return(true);
+        if(!math::IsNearlyEqual(lhs.w,rhs.w))return(true);
         return(false);
     }
 
     // ==================== 近似相等判断 ====================
 
-    inline bool IsNearlyEqual(const Vector2f &v1,const Vector2f &v2,const float err=HGL_FLOAT_ERROR)
+    inline bool IsNearlyEqual(const math::Vector2f &v1,const math::Vector2f &v2,const float err=HGL_FLOAT_ERROR)
     {
-        if(!IsNearlyEqual(v1.x,v2.x,err))return(false);
-        if(!IsNearlyEqual(v1.y,v2.y,err))return(false);
+        if(!math::IsNearlyEqual(v1.x,v2.x,err))return(false);
+        if(!math::IsNearlyEqual(v1.y,v2.y,err))return(false);
         return(true);
     }
 
     inline bool IsNearlyEqual(const Vector2d &v1,const Vector2d &v2,const double err=HGL_DOUBLE_ERROR)
     {
-        if(!IsNearlyEqual(v1.x,v2.x,err))return(false);
-        if(!IsNearlyEqual(v1.y,v2.y,err))return(false);
+        if(!math::IsNearlyEqual(v1.x,v2.x,err))return(false);
+        if(!math::IsNearlyEqual(v1.y,v2.y,err))return(false);
         return(true);
     }
 
-    inline bool IsNearlyEqual(const Vector3f &v1,const Vector3f &v2,const float err=HGL_FLOAT_ERROR)
+    inline bool IsNearlyEqual(const math::Vector3f &v1,const math::Vector3f &v2,const float err=HGL_FLOAT_ERROR)
     {
-        if(!IsNearlyEqual(v1.x,v2.x,err))return(false);
-        if(!IsNearlyEqual(v1.y,v2.y,err))return(false);
-        if(!IsNearlyEqual(v1.z,v2.z,err))return(false);
+        if(!math::IsNearlyEqual(v1.x,v2.x,err))return(false);
+        if(!math::IsNearlyEqual(v1.y,v2.y,err))return(false);
+        if(!math::IsNearlyEqual(v1.z,v2.z,err))return(false);
         return(true);
     }
 
     inline bool IsNearlyEqual(const Vector3d &v1,const Vector3d &v2,const double err=HGL_DOUBLE_ERROR)
     {
-        if(!IsNearlyEqual(v1.x,v2.x,err))return(false);
-        if(!IsNearlyEqual(v1.y,v2.y,err))return(false);
-        if(!IsNearlyEqual(v1.z,v2.z,err))return(false);
+        if(!math::IsNearlyEqual(v1.x,v2.x,err))return(false);
+        if(!math::IsNearlyEqual(v1.y,v2.y,err))return(false);
+        if(!math::IsNearlyEqual(v1.z,v2.z,err))return(false);
         return(true);
     }
 
@@ -124,17 +124,17 @@ namespace hgl
 
     // ==================== 叉乘 ====================
 
-    inline Vector3f cross(const Vector3f &v1,const Vector3f &v2)
+    inline math::Vector3f cross(const math::Vector3f &v1,const math::Vector3f &v2)
     {
         return glm::cross(v1,v2);
     }
 
-    inline Vector4f cross(const Vector4f &v1,const Vector4f &v2)
+    inline math::Vector4f cross(const math::Vector4f &v1,const math::Vector4f &v2)
     {
-        Vector3f v31=v1;
-        Vector3f v32=v2;
+        math::Vector3f v31=v1;
+        math::Vector3f v32=v2;
 
-        Vector4f result=Vector4f(glm::cross(v31,v32),1.0f);
+        math::Vector4f result=Vector4f(glm::cross(v31,v32),1.0f);
 
         return result;
     }
@@ -149,22 +149,22 @@ namespace hgl
 
     // ==================== 长度计算 ====================
 
-    inline float length_squared(const Vector2f &v)
+    inline float length_squared(const math::Vector2f &v)
     {
         return (v.x*v.x) + (v.y*v.y);
     }
 
-    inline float length_squared_2d(const Vector3f &v)
+    inline float length_squared_2d(const math::Vector3f &v)
     {
         return (v.x*v.x) + (v.y*v.y);
     }
 
-    inline float length_squared(const Vector3f &v)
+    inline float length_squared(const math::Vector3f &v)
     {
         return (v.x*v.x) + (v.y*v.y) + (v.z*v.z);
     }
 
-    inline float length_squared(const Vector4f &v)
+    inline float length_squared(const math::Vector4f &v)
     {
         return (v.x*v.x) + (v.y*v.y) + (v.z*v.z);
     }
@@ -175,7 +175,7 @@ namespace hgl
         return sqrt(length_squared(v));
     }
 
-    inline float length_2d(const Vector3f &v)
+    inline float length_2d(const math::Vector3f &v)
     {
         return sqrt(length_squared_2d(v));
     }
@@ -240,4 +240,4 @@ namespace hgl
     {
         return clamp<uint16>(in,0,0xFFFF);
     }
-}//namespace hgl
+}//namespace hgl::graph

@@ -10,10 +10,10 @@ namespace hgl
         // ==================== Function Pointer Type Definitions ====================
 
         /// 2-point Vector2f Lerp function pointer type (Linear, Cosine, Cubic, Hermite)
-        typedef Vector2f (*LerpFunc2PointVec2f)(const Vector2f&, const Vector2f&, const float);
+        typedef Vector2f (*LerpFunc2PointVec2f)(const math::Vector2f&, const math::Vector2f&, const float);
 
         /// 4-point Vector2f Lerp function pointer type (Bezier, CatmullRom, BSpline)
-        typedef Vector2f (*LerpFunc4PointVec2f)(const Vector2f&, const Vector2f&, const Vector2f&, const Vector2f&, const float);
+        typedef Vector2f (*LerpFunc4PointVec2f)(const math::Vector2f&, const math::Vector2f&, const math::Vector2f&, const math::Vector2f&, const float);
 
         // ==================== Interpolation Functions ====================
 
@@ -45,19 +45,19 @@ namespace hgl
             return from*(2.0f*t3-3.0f*t2+1.0f)+to*(3.0f*t2-2.0f*t3);
         }
 
-        inline Vector2f LerpLinear(const Vector2f &from,const Vector2f &to,const float t)
+        inline Vector2f LerpLinear(const math::Vector2f &from,const math::Vector2f &to,const float t)
         {
             return from+(to-from)*t;
         }
 
-        inline Vector2f LerpCos(const Vector2f &from,const Vector2f &to,const float t)
+        inline Vector2f LerpCos(const math::Vector2f &from,const math::Vector2f &to,const float t)
         {
             float t2=(1.0f-cos(t*HGL_PI))/2.0f;
 
             return from*(1.0f-t2)+to*t2;
         }
 
-        inline Vector2f LerpCubic(const Vector2f &from,const Vector2f &to,const float t)
+        inline Vector2f LerpCubic(const math::Vector2f &from,const math::Vector2f &to,const float t)
         {
             float t2=t*t;
             float t3=t2*t;
@@ -65,7 +65,7 @@ namespace hgl
             return from*(2.0f*t3-3.0f*t2+1.0f)+to*(3.0f*t2-2.0f*t3);
         }
 
-        inline Vector2f LerpCubicEase(const Vector2f &from,const Vector2f &to,const float t)
+        inline Vector2f LerpCubicEase(const math::Vector2f &from,const math::Vector2f &to,const float t)
         {
             float t2=t*t;
             float t3=t2*t;
@@ -73,7 +73,7 @@ namespace hgl
             return from*(2.0f*t3-3.0f*t2+1.0f)+to*(3.0f*t2-2.0f*t3);
         }
 
-        inline Vector2f LerpBezier(const Vector2f &p0,const Vector2f &p1,const Vector2f &p2,const Vector2f &p3,const float t)
+        inline Vector2f LerpBezier(const math::Vector2f &p0,const math::Vector2f &p1,const math::Vector2f &p2,const math::Vector2f &p3,const float t)
         {
             float t2=t*t;
             float t3=t2*t;
@@ -85,7 +85,7 @@ namespace hgl
             return p0*t3_1+3.0f*p1*t*t2_1+3.0f*p2*t2*t_1+p3*t3;
         }
 
-        inline Vector2f LerpCatmullRom(const Vector2f &p0,const Vector2f &p1,const Vector2f &p2,const Vector2f &p3,const float t)
+        inline Vector2f LerpCatmullRom(const math::Vector2f &p0,const math::Vector2f &p1,const math::Vector2f &p2,const math::Vector2f &p3,const float t)
         {
             float t2=t*t;
             float t3=t2*t;
@@ -100,7 +100,7 @@ namespace hgl
                     +p3*((t3-t2)*0.5f);
         }
 
-        inline Vector2f LerpBSpline(const Vector2f &p0,const Vector2f &p1,const Vector2f &p2,const Vector2f &p3,const float t)
+        inline Vector2f LerpBSpline(const math::Vector2f &p0,const math::Vector2f &p1,const math::Vector2f &p2,const math::Vector2f &p3,const float t)
         {
             float t2=t*t;
             float t3=t2*t;

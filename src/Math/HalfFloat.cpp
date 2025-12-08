@@ -1,6 +1,6 @@
 ﻿#include<hgl/math/HalfFloat.h>
 
-namespace hgl
+namespace hgl::math
 {
     void Float32toFloat16(half_float *output,const float *input,const uint count)
     {
@@ -83,4 +83,4 @@ namespace hgl
             dst[i]=(sign_bit>>16)|(exponent<<10)|mantissa;
         }
     }
-}//namespace hgl
+}//namespace hgl::math

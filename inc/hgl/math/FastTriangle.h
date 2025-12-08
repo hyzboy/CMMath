@@ -2,7 +2,8 @@
 
 #include<hgl/math/MathConstants.h>
 #include<cmath>
-namespace hgl
+
+namespace hgl::math
 {
     double Lsin(int angle);                                     ///<低精度sin计算,注意传入的参数为角度而非弧度
     double Lcos(int angle);                                     ///<低精度cos计算,注意传入的参数为角度而非弧度
@@ -71,4 +72,4 @@ namespace hgl
     {
         return x*(1.12*x - 0.12);
     }
-}//namespace hgl
+}//namespace hgl::math

@@ -11,7 +11,7 @@
 
 #include<hgl/math/MathConstants.h>
 
-namespace hgl
+namespace hgl::math
 {
     // ==================== 预定义角度的余弦值 ====================
     
@@ -72,4 +72,4 @@ namespace hgl
     {
         return rad * (180.0f / HGL_PI);
     }
-}//namespace hgl
+}//namespace hgl::math

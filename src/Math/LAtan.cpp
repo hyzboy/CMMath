@@ -1,6 +1,7 @@
 ﻿#include<hgl/math/MathConstants.h>
 #include<cmath>
-namespace hgl
+
+namespace hgl::math
 {
     /**
         * fast atan2
@@ -29,4 +30,4 @@ namespace hgl
         else
             return (angle);
     }
-}//namespace hgl
+}//namespace hgl::math

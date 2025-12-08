@@ -9,7 +9,7 @@
 
 #pragma once
 
-namespace hgl
+namespace hgl::math
 {
     // ==================== 自然常数 e ====================
     
@@ -44,4 +44,4 @@ namespace hgl
     constexpr const double HGL_EULER_GAMMA = 0.57721566490153286060651209008240243104215933593992; ///<欧拉-马斯凯罗尼常数 γ
     constexpr const double HGL_CATALAN_G   = 0.91596559417721901505460351493238411077414937428167; ///<卡塔兰常数 G
     constexpr const double HGL_APERY_ZETA3 = 1.20205690315959428539973816151144999076498629234049; ///<阿培里常数 ζ(3)
-}//namespace hgl
+}//namespace hgl::math

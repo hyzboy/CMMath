@@ -41,6 +41,7 @@ SET(CMMATH_GEOMETRY_HEADER  ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Frustum.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Coordinate.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/TRS.h
+                            ${MATH_GEOMETRY_INCLUDE_PATH}/Box.h
                             )
 
 SET(CMMATH_SOURCE   Math/LAtan.cpp
@@ -56,7 +57,9 @@ SET(CMMATH_GEOMETRY_SOURCE  Geometry/Plane.cpp
                             Geometry/BoundingVolumes.cpp
                             Geometry/Ray.cpp
                             Geometry/Frustum.cpp
-                            Geometry/TRS.cpp)
+                            Geometry/TRS.cpp
+                            Geometry/Box.cpp
+                            )
 
 SET(CM_CAMERA_INFO_SOURCE ${CMMATH_ROOT_INCLUDE_PATH}/hgl/graph/CameraInfo.h)
 

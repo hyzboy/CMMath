@@ -2,10 +2,18 @@
 
 namespace hgl::math
 {
+    /**
+     * 从MVP矩阵提取视锥体六个平面 (Vulkan Z-up)
+     * 
+     * 坐标系约定：
+     * - 世界空间：X右，Y前（摄像机朝向），Z上
+     * - Vulkan NDC：x右，y下，z前（深度[0,1]）
+     * 
+     * 平面提取基于：https://github.com/SaschaWillems/Vulkan/base/frustum.hpp
+     * 但需要注意：原实现假设Y-up，我们使用Z-up
+     */
     void GetFrustumPlanes(FrustumPlanes &planes,const math::Matrix4f &mvp)
     {
-        // @see https://github.com/SaschaWillems/Vulkan/base/frustum.hpp
-        // 注意我们的向上轴和向前轴和上面的不同
 
         planes[size_t(Frustum::Side::Left   )].x = mvp[0].w + mvp[0].x;
         planes[size_t(Frustum::Side::Left   )].y = mvp[1].w + mvp[1].x;

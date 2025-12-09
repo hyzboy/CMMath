@@ -23,7 +23,9 @@ namespace hgl::math
         void Set(const Vector3f &face_center_point,const Vector3f &face_normal)
         {
             normal=face_normal;
-            d=dot(face_center_point,face_normal);
+            // 平面方程: dot(normal, p) + d = 0
+            // 对于平面上的点: d = -dot(normal, point_on_plane)
+            d=-dot(face_center_point,face_normal);
         }
 
         void Set(const Vector4f &p)
@@ -34,7 +36,9 @@ namespace hgl::math
 
         float Distance(const Vector3f &p)const
         {
-            return(dot(normal,p)-d)/glm::length(normal);
+            // 平面方程: dot(normal, p) + d = 0
+            // 距离为正表示在正半空间（平面法线方向）
+            return dot(normal, p) + d;
         }
     };//struct Plane
 

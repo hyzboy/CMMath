@@ -21,17 +21,28 @@ namespace hgl::math
             return origin+direction*length;
     }
         
+    /**
+     * 屏幕坐标反投影生成射线 (Vulkan Z-up, 深度范围[0,1])
+     * 
+     * @param origin 输出：射线起点（近平面上的点）
+     * @param direction 输出：射线方向（归一化）
+     * @param win 屏幕坐标 (左上角为原点)
+     * @param Inverse 逆VP矩阵 (inverse(projection * view))
+     * @param viewport 视口大小
+     */
     void RayUnProjectZO(Vector3f &origin,Vector3f &direction,const Vector2i &win, const Matrix4f &Inverse, const Vector2u &viewport)
     {
         Vector4f near_point;
         Vector4f far_point;
         Vector4f tmp;
 
+        // 屏幕坐标 -> NDC [-1, 1]
         tmp.x = float(win.x) / float(viewport.x);
         tmp.y = float(win.y) / float(viewport.y);
-        tmp.x = tmp.x + tmp.x - 1.0;
-        tmp.y = tmp.y + tmp.y - 1.0;
+        tmp.x = tmp.x + tmp.x - 1.0;  // [0,1] -> [-1,1]
+        tmp.y = tmp.y + tmp.y - 1.0;  // [0,1] -> [-1,1] (Vulkan: y向下)
 
+        // 近平面 (z=0 in Vulkan)
         tmp.z=0.0;
         tmp.w=1.0;
 
@@ -39,41 +50,36 @@ namespace hgl::math
         if(near_point.w != 0.0f)
             near_point/=near_point.w;
 
+        // 远平面 (z=1 in Vulkan)
         tmp.z=1.0;
 
         far_point = Inverse * tmp;
         if(far_point.w != 0.0f)
             far_point/=far_point.w;
 
-        //注意这里的远近点和我们的矩阵设置有关
-
+        // 生成射线：从近平面点指向远平面点
+        // Vulkan Z-up: 摄像机朝+Y方向
         origin=near_point;
         direction=glm::normalize(far_point-near_point);
     }
 
     /**
-    * 设置屏幕坐标产生拾取射线
-    * @param mp 屏幕点坐标
-    * @param camera_info 摄像机信息
-    */
+     * 从屏幕坐标生成拾取射线 (Vulkan Z-up)
+     * 
+     * @param mp 屏幕点坐标 (左上角为原点)
+     * @param ci 摄像机信息
+     * @param vp_size 视口大小
+     * 
+     * 生成的射线：
+     * - origin: 近平面上对应屏幕点的世界坐标
+     * - direction: 从摄像机指向该点的方向（Z-up系统中沿+Y方向）
+     */
     void Ray::SetFromViewportPoint(const Vector2i &mp,const graph::CameraInfo *ci,const Vector2u &vp_size)
     {
-        //新方案
-
+        // Vulkan专用方案：深度范围[0,1]，Z轴向上，摄像机朝+Y
         RayUnProjectZO(origin,direction,mp,ci->inverse_vp,vp_size);
 
-        //由于near/far的xy一样，而near.z又是0。所以省去了direction=normalize(far-near)的计算
-
-        //旧标准方案
-
-        //Vector3f pos(mp.x,mp.y,0);
-        //Vector4i vp(0,0,camera_info->viewport_resolution.x,camera_info->viewport_resolution.y);
-
-        //origin      =glm::unProject(pos,camera_info->view,camera_info->projection,vp);        //射线最近点
-
-        //pos.z=1.0f;
-
-        //direction   =glm::unProject(pos,camera_info->view,camera_info->projection,vp);        //射线最远点
+        // 注意：不使用glm::unProject，因为它假设OpenGL的深度范围[-1,1]和Y-up坐标系
     }
 
     void Ray::ClosestPoint(Vector3f &point_on_ray,Vector3f &point_on_segment,const Vector3f &line_segment_start,const Vector3f &line_segment_end)const

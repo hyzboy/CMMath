@@ -127,12 +127,13 @@ namespace hgl::math
 
         /**
          * 检查与另一个AABB是否相交
+         * 注意：边界接触不算相交（遵循Unreal Engine等游戏引擎的惯例）
          */
         bool Intersects(const AABB &other) const
         {
-            return !(maxPoint.x < other.minPoint.x || minPoint.x > other.maxPoint.x ||
-                     maxPoint.y < other.minPoint.y || minPoint.y > other.maxPoint.y ||
-                     maxPoint.z < other.minPoint.z || minPoint.z > other.maxPoint.z);
+            return !(maxPoint.x <= other.minPoint.x || minPoint.x >= other.maxPoint.x ||
+                     maxPoint.y <= other.minPoint.y || minPoint.y >= other.maxPoint.y ||
+                     maxPoint.z <= other.minPoint.z || minPoint.z >= other.maxPoint.z);
         }
 
         /**

@@ -110,8 +110,9 @@ namespace hgl::math
 
     float AABB::DistanceToPointSquared(const math::Vector3f &point) const
     {
-        math::Vector3f closest = ClosestPoint(point);
-        return glm::length2(point - closest);
+        const math::Vector3f closest = ClosestPoint(point);
+        const math::Vector3f delta = point - closest;
+        return glm::dot(delta, delta);
     }
 
     bool AABB::GetIntersection(const AABB &other, AABB &intersection) const

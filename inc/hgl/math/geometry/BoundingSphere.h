@@ -4,6 +4,9 @@
 
 namespace hgl::math
 {
+    struct Plane;
+    struct Ray;
+
     struct BoundingSphere
     {
         math::Vector3f center { 0.0f };
@@ -41,7 +44,8 @@ namespace hgl::math
          */
         bool ContainsPoint(const math::Vector3f &point) const
         {
-            return glm::length2(point - center) <= radius * radius;
+            const Vector3f diff = point - center;
+            return glm::dot(diff, diff) <= radius * radius;
         }
 
         /**
@@ -72,8 +76,9 @@ namespace hgl::math
          */
         bool Intersects(const BoundingSphere &other) const
         {
-            float sum_radius = radius + other.radius;
-            return glm::length2(center - other.center) <= sum_radius * sum_radius;
+            const Vector3f diff = center - other.center;
+            const float sum_radius = radius + other.radius;
+            return glm::dot(diff, diff) <= sum_radius * sum_radius;
         }
 
         /**

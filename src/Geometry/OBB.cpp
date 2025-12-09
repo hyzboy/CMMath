@@ -136,8 +136,9 @@ namespace hgl::math
 
     float OBB::DistanceToPointSquared(const math::Vector3f &point) const
     {
-        math::Vector3f closest = ClosestPoint(point);
-        return glm::length2(point - closest);
+        const math::Vector3f closest = ClosestPoint(point);
+        const math::Vector3f delta = point - closest;
+        return glm::dot(delta, delta);
     }
 
     bool OBB::Intersects(const OBB &other) const

@@ -226,7 +226,7 @@ namespace hgl::math
     {
         math::Vector3f axis=glm::cross(old_direction,new_direction);
 
-        if(glm::length2(axis)<0.0001)
+        if(glm::dot(axis,axis)<0.0001f)
             return Matrix4f(1.0f);
 
         axis=glm::normalize(axis);
@@ -243,7 +243,7 @@ namespace hgl::math
     {
         math::Vector3f axis=glm::cross(old_direction,new_direction);
 
-        if(glm::length2(axis)<0.0001)
+        if(glm::dot(axis,axis)<0.0001f)
             return Quatf(1.0f,0.0f,0.0f,0.0f);
 
         axis=glm::normalize(axis);

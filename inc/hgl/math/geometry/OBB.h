@@ -3,9 +3,13 @@
 #include<hgl/math/Vector.h>
 #include<hgl/math/MatrixTypes.h>
 #include<hgl/math/geometry/Plane.h>
+#include<hgl/math/geometry/Triangle.h>
 
 namespace hgl::math
 {
+    class Ray;
+    class AABB;
+
     /**
      * Oriented Bounding Box
      */

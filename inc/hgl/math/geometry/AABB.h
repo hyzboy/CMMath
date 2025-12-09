@@ -3,6 +3,7 @@
 #include<hgl/math/Vector.h>
 #include<hgl/math/MatrixTypes.h>
 #include<hgl/math/geometry/Plane.h>
+#include<hgl/math/geometry/Triangle.h>
 
 namespace hgl::math
 {
@@ -15,6 +16,9 @@ namespace hgl::math
         math::Vector3f( 0,  0, -1),
         math::Vector3f( 0,  0,  1)
     };
+
+    class Ray;
+    class OBB;
 
     /**
     * Axis Aligned Bounding Box

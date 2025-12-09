@@ -8,6 +8,9 @@
 
 namespace hgl::math
 {
+    struct Ray;
+    struct Plane;
+
     BoundingSphere ToBoundingSphere(const AABB &a);
 
     /**

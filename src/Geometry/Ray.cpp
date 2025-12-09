@@ -11,7 +11,7 @@ namespace hgl::math
     * @param point 指定点
     * @return 位于射线上的点
     */
-    math::Vector3f Ray::ClosestPoint(const math::Vector3f &point)const
+    Vector3f Ray::ClosestPoint(const Vector3f &point)const
     {
         const float length=dot(direction,point-origin);
 
@@ -21,11 +21,11 @@ namespace hgl::math
             return origin+direction*length;
     }
         
-    void RayUnProjectZO(Vector3f &origin,Vector3f &direction,const math::Vector2i &win, const math::Matrix4f &Inverse, const math::Vector2u &viewport)
+    void RayUnProjectZO(Vector3f &origin,Vector3f &direction,const Vector2i &win, const Matrix4f &Inverse, const Vector2u &viewport)
     {
-        math::Vector4f near_point;
-        math::Vector4f far_point;
-        math::Vector4f tmp;
+        Vector4f near_point;
+        Vector4f far_point;
+        Vector4f tmp;
 
         tmp.x = float(win.x) / float(viewport.x);
         tmp.y = float(win.y) / float(viewport.y);
@@ -56,7 +56,7 @@ namespace hgl::math
     * @param mp 屏幕点坐标
     * @param camera_info 摄像机信息
     */
-    void Ray::SetFromViewportPoint(const math::Vector2i &mp,const graph::CameraInfo *ci,const math::Vector2u &vp_size)
+    void Ray::SetFromViewportPoint(const Vector2i &mp,const graph::CameraInfo *ci,const Vector2u &vp_size)
     {
         //新方案
 
@@ -76,11 +76,11 @@ namespace hgl::math
         //direction   =glm::unProject(pos,camera_info->view,camera_info->projection,vp);        //射线最远点
     }
 
-    void Ray::ClosestPoint(Vector3f &point_on_ray,Vector3f &point_on_segment,const math::Vector3f &line_segment_start,const math::Vector3f &line_segment_end)const
+    void Ray::ClosestPoint(Vector3f &point_on_ray,Vector3f &point_on_segment,const Vector3f &line_segment_start,const Vector3f &line_segment_end)const
     {
-        math::Vector3f u = direction; // 射线方向，假定已归一化
-        math::Vector3f v = line_segment_end - line_segment_start;
-        math::Vector3f w = origin - line_segment_start;
+        Vector3f u = direction; // 射线方向，假定已归一化
+        Vector3f v = line_segment_end - line_segment_start;
+        Vector3f w = origin - line_segment_start;
 
         float a = dot(u, u); // = 1，如果u已归一化
         float b = dot(u, v);
@@ -115,10 +115,10 @@ namespace hgl::math
     /**
     * 求线段上离射线最近的点
     */
-    math::Vector3f Ray::ClosestPoint(const math::Vector3f &start,const math::Vector3f &end)const
+    Vector3f Ray::ClosestPoint(const Vector3f &start,const Vector3f &end)const
     {
-        math::Vector3f pointOnRay;
-        math::Vector3f pointOnSeg;
+        Vector3f pointOnRay;
+        Vector3f pointOnSeg;
 
         ClosestPoint(pointOnRay,pointOnSeg,start,end);
 
@@ -128,10 +128,10 @@ namespace hgl::math
     /**
     * 求射线与指定线段的距离的平方(Github Copilot)
     */
-    const float Ray::ToLineSegmentDistanceSquared(const math::Vector3f &start,const math::Vector3f &end)const
+    const float Ray::ToLineSegmentDistanceSquared(const Vector3f &start,const Vector3f &end)const
     {
-        math::Vector3f pointOnRay;
-        math::Vector3f pointOnSeg;
+        Vector3f pointOnRay;
+        Vector3f pointOnSeg;
 
         ClosestPoint(pointOnRay,pointOnSeg,start,end);
 
@@ -140,10 +140,10 @@ namespace hgl::math
 
     bool Ray::CrossSphere(const Sphere &s)const
     {
-        const math::Vector3f  sphere_center=s.GetCenter();
+        const Vector3f  sphere_center=s.GetCenter();
         const float     sphere_radius=s.GetRadius();
 
-        const math::Vector3f oc=origin-sphere_center;
+        const Vector3f oc=origin-sphere_center;
 
         const float b=dot(oc,direction);
         const float c=dot(oc,oc)-sphere_radius*sphere_radius;
@@ -159,10 +159,10 @@ namespace hgl::math
 
     bool Ray::CrossEllipseSphere(const EllipseSphere &es)const
     {
-        const math::Vector3f es_center=es.GetCenter();
-        const math::Vector3f es_radius=es.GetRadius();
+        const Vector3f es_center=es.GetCenter();
+        const Vector3f es_radius=es.GetRadius();
 
-        const math::Vector3f oc=origin-es_center;
+        const Vector3f oc=origin-es_center;
 
         const float b=dot(oc,direction);
         const float c=dot(oc,oc)-es_radius.x*es_radius.y*es_radius.z;
@@ -181,11 +181,11 @@ namespace hgl::math
     */
     bool Ray::CrossTriangle(const Triangle3f &tri,bool two_side)const
     {
-        const math::Vector3f a1=tri[0];
-        const math::Vector3f a2=tri[1];
-        const math::Vector3f a3=tri[2];
+        const Vector3f a1=tri[0];
+        const Vector3f a2=tri[1];
+        const Vector3f a3=tri[2];
 
-        const math::Vector3f normal=cross(a2-a1,a3-a1);
+        const Vector3f normal=cross(a2-a1,a3-a1);
 
         float rad=dot(normal,direction);
             
@@ -203,11 +203,11 @@ namespace hgl::math
 
         if(t<0)return(false);            //射线与三角形不相交
 
-        const math::Vector3f hit_point=origin+direction*t;
+        const Vector3f hit_point=origin+direction*t;
 
-        const math::Vector3f v1=cross(a2-a1,hit_point-a1);
-        const math::Vector3f v2=cross(a3-a2,hit_point-a2);
-        const math::Vector3f v3=cross(a1-a3,hit_point-a3);
+        const Vector3f v1=cross(a2-a1,hit_point-a1);
+        const Vector3f v2=cross(a3-a2,hit_point-a2);
+        const Vector3f v3=cross(a1-a3,hit_point-a3);
 
         if(dot(v1,v2)<0)return(false);
         if(dot(v2,v3)<0)return(false);
@@ -219,9 +219,9 @@ namespace hgl::math
     /**
     * 求指定面是否与射线交汇
     */
-    bool Ray::CrossPlane(const math::Vector3f &v1,const math::Vector3f &v2,const math::Vector3f &v3,const math::Vector3f &v4,const bool two_side)const
+    bool Ray::CrossPlane(const Vector3f &v1,const Vector3f &v2,const Vector3f &v3,const Vector3f &v4,const bool two_side)const
     {
-        const math::Vector3f normal=cross(v2-v1,v3-v1);
+        const Vector3f normal=cross(v2-v1,v3-v1);
 
         float rad=dot(normal,direction);
 
@@ -242,7 +242,7 @@ namespace hgl::math
         return(true);
     }
 
-    bool Ray::CrossCircle(const math::Vector3f &center,const math::Vector3f &normal,const float radius)const
+    bool Ray::CrossCircle(const Vector3f &center,const Vector3f &normal,const float radius)const
     {
         // 计算射线与平面的交点
         float denom = dot(normal, direction);
@@ -252,7 +252,7 @@ namespace hgl::math
         if (t < 0) return false; // 平面在射线的反方向
 
         // 计算交点
-        math::Vector3f hit_point = origin + t * direction;
+        Vector3f hit_point = origin + t * direction;
 
         // 判断交点是否在圆内
         return length_squared(hit_point - center) <= radius * radius;

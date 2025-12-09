@@ -34,9 +34,10 @@ namespace hgl
         if (value == 0)
             return (0);
 
-        double per = pow(10, num);
+        double per = std::pow(10.0, num);
 
-        return double(floor(value * per)) / per;
+        const double clipped = std::floor(value * per) / per;
+        return static_cast<T>(clipped);
     }
 
     // ==================== 体积计算 ====================

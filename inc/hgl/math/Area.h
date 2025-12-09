@@ -40,7 +40,7 @@ namespace hgl::math
      */
     inline float CircleArea(const float radius)
     {
-        return HGL_PI*radius*radius;
+        return math::pi*radius*radius;
     }
     
     /**
@@ -50,17 +50,17 @@ namespace hgl::math
      */
     inline float EllipseArea(const float horizontal_radius,const float vertical_radius)
     {
-        return HGL_PI*horizontal_radius*vertical_radius;
+        return math::pi*horizontal_radius*vertical_radius;
     }
 
     inline float EllipseArea(const Vector2f &radius)
     {
-        return HGL_PI*radius.x*radius.y;
+        return math::pi*radius.x*radius.y;
     }
 
     inline float SectorArea(const float radius,const float angle)
     {
-        return HGL_PI*radius*radius*angle/360.0f;
+        return math::pi*radius*radius*angle/360.0f;
     }
 
     inline float QuadArea(const Vector3f &a,const Vector3f &b,const Vector3f &c,const Vector3f &d)

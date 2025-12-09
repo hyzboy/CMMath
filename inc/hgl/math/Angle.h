@@ -21,18 +21,18 @@ namespace hgl::math
     public:
         constexpr Angle() noexcept : radians_(0.0) {}
         constexpr Angle(Radians rad) noexcept : radians_(rad.value) {}
-        constexpr Angle(Degrees deg) noexcept : radians_(deg.value * HGL_PI / 180.0) {}
+        constexpr Angle(Degrees deg) noexcept : radians_(deg.value * math::pi / 180.0) {}
 
         static constexpr Angle FromRadians(double value) noexcept { return Angle(Radians(value)); }
         static constexpr Angle FromDegrees(double value) noexcept { return Angle(Degrees(value)); }
 
         constexpr double AsRadians() const noexcept { return radians_; }
-        constexpr double AsDegrees() const noexcept { return radians_ * 180.0 / HGL_PI; }
+        constexpr double AsDegrees() const noexcept { return radians_ * 180.0 / math::pi; }
 
-        Angle &operator+=(const Angle &rhs) noexcept { radians_ += rhs.radians_; return *this; }
-        Angle &operator-=(const Angle &rhs) noexcept { radians_ -= rhs.radians_; return *this; }
-        Angle &operator*=(double rhs) noexcept { radians_ *= rhs; return *this; }
-        Angle &operator/=(double rhs) noexcept { radians_ /= rhs; return *this; }
+        constexpr Angle &operator+=(const Angle &rhs) noexcept { radians_ += rhs.radians_; return *this; }
+        constexpr Angle &operator-=(const Angle &rhs) noexcept { radians_ -= rhs.radians_; return *this; }
+        constexpr Angle &operator*=(double rhs) noexcept { radians_ *= rhs; return *this; }
+        constexpr Angle &operator/=(double rhs) noexcept { radians_ /= rhs; return *this; }
 
         friend constexpr Angle operator+(Angle lhs, const Angle &rhs) noexcept { lhs += rhs; return lhs; }
         friend constexpr Angle operator-(Angle lhs, const Angle &rhs) noexcept { lhs -= rhs; return lhs; }

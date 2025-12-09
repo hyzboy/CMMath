@@ -17,12 +17,12 @@ namespace hgl::math
         if (x >= 0)
         {
             r = (x - abs_y) / (x + abs_y);
-            angle = HGL_PI_4 - HGL_PI_4 * r;
+            angle = math::pi_4 - math::pi_4 * r;
         }
         else
         {
             r = (x + abs_y) / (abs_y - x);
-            angle = HGL_PI_3_4 - HGL_PI_4 * r;
+            angle = math::pi_3_4 - math::pi_4 * r;
         }
 
         if (y < 0)

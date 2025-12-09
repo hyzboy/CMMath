@@ -32,7 +32,7 @@ namespace hgl::math
                             constexpr const size_t Matrix##num##fBytes=sizeof(Matrix##num##f); \
                             const Matrix##num##f Identity##num##f=Matrix##num##f(1.0f); \
                             inline bool IsIdentityMatrix(const Matrix##num##f &m){return(mem_compare(m,Identity##num##f)==0);}  \
-                            inline bool IsNearlyEqual(const Matrix##num##f &m1,const Matrix##num##f &m2,const float err=HGL_FLOAT_ERROR)    \
+                            inline bool IsNearlyEqual(const Matrix##num##f &m1,const Matrix##num##f &m2,const float err=math::float_error)    \
                             {   \
                                 float *f1=(float *)&m1;\
                                 float *f2=(float *)&m2;\

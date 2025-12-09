@@ -26,7 +26,7 @@ namespace hgl::math
     /**
      * 四元数精度比较
      */
-    inline const bool IsNearlyEqual(const Quatf &q1,const Quatf &q2,const float err=HGL_FLOAT_ERROR)
+    inline const bool IsNearlyEqual(const Quatf &q1,const Quatf &q2,const float err=math::float_error)
     {
         return glm::all(glm::epsilonEqual(q1,q2,err));
     }

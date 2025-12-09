@@ -20,7 +20,7 @@ namespace hgl::math
         float y = fabs(x);
         float p = -0.1565827 * y + 1.570796;
         p *= sqrt(1.0 - y);
-        return x >= 0.0 ? p : HGL_PI - p;
+        return x >= 0.0 ? p : math::pi - p;
     }
 
     /**

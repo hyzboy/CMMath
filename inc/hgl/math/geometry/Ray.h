@@ -60,7 +60,7 @@ namespace hgl::math
         */
         float GetAngle(const Vector3f &point)const
         {
-            return acos(GetAngleCos(point))*180.0f/HGL_PI;
+            return acos(GetAngleCos(point))*180.0f/math::pi;
         }
 
     public: //距离计算

@@ -63,21 +63,21 @@ namespace hgl::math
 
     // ==================== 近似相等判断 ====================
 
-    inline bool IsNearlyEqual(const Vector2f &v1,const Vector2f &v2,const float err=HGL_FLOAT_ERROR)
+    inline bool IsNearlyEqual(const Vector2f &v1,const Vector2f &v2,const float err=math::float_error)
     {
         if(!math::IsNearlyEqual(v1.x,v2.x,err))return(false);
         if(!math::IsNearlyEqual(v1.y,v2.y,err))return(false);
         return(true);
     }
 
-    inline bool IsNearlyEqual(const Vector2d &v1,const Vector2d &v2,const double err=HGL_DOUBLE_ERROR)
+    inline bool IsNearlyEqual(const Vector2d &v1,const Vector2d &v2,const double err=math::double_error)
     {
         if(!math::IsNearlyEqual(v1.x,v2.x,err))return(false);
         if(!math::IsNearlyEqual(v1.y,v2.y,err))return(false);
         return(true);
     }
 
-    inline bool IsNearlyEqual(const Vector3f &v1,const Vector3f &v2,const float err=HGL_FLOAT_ERROR)
+    inline bool IsNearlyEqual(const Vector3f &v1,const Vector3f &v2,const float err=math::float_error)
     {
         if(!math::IsNearlyEqual(v1.x,v2.x,err))return(false);
         if(!math::IsNearlyEqual(v1.y,v2.y,err))return(false);
@@ -85,7 +85,7 @@ namespace hgl::math
         return(true);
     }
 
-    inline bool IsNearlyEqual(const Vector3d &v1,const Vector3d &v2,const double err=HGL_DOUBLE_ERROR)
+    inline bool IsNearlyEqual(const Vector3d &v1,const Vector3d &v2,const double err=math::double_error)
     {
         if(!math::IsNearlyEqual(v1.x,v2.x,err))return(false);
         if(!math::IsNearlyEqual(v1.y,v2.y,err))return(false);

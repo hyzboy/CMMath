@@ -36,7 +36,7 @@ namespace hgl::math
 
         float GetVolume()const
         {
-            return (4.0f/3.0f)*HGL_PI*radius*radius*radius;
+            return (4.0f/3.0f)*math::pi*radius*radius*radius;
         }
 
         /**
@@ -81,7 +81,7 @@ namespace hgl::math
 
         float GetVolume()const
         {
-            return (4.0f/3.0f)*HGL_PI*radius.x*radius.y*radius.z;
+            return (4.0f/3.0f)*math::pi*radius.x*radius.y*radius.z;
         }
 
         /**

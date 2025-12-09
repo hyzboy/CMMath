@@ -119,7 +119,7 @@ namespace hgl::math
         double val=dot(ray_dir, normalized(pos - ray_pos));
 
         if(val>1)return 0;
-        if(val<-1)return HGL_PI;
+        if(val<-1)return math::pi;
     
         return acos(val);
     }

@@ -49,7 +49,7 @@ namespace hgl
      */
     constexpr double SphereVolume(const double radius)
     {
-        return (radius * radius * radius * (HGL_PI * 4.0f)) / 3.0f;
+        return (radius * radius * radius * (math::pi * 4.0f)) / 3.0f;
     }
 
     /**
@@ -61,6 +61,6 @@ namespace hgl
      */
     constexpr double EllipsoidVolume(const double x_radius, const double y_radius, const double z_radius)
     {
-        return (x_radius * y_radius * z_radius * (HGL_PI * 4.0f)) / 3.0f;
+        return (x_radius * y_radius * z_radius * (math::pi * 4.0f)) / 3.0f;
     }
 }//namespace hgl

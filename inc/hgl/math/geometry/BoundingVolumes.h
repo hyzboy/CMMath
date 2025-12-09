@@ -94,6 +94,158 @@ namespace hgl::math
             return true;
         }
 
+    public: // 碰撞检测 - 点相关
+
+        /**
+         * 检查点是否在任一包围体内
+         */
+        bool ContainsPoint(const math::Vector3f &point) const
+        {
+            return aabb.ContainsPoint(point) || obb.ContainsPoint(point) || bsphere.ContainsPoint(point);
+        }
+
+        /**
+         * 计算点到包围体的最近点(使用球体)
+         */
+        math::Vector3f ClosestPoint(const math::Vector3f &point) const
+        {
+            return bsphere.ClosestPoint(point);
+        }
+
+        /**
+         * 计算点到包围体的距离(使用最保守的AABB)
+         */
+        float DistanceToPoint(const math::Vector3f &point) const
+        {
+            return aabb.DistanceToPoint(point);
+        }
+
+    public: // 碰撞检测 - 包围体
+
+        /**
+         * 检查与另一个BoundingVolumes是否相交(快速球体测试)
+         */
+        bool IntersectsFast(const BoundingVolumes &other) const
+        {
+            return bsphere.Intersects(other.bsphere);
+        }
+
+        /**
+         * 检查与另一个BoundingVolumes是否相交(精确AABB测试)
+         */
+        bool IntersectsAABB(const BoundingVolumes &other) const
+        {
+            return aabb.Intersects(other.aabb);
+        }
+
+        /**
+         * 检查与另一个BoundingVolumes是否相交(精确OBB测试)
+         */
+        bool IntersectsOBB(const BoundingVolumes &other) const
+        {
+            return obb.Intersects(other.obb);
+        }
+
+        /**
+         * 检查与另一个BoundingVolumes是否相交(层次测试:球体->AABB->OBB)
+         */
+        bool Intersects(const BoundingVolumes &other) const
+        {
+            if (!IntersectsFast(other))
+                return false;
+            if (!IntersectsAABB(other))
+                return false;
+            return IntersectsOBB(other);
+        }
+
+        /**
+         * 检查是否完全包含另一个BoundingVolumes
+         */
+        bool Contains(const BoundingVolumes &other) const
+        {
+            return aabb.Contains(other.aabb) && bsphere.Contains(other.bsphere);
+        }
+
+        /**
+         * 合并另一个BoundingVolumes
+         */
+        void Merge(const BoundingVolumes &other)
+        {
+            aabb.Merge(other.aabb);
+            obb.Merge(other.obb);
+            bsphere.Merge(other.bsphere);
+        }
+
+    public: // 碰撞检测 - 其他几何体
+
+        /**
+         * 检查与射线是否相交(快速球体测试)
+         */
+        bool IntersectsRayFast(const Ray &ray) const
+        {
+            return bsphere.IntersectsRay(ray);
+        }
+
+        /**
+         * 检查与射线是否相交(精确AABB测试)
+         */
+        bool IntersectsRay(const Ray &ray, float &distance) const
+        {
+            if (!IntersectsRayFast(ray))
+                return false;
+            return aabb.IntersectsRay(ray, distance);
+        }
+
+        bool IntersectsRay(const Ray &ray) const
+        {
+            float distance;
+            return IntersectsRay(ray, distance);
+        }
+
+        /**
+         * 检查与平面的关系
+         */
+        int ClassifyPlane(const Plane &plane) const
+        {
+            return aabb.ClassifyPlane(plane);
+        }
+
+        /**
+         * 检查是否与平面相交
+         */
+        bool IntersectsPlane(const Plane &plane) const
+        {
+            return aabb.IntersectsPlane(plane) || bsphere.IntersectsPlane(plane);
+        }
+
+    public: // 工具函数
+
+        /**
+         * 扩展包围体以包含指定点
+         */
+        void ExpandToInclude(const math::Vector3f &point)
+        {
+            aabb.ExpandToInclude(point);
+            obb.ExpandToInclude(point);
+            bsphere.ExpandToInclude(point);
+        }
+
+        /**
+         * 获取最大半径(球体半径)
+         */
+        float GetMaxRadius() const
+        {
+            return bsphere.GetRadius();
+        }
+
+        /**
+         * 获取中心点(使用AABB中心)
+         */
+        const math::Vector3f &GetCenter() const
+        {
+            return aabb.GetCenter();
+        }
+
     public:
 
         void Pack(BoundingVolumesData *packed) const;

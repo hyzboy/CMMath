@@ -14,12 +14,12 @@ namespace hgl::math
         return sqrt(s*(s-a)*(s-b)*(s-c));
     }
 
-    inline float TriangleArea(const math::Vector2f &a,const math::Vector2f &b,const math::Vector2f &c)
+    inline float TriangleArea(const Vector2f &a,const Vector2f &b,const Vector2f &c)
     {
         return fabs((a.x-c.x)*(b.y-c.y)-(a.y-c.y)*(b.x-c.x))*0.5f;
     }
 
-    inline float TriangleArea(const math::Vector3f &a,const math::Vector3f &b,const math::Vector3f &c)
+    inline float TriangleArea(const Vector3f &a,const Vector3f &b,const Vector3f &c)
     {
         return glm::length(glm::cross(b-a,c-a))*0.5f;
     }
@@ -29,7 +29,7 @@ namespace hgl::math
         return width*height;
     }
 
-    inline float RectangleArea(const math::Vector2f &size)
+    inline float RectangleArea(const Vector2f &size)
     {
         return size.x*size.y;
     }
@@ -53,7 +53,7 @@ namespace hgl::math
         return HGL_PI*horizontal_radius*vertical_radius;
     }
 
-    inline float EllipseArea(const math::Vector2f &radius)
+    inline float EllipseArea(const Vector2f &radius)
     {
         return HGL_PI*radius.x*radius.y;
     }
@@ -63,7 +63,7 @@ namespace hgl::math
         return HGL_PI*radius*radius*angle/360.0f;
     }
 
-    inline float QuadArea(const math::Vector3f &a,const math::Vector3f &b,const math::Vector3f &c,const math::Vector3f &d)
+    inline float QuadArea(const Vector3f &a,const Vector3f &b,const Vector3f &c,const Vector3f &d)
     {
         return TriangleArea(a,b,c)+TriangleArea(a,c,d);
     }

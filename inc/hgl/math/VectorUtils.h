@@ -15,39 +15,39 @@ namespace hgl::math
 
     // ==================== 向量维度转换 ====================
 
-    inline void vec3to2(Vector2f &dst,const math::Vector3f &src)
+    inline void vec3to2(Vector2f &dst,const Vector3f &src)
     {
         dst.x=src.x;
         dst.y=src.y;
     }
 
-    inline Vector2f vec3to2(const math::Vector3f &src)
+    inline Vector2f vec3to2(const Vector3f &src)
     {
         return Vector2f(src.x,src.y);
     }
 
-    inline void vec2to3(Vector3f &dst,const math::Vector2f &src,const float z)
+    inline void vec2to3(Vector3f &dst,const Vector2f &src,const float z)
     {
         dst.x=src.x;
         dst.y=src.y;
         dst.z=z;
     }
 
-    inline math::Vector3f vec2to3(const math::Vector2f &src,const float z)
+    inline Vector3f vec2to3(const Vector2f &src,const float z)
     {
         return Vector3f(src.x,src.y,z);
     }
 
     // ==================== 向量极值 ====================
 
-    inline const math::Vector3f MinVector(const math::Vector3f &v1,const math::Vector3f &v2)
+    inline const Vector3f MinVector(const Vector3f &v1,const Vector3f &v2)
     {
         return Vector3f(hgl_min(v1.x,v2.x),
                         hgl_min(v1.y,v2.y),
                         hgl_min(v1.z,v2.z));
     }
 
-    inline const math::Vector4f MinVector(const math::Vector4f &v1,const math::Vector4f &v2)
+    inline const Vector4f MinVector(const Vector4f &v1,const Vector4f &v2)
     {
         return Vector4f(hgl_min(v1.x,v2.x),
                         hgl_min(v1.y,v2.y),
@@ -55,14 +55,14 @@ namespace hgl::math
                         hgl_min(v1.w,v2.w));
     }
 
-    inline const math::Vector3f MaxVector(const math::Vector3f &v1,const math::Vector3f &v2)
+    inline const Vector3f MaxVector(const Vector3f &v1,const Vector3f &v2)
     {
         return Vector3f(hgl_max(v1.x,v2.x),
                         hgl_max(v1.y,v2.y),
                         hgl_max(v1.z,v2.z));
     }
 
-    inline const math::Vector4f MaxVector(const math::Vector4f &v1,const math::Vector4f &v2)
+    inline const Vector4f MaxVector(const Vector4f &v1,const Vector4f &v2)
     {
         return Vector4f(hgl_max(v1.x,v2.x),
                         hgl_max(v1.y,v2.y),
@@ -72,7 +72,7 @@ namespace hgl::math
 
     // ==================== 方向插值 ====================
 
-    inline const math::Vector3f LerpDirection(const math::Vector3f &old_direction,const math::Vector3f &new_direction,const float alpha)
+    inline const Vector3f LerpDirection(const Vector3f &old_direction,const Vector3f &new_direction,const float alpha)
     {
         return glm::normalize(old_direction*(1.0f-alpha)+new_direction*alpha);
     }
@@ -106,7 +106,7 @@ namespace hgl::math
     /**
     * 计算射线与点的夹角(cos)
     */
-    inline float ray_intersection_angle_cos(const math::Vector3f &ray_dir, const math::Vector3f &ray_pos, const math::Vector3f &pos)
+    inline float ray_intersection_angle_cos(const Vector3f &ray_dir, const Vector3f &ray_pos, const Vector3f &pos)
     {
         return dot(ray_dir, normalized(pos - ray_pos));
     }
@@ -114,7 +114,7 @@ namespace hgl::math
     /**
     * 计算射线与点的夹角(弧度)
     */
-    inline float ray_intersection_angle_radian(const math::Vector3f &ray_dir, const math::Vector3f &ray_pos, const math::Vector3f &pos)
+    inline float ray_intersection_angle_radian(const Vector3f &ray_dir, const Vector3f &ray_pos, const Vector3f &pos)
     {
         double val=dot(ray_dir, normalized(pos - ray_pos));
 
@@ -127,7 +127,7 @@ namespace hgl::math
     /**
      * 计算射线与点的夹角(角度)
      */
-    inline float ray_intersection_angle_degree(const math::Vector3f &ray_dir, const math::Vector3f &ray_pos, const math::Vector3f &pos)
+    inline float ray_intersection_angle_degree(const Vector3f &ray_dir, const Vector3f &ray_pos, const Vector3f &pos)
     {
         double val=dot(ray_dir, normalized(pos - ray_pos));
 
@@ -159,7 +159,7 @@ namespace hgl::math
 
     // ==================== 极坐标转换 ====================
 
-    inline const math::Vector3f PolarToVector(float yaw,float pitch)
+    inline const Vector3f PolarToVector(float yaw,float pitch)
     {
         return glm::normalize(  Vector3f(   cos(yaw  )*cos(pitch),
                                             sin(yaw  )*cos(pitch),
@@ -168,17 +168,17 @@ namespace hgl::math
 
     // ==================== 向量类型转换 ====================
 
-    inline const math::Vector4f PointVector(const math::Vector3f &v)
+    inline const Vector4f PointVector(const Vector3f &v)
     {
         return Vector4f(v,1.0f);
     }
 
-    inline const math::Vector4f DirectionVector(const math::Vector3f &v)
+    inline const Vector4f DirectionVector(const Vector3f &v)
     {
         return Vector4f(v,0.0f);
     }
 
-    inline const math::Vector3f xyz(const math::Vector4f &v)
+    inline const Vector3f xyz(const Vector4f &v)
     {
         return Vector3f(v.x,v.y,v.z);
     }

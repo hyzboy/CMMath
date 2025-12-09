@@ -7,14 +7,14 @@
 
 namespace hgl::math
 {
-    const math::Vector3f AABBFaceNormal[6]=
+    const Vector3f AABBFaceNormal[6]=
     {
-        math::Vector3f(-1,  0,  0),
-        math::Vector3f( 1,  0,  0),
-        math::Vector3f( 0, -1,  0),
-        math::Vector3f( 0,  1,  0),
-        math::Vector3f( 0,  0, -1),
-        math::Vector3f( 0,  0,  1)
+        Vector3f(-1,  0,  0),
+        Vector3f( 1,  0,  0),
+        Vector3f( 0, -1,  0),
+        Vector3f( 0,  1,  0),
+        Vector3f( 0,  0, -1),
+        Vector3f( 0,  0,  1)
     };
 
     class Ray;
@@ -25,12 +25,12 @@ namespace hgl::math
     */
     class AABB
     {
-        math::Vector3f minPoint;
-        math::Vector3f center;
-        math::Vector3f length;
-        math::Vector3f maxPoint;
+        Vector3f minPoint;
+        Vector3f center;
+        Vector3f length;
+        Vector3f maxPoint;
 
-        math::Vector3f face_center_point[6];
+        Vector3f face_center_point[6];
 
         Plane planes[6];
 
@@ -47,7 +47,7 @@ namespace hgl::math
             SetCornerLength(Vector3f(0,0,0),Vector3f(1,1,1));
         }
 
-        void SetCornerLength(const math::Vector3f &c,const math::Vector3f &l)               ///<按顶角和长度设置盒子范围
+        void SetCornerLength(const Vector3f &c,const Vector3f &l)               ///<按顶角和长度设置盒子范围
         {
             minPoint=c;
             length=l;
@@ -56,7 +56,7 @@ namespace hgl::math
             Update();
         }
 
-        void SetMinMax(const math::Vector3f &min_v,const math::Vector3f &max_v)             ///<按最小最大值设置盒子范围
+        void SetMinMax(const Vector3f &min_v,const Vector3f &max_v)             ///<按最小最大值设置盒子范围
         {
             minPoint=min_v;
             maxPoint=max_v;
@@ -83,8 +83,8 @@ namespace hgl::math
         const   Vector3f &  GetCenter   ()const{return center;}
         const   Vector3f &  GetLength   ()const{return length;}
 
-                math::Vector3f    GetVertexP  (const math::Vector3f &)const;
-                math::Vector3f    GetVertexN  (const math::Vector3f &)const;
+                Vector3f    GetVertexP  (const Vector3f &)const;
+                Vector3f    GetVertexN  (const Vector3f &)const;
 
         void Merge(const AABB &box)
         {
@@ -101,7 +101,7 @@ namespace hgl::math
         /**
          * 检查点是否在AABB内
          */
-        bool ContainsPoint(const math::Vector3f &point) const
+        bool ContainsPoint(const Vector3f &point) const
         {
             return point.x >= minPoint.x && point.x <= maxPoint.x &&
                    point.y >= minPoint.y && point.y <= maxPoint.y &&
@@ -111,17 +111,17 @@ namespace hgl::math
         /**
          * 计算点到AABB的最近点
          */
-        math::Vector3f ClosestPoint(const math::Vector3f &point) const;
+        Vector3f ClosestPoint(const Vector3f &point) const;
 
         /**
          * 计算点到AABB的距离
          */
-        float DistanceToPoint(const math::Vector3f &point) const;
+        float DistanceToPoint(const Vector3f &point) const;
 
         /**
          * 计算点到AABB的距离平方
          */
-        float DistanceToPointSquared(const math::Vector3f &point) const;
+        float DistanceToPointSquared(const Vector3f &point) const;
 
     public: // 碰撞检测 - AABB
 
@@ -160,7 +160,7 @@ namespace hgl::math
         /**
          * 检查与球体是否相交
          */
-        bool IntersectsSphere(const math::Vector3f &sphere_center, float sphere_radius) const;
+        bool IntersectsSphere(const Vector3f &sphere_center, float sphere_radius) const;
 
         /**
          * 检查与OBB是否相交
@@ -195,7 +195,7 @@ namespace hgl::math
         /**
          * 扩展AABB以包含指定点
          */
-        void ExpandToInclude(const math::Vector3f &point);
+        void ExpandToInclude(const Vector3f &point);
 
         /**
          * 获取表面积
@@ -217,6 +217,6 @@ namespace hgl::math
 
         void operator += (const AABB &aabb){Merge(aabb);}                       ///<融合另一个AABox
 
-        AABB Transformed(const math::Matrix4f &m)const;                               ///<返回变换后的AABox
+        AABB Transformed(const Matrix4f &m)const;                               ///<返回变换后的AABox
     };//class AABB
 }//namespace hgl::math

@@ -36,7 +36,7 @@ namespace hgl::math
      * @note The OBB's axes are extracted from the rotation part of the transform,
      *       and scaling is applied to the half extents
      */
-    OBB ToOBB(const AABB &aabb, const math::Matrix4f &transform);
+    OBB ToOBB(const AABB &aabb, const Matrix4f &transform);
 
     struct BoundingVolumesData;
 
@@ -75,7 +75,7 @@ namespace hgl::math
             bsphere.radius = glm::length(aabb.GetMax() - bsphere.center);
         }
 
-        void SetFromAABB(const math::Vector3f &min_v,const math::Vector3f &max_v)
+        void SetFromAABB(const Vector3f &min_v,const Vector3f &max_v)
         {
             AABB box;
             box.SetMinMax(min_v,max_v);
@@ -102,7 +102,7 @@ namespace hgl::math
         /**
          * 检查点是否在任一包围体内
          */
-        bool ContainsPoint(const math::Vector3f &point) const
+        bool ContainsPoint(const Vector3f &point) const
         {
             return aabb.ContainsPoint(point) || obb.ContainsPoint(point) || bsphere.ContainsPoint(point);
         }
@@ -110,7 +110,7 @@ namespace hgl::math
         /**
          * 计算点到包围体的最近点(使用球体)
          */
-        math::Vector3f ClosestPoint(const math::Vector3f &point) const
+        Vector3f ClosestPoint(const Vector3f &point) const
         {
             return bsphere.ClosestPoint(point);
         }
@@ -118,7 +118,7 @@ namespace hgl::math
         /**
          * 计算点到包围体的距离(使用最保守的AABB)
          */
-        float DistanceToPoint(const math::Vector3f &point) const
+        float DistanceToPoint(const Vector3f &point) const
         {
             return aabb.DistanceToPoint(point);
         }
@@ -226,7 +226,7 @@ namespace hgl::math
         /**
          * 扩展包围体以包含指定点
          */
-        void ExpandToInclude(const math::Vector3f &point)
+        void ExpandToInclude(const Vector3f &point)
         {
             aabb.ExpandToInclude(point);
             obb.ExpandToInclude(point);
@@ -244,7 +244,7 @@ namespace hgl::math
         /**
          * 获取中心点(使用AABB中心)
          */
-        const math::Vector3f &GetCenter() const
+        const Vector3f &GetCenter() const
         {
             return aabb.GetCenter();
         }

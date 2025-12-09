@@ -9,7 +9,7 @@ namespace hgl::math
 
     struct BoundingSphere
     {
-        math::Vector3f center { 0.0f };
+        Vector3f center { 0.0f };
 
         float radius=-1.0f;
 
@@ -42,7 +42,7 @@ namespace hgl::math
         /**
          * 检查点是否在球体内
          */
-        bool ContainsPoint(const math::Vector3f &point) const
+        bool ContainsPoint(const Vector3f &point) const
         {
             const Vector3f diff = point - center;
             return glm::dot(diff, diff) <= radius * radius;
@@ -51,7 +51,7 @@ namespace hgl::math
         /**
          * 计算点到球体的最近点
          */
-        math::Vector3f ClosestPoint(const math::Vector3f &point) const
+        Vector3f ClosestPoint(const Vector3f &point) const
         {
             Vector3f dir = point - center;
             float dist = glm::length(dir);
@@ -63,7 +63,7 @@ namespace hgl::math
         /**
          * 计算点到球体的距离(点在球内返回0)
          */
-        float DistanceToPoint(const math::Vector3f &point) const
+        float DistanceToPoint(const Vector3f &point) const
         {
             float dist = glm::length(point - center) - radius;
             return dist > 0.0f ? dist : 0.0f;
@@ -128,7 +128,7 @@ namespace hgl::math
         /**
          * 扩展球体以包含指定点
          */
-        void ExpandToInclude(const math::Vector3f &point);
+        void ExpandToInclude(const Vector3f &point);
 
         /**
          * 获取表面积

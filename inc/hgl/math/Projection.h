@@ -25,7 +25,7 @@ namespace hgl::math
      * @param znear 近平面z值
      * @param zfar 远平面z值
      */
-    math::Matrix4f OrthoMatrix( float left,
+    Matrix4f OrthoMatrix( float left,
                           float right,
                           float bottom,
                           float top,
@@ -39,14 +39,14 @@ namespace hgl::math
      * @param znear 近平面z值
      * @param zfar 远平面z值
      */
-    math::Matrix4f OrthoMatrix(float width,float height,float znear,float zfar);
+    Matrix4f OrthoMatrix(float width,float height,float znear,float zfar);
 
     /**
      * 生成一个正交投影矩阵（2参数版本，近平面=0，远平面=1）
      * @param width 宽度
      * @param height 高度
      */
-    math::Matrix4f OrthoMatrix(float width,float height);
+    Matrix4f OrthoMatrix(float width,float height);
 
     // ==================== 透视投影矩阵 ====================
     
@@ -57,7 +57,7 @@ namespace hgl::math
      * @param znear 近截面
      * @param zfar 远截面
      */
-    math::Matrix4f PerspectiveMatrix( float field_of_view,
+    Matrix4f PerspectiveMatrix( float field_of_view,
                                 float aspect_ratio,                                
                                 float znear,
                                 float zfar);
@@ -70,7 +70,7 @@ namespace hgl::math
      * @param target 目标位置
      * @param up 向上向量（默认为Z轴）
      */
-    math::Matrix4f LookAtMatrix(const math::Vector3f &eye,const math::Vector3f &target,const math::Vector3f &up=AxisVector::Z);
+    Matrix4f LookAtMatrix(const Vector3f &eye,const Vector3f &target,const Vector3f &up=AxisVector::Z);
 
     // ==================== 坐标投影 ====================
     
@@ -83,10 +83,10 @@ namespace hgl::math
      * @return 屏幕坐标
      */
     Vector2i ProjectToScreen(
-        const math::Vector3f& world_pos,
-        const math::Matrix4f& view,
-        const math::Matrix4f& projection,
-        const math::Vector2u& viewport_size);
+        const Vector3f& world_pos,
+        const Matrix4f& view,
+        const Matrix4f& projection,
+        const Vector2u& viewport_size);
 
     /**
      * 将屏幕坐标反投影到世界坐标
@@ -96,9 +96,9 @@ namespace hgl::math
      * @param viewport_size 视口大小
      * @return 世界坐标
      */
-    math::Vector3f UnProjectToWorld(
-        const math::Vector2i &win_pos,
-        const math::Matrix4f &view,
-        const math::Matrix4f &projection,
-        const math::Vector2u &viewport_size);
+    Vector3f UnProjectToWorld(
+        const Vector2i &win_pos,
+        const Matrix4f &view,
+        const Matrix4f &projection,
+        const Vector2u &viewport_size);
 }//namespace hgl::math

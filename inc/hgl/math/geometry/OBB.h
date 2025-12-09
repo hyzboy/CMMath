@@ -88,22 +88,22 @@ namespace hgl::math
         /**
          * 检查点是否在OBB内
          */
-        bool ContainsPoint(const math::Vector3f &point) const;
+        bool ContainsPoint(const Vector3f &point) const;
 
         /**
          * 计算点到OBB的最近点
          */
-        math::Vector3f ClosestPoint(const math::Vector3f &point) const;
+        Vector3f ClosestPoint(const Vector3f &point) const;
 
         /**
          * 计算点到OBB的距离
          */
-        float DistanceToPoint(const math::Vector3f &point) const;
+        float DistanceToPoint(const Vector3f &point) const;
 
         /**
          * 计算点到OBB的距离平方
          */
-        float DistanceToPointSquared(const math::Vector3f &point) const;
+        float DistanceToPointSquared(const Vector3f &point) const;
 
     public: // 碰撞检测 - OBB
 
@@ -132,7 +132,7 @@ namespace hgl::math
         /**
          * 检查与球体是否相交
          */
-        bool IntersectsSphere(const math::Vector3f &sphere_center, float sphere_radius) const;
+        bool IntersectsSphere(const Vector3f &sphere_center, float sphere_radius) const;
 
         /**
          * 检查与射线是否相交
@@ -162,7 +162,7 @@ namespace hgl::math
         /**
          * 扩展OBB以包含指定点
          */
-        void ExpandToInclude(const math::Vector3f &point);
+        void ExpandToInclude(const Vector3f &point);
 
         /**
          * 获取表面积

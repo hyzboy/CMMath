@@ -9,7 +9,7 @@ namespace hgl::math
 {
     using FrustumPlanes=Vector4f[6];
 
-    void GetFrustumPlanes(FrustumPlanes &fp,const math::Matrix4f &mvp);
+    void GetFrustumPlanes(FrustumPlanes &fp,const Matrix4f &mvp);
 
     /**
     * 平截头裁剪处理
@@ -39,10 +39,10 @@ namespace hgl::math
 
     public:
 
-        void SetMatrix(const math::Matrix4f &mvp);
+        void SetMatrix(const Matrix4f &mvp);
 
-        Scope PointIn(const math::Vector3f &)const;
-        Scope SphereIn(const math::Vector3f &,float radius)const;
+        Scope PointIn(const Vector3f &)const;
+        Scope SphereIn(const Vector3f &,float radius)const;
         Scope BoxIn(const AABB &)const;
     };//class Frustum
 }//namespace hgl::math

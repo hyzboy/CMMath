@@ -21,12 +21,12 @@ namespace hgl::math
     // ==================== 四元数类型定义 ====================
     
     using Quatf=glm::quat;
-    const math::Quatf IdentityQuatf(1,0,0,0);     //w,x,y,z
+    const Quatf IdentityQuatf(1,0,0,0);     //w,x,y,z
 
     /**
      * 四元数精度比较
      */
-    inline const bool IsNearlyEqual(const math::Quatf &q1,const math::Quatf &q2,const float err=HGL_FLOAT_ERROR)
+    inline const bool IsNearlyEqual(const Quatf &q1,const Quatf &q2,const float err=HGL_FLOAT_ERROR)
     {
         return glm::all(glm::epsilonEqual(q1,q2,err));
     }
@@ -38,7 +38,7 @@ namespace hgl::math
      * @param angle 旋转角度（度数）
      * @param axis 旋转轴
      */
-    inline Quatf RotationQuat(const float angle,const math::Vector3f &axis)
+    inline Quatf RotationQuat(const float angle,const Vector3f &axis)
     {
         return glm::angleAxis(glm::radians(angle),axis);
     }
@@ -48,7 +48,7 @@ namespace hgl::math
     /**
      * 四元数转换为4x4矩阵
      */
-    inline Matrix4f ToMatrix(const math::Quatf &quat)
+    inline Matrix4f ToMatrix(const Quatf &quat)
     {
         return glm::toMat4(quat);
     }
@@ -61,7 +61,7 @@ namespace hgl::math
      * @param axis 输出：旋转轴
      * @param angle 输出：旋转角度（度数）
      */
-    inline void ExtractedQuat(const math::Quatf &quat,Vector3f &axis,float &angle)
+    inline void ExtractedQuat(const Quatf &quat,Vector3f &axis,float &angle)
     {
         angle=glm::degrees(glm::angle(quat));
         axis=glm::axis(quat);
@@ -70,7 +70,7 @@ namespace hgl::math
     /**
      * 获取四元数的旋转轴
      */
-    inline const math::Vector3f &GetRotateAxis(const math::Quatf &quat)
+    inline const Vector3f &GetRotateAxis(const Quatf &quat)
     {
         return glm::axis(quat);
     }
@@ -78,7 +78,7 @@ namespace hgl::math
     /**
      * 获取四元数的旋转角度（度数）
      */
-    inline const float GetRotateAngle(const math::Quatf &quat)
+    inline const float GetRotateAngle(const Quatf &quat)
     {
         return glm::degrees(glm::angle(quat));
     }
@@ -88,7 +88,7 @@ namespace hgl::math
     /**
      * 四元数线性插值
      */
-    inline Quatf LerpQuat(const math::Quatf &from,const math::Quatf &to,const float t)
+    inline Quatf LerpQuat(const Quatf &from,const Quatf &to,const float t)
     {
         return glm::lerp(from,to,t);
     }
@@ -96,7 +96,7 @@ namespace hgl::math
     /**
      * 四元数球面线性插值（推荐用于旋转动画）
      */
-    inline Quatf SLerpQuat(const math::Quatf &from,const math::Quatf &to,const float t)
+    inline Quatf SLerpQuat(const Quatf &from,const Quatf &to,const float t)
     {
         return glm::slerp(from,to,t);
     }
@@ -109,5 +109,5 @@ namespace hgl::math
      * @param old_direction 旧方向向量
      * @param new_direction 新方向向量
      */
-    const math::Quatf GetRotateQuat(const math::Vector3f &world_position,const math::Vector3f &old_direction,const math::Vector3f &new_direction);
+    const Quatf GetRotateQuat(const Vector3f &world_position,const Vector3f &old_direction,const Vector3f &new_direction);
 }//namespace hgl::math

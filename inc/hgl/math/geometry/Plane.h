@@ -9,30 +9,30 @@ namespace hgl::math
     */
     struct Plane
     {
-        math::Vector3f normal;
+        Vector3f normal;
         float d;
 
     public:
 
-        void Set(const math::Vector3f &_p,float _d)
+        void Set(const Vector3f &_p,float _d)
         {
             normal=_p;
             d=_d;
         }
 
-        void Set(const math::Vector3f &face_center_point,const math::Vector3f &face_normal)
+        void Set(const Vector3f &face_center_point,const Vector3f &face_normal)
         {
             normal=face_normal;
             d=dot(face_center_point,face_normal);
         }
 
-        void Set(const math::Vector4f &p)
+        void Set(const Vector4f &p)
         {
             normal=p;
             d=p.w;
         }
 
-        float Distance(const math::Vector3f &p)const
+        float Distance(const Vector3f &p)const
         {
             return(dot(normal,p)-d)/glm::length(normal);
         }
@@ -44,12 +44,12 @@ namespace hgl::math
     */
     struct Rectangle3D
     {
-        math::Vector3f center;
-        math::Vector3f normal;
-        math::Vector3f up;
-        math::Vector3f right;
-        math::Vector2f size;
+        Vector3f center;
+        Vector3f normal;
+        Vector3f up;
+        Vector3f right;
+        Vector2f size;
     };
 
-    float DistanceBetweenPointAndRectangle3D(const math::Vector3f &p,const Rectangle3D &rect);
+    float DistanceBetweenPointAndRectangle3D(const Vector3f &p,const Rectangle3D &rect);
 }//namespace hgl::math

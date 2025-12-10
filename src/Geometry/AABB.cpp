@@ -7,9 +7,9 @@
 
 namespace hgl::math
 {
-    math::Vector3f AABB::GetVertexP(const math::Vector3f &normal) const
+    Vector3f AABB::GetVertexP(const Vector3f &normal) const
     {
-        math::Vector3f res = minPoint;
+        Vector3f res = minPoint;
 
         if (normal[0] > 0)res[0] += length[0];
         if (normal[1] > 0)res[1] += length[1];
@@ -18,9 +18,9 @@ namespace hgl::math
         return(res);
     }
 
-    math::Vector3f AABB::GetVertexN(const math::Vector3f &normal) const
+    Vector3f AABB::GetVertexN(const Vector3f &normal) const
     {
-        math::Vector3f res = minPoint;
+        Vector3f res = minPoint;
 
         if (normal[0] < 0)res[0] += length[0];
         if (normal[1] < 0)res[1] += length[1];
@@ -51,13 +51,13 @@ namespace hgl::math
 
         const float *p=pts;
             
-        math::Vector3f minp(p[0],p[1],p[2]);
-        math::Vector3f maxp(p[0],p[1],p[2]);
+        Vector3f minp(p[0],p[1],p[2]);
+        Vector3f maxp(p[0],p[1],p[2]);
         p+=component_count;
 
         for(uint32_t i=1;i<count;++i)
         {
-            math::Vector3f v(p[0],p[1],p[2]);
+            Vector3f v(p[0],p[1],p[2]);
             minp=glm::min(minp,v);
             maxp=glm::max(maxp,v);
             p+=component_count;
@@ -71,19 +71,19 @@ namespace hgl::math
         if(IsEmpty())
             return *this;
 
-        const math::Vector3f corners[8]=
+        const Vector3f corners[8]=
         {
             minPoint,
-            math::Vector3f(maxPoint.x,minPoint.y,minPoint.z),
-            math::Vector3f(minPoint.x,maxPoint.y,minPoint.z),
-            math::Vector3f(maxPoint.x,maxPoint.y,minPoint.z),
-            math::Vector3f(minPoint.x,minPoint.y,maxPoint.z),
-            math::Vector3f(maxPoint.x,minPoint.y,maxPoint.z),
-            math::Vector3f(minPoint.x,maxPoint.y,maxPoint.z),
+            Vector3f(maxPoint.x,minPoint.y,minPoint.z),
+            Vector3f(minPoint.x,maxPoint.y,minPoint.z),
+            Vector3f(maxPoint.x,maxPoint.y,minPoint.z),
+            Vector3f(minPoint.x,minPoint.y,maxPoint.z),
+            Vector3f(maxPoint.x,minPoint.y,maxPoint.z),
+            Vector3f(minPoint.x,maxPoint.y,maxPoint.z),
             maxPoint
         };
 
-        math::Vector3f transformed[8];
+        Vector3f transformed[8];
 
         for(int i=0;i<8;++i)
             transformed[i] = Vector3f(m * math::Vector4f(corners[i], 1.0f));
@@ -98,20 +98,20 @@ namespace hgl::math
     // 碰撞检测实现
     // ============================================================================
 
-    math::Vector3f AABB::ClosestPoint(const math::Vector3f &point) const
+    Vector3f AABB::ClosestPoint(const Vector3f &point) const
     {
         return glm::clamp(point, minPoint, maxPoint);
     }
 
-    float AABB::DistanceToPoint(const math::Vector3f &point) const
+    float AABB::DistanceToPoint(const Vector3f &point) const
     {
         return glm::sqrt(DistanceToPointSquared(point));
     }
 
-    float AABB::DistanceToPointSquared(const math::Vector3f &point) const
+    float AABB::DistanceToPointSquared(const Vector3f &point) const
     {
-        const math::Vector3f closest = ClosestPoint(point);
-        const math::Vector3f delta = point - closest;
+        const Vector3f closest = ClosestPoint(point);
+        const Vector3f delta = point - closest;
         return glm::dot(delta, delta);
     }
 
@@ -120,8 +120,8 @@ namespace hgl::math
         if (!Intersects(other))
             return false;
 
-        math::Vector3f int_min = MaxVector(minPoint, other.minPoint);
-        math::Vector3f int_max = MinVector(maxPoint, other.maxPoint);
+        Vector3f int_min = MaxVector(minPoint, other.minPoint);
+        Vector3f int_max = MinVector(maxPoint, other.maxPoint);
 
         intersection.SetMinMax(int_min, int_max);
         return true;
@@ -132,7 +132,7 @@ namespace hgl::math
         if (Intersects(other))
             return 0.0f;
 
-        math::Vector3f delta(0.0f);
+        Vector3f delta(0.0f);
 
         // X轴
         if (maxPoint.x < other.minPoint.x) delta.x = other.minPoint.x - maxPoint.x;
@@ -149,7 +149,7 @@ namespace hgl::math
         return glm::length(delta);
     }
 
-    bool AABB::IntersectsSphere(const math::Vector3f &sphere_center, float sphere_radius) const
+    bool AABB::IntersectsSphere(const Vector3f &sphere_center, float sphere_radius) const
     {
         float distSq = DistanceToPointSquared(sphere_center);
         return distSq <= sphere_radius * sphere_radius;
@@ -250,10 +250,10 @@ namespace hgl::math
         return false;
     }
 
-    void AABB::ExpandToInclude(const math::Vector3f &point)
+    void AABB::ExpandToInclude(const Vector3f &point)
     {
-        math::Vector3f new_min = MinVector(minPoint, point);
-        math::Vector3f new_max = MaxVector(maxPoint, point);
+        Vector3f new_min = MinVector(minPoint, point);
+        Vector3f new_max = MaxVector(maxPoint, point);
         SetMinMax(new_min, new_max);
     }
 

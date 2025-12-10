@@ -62,7 +62,7 @@ namespace hgl::math
         for(int i=0;i<6;i++)pl[i].Set(planes[i]);         // 设置平面
     }
 
-    Frustum::Scope Frustum::PointIn(const math::Vector3f &p) const
+    Frustum::Scope Frustum::PointIn(const Vector3f &p) const
     {
         Frustum::Scope result = Frustum::Scope::INSIDE;
 
@@ -73,7 +73,7 @@ namespace hgl::math
         return(result);
     }
 
-    Frustum::Scope Frustum::SphereIn(const math::Vector3f &p, float radius) const
+    Frustum::Scope Frustum::SphereIn(const Vector3f &p, float radius) const
     {
         Frustum::Scope result = Frustum::Scope::INSIDE;
         float distance;

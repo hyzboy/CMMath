@@ -32,6 +32,12 @@ SET(CMMATH_GEOMETRY_HEADER  ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Sphere.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/LineSegment.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Capsule.h
+                            ${MATH_GEOMETRY_INCLUDE_PATH}/Cylinder.h
+                            ${MATH_GEOMETRY_INCLUDE_PATH}/Torus.h
+                            ${MATH_GEOMETRY_INCLUDE_PATH}/HollowCylinder.h
+                            ${MATH_GEOMETRY_INCLUDE_PATH}/Cone.h
+                            ${MATH_GEOMETRY_INCLUDE_PATH}/Stairs.h
+                            ${MATH_GEOMETRY_INCLUDE_PATH}/SpiralStairs.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Triangle.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/BoundingSphere.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/AABB.h
@@ -54,6 +60,8 @@ SET(CMMATH_GEOMETRY_SOURCE  Geometry/Plane.cpp
                             Geometry/OBB_SetFromPoints_AVX2.cpp
                             Geometry/BoundingSphere.cpp
                             Geometry/BoundingVolumes.cpp
+                            Geometry/Cylinder.cpp
+                            Geometry/Cone.cpp
                             Geometry/Ray.cpp
                             Geometry/Frustum.cpp
                             Geometry/TRS.cpp

@@ -100,7 +100,7 @@ namespace hgl::math
     // 碰撞检测实现
     // ============================================================================
 
-    bool OBB::ContainsPoint(const math::Vector3f &point) const
+    bool OBB::ContainsPoint(const Vector3f &point) const
     {
         Vector3f d = point - center;
         
@@ -114,7 +114,7 @@ namespace hgl::math
         return true;
     }
 
-    math::Vector3f OBB::ClosestPoint(const math::Vector3f &point) const
+    Vector3f OBB::ClosestPoint(const Vector3f &point) const
     {
         Vector3f d = point - center;
         Vector3f result = center;
@@ -129,15 +129,15 @@ namespace hgl::math
         return result;
     }
 
-    float OBB::DistanceToPoint(const math::Vector3f &point) const
+    float OBB::DistanceToPoint(const Vector3f &point) const
     {
         return glm::sqrt(DistanceToPointSquared(point));
     }
 
-    float OBB::DistanceToPointSquared(const math::Vector3f &point) const
+    float OBB::DistanceToPointSquared(const Vector3f &point) const
     {
-        const math::Vector3f closest = ClosestPoint(point);
-        const math::Vector3f delta = point - closest;
+        const Vector3f closest = ClosestPoint(point);
+        const Vector3f delta = point - closest;
         return glm::dot(delta, delta);
     }
 
@@ -262,7 +262,7 @@ namespace hgl::math
         return true;
     }
 
-    bool OBB::IntersectsSphere(const math::Vector3f &sphere_center, float sphere_radius) const
+    bool OBB::IntersectsSphere(const Vector3f &sphere_center, float sphere_radius) const
     {
         float distSq = DistanceToPointSquared(sphere_center);
         return distSq <= sphere_radius * sphere_radius;
@@ -357,7 +357,7 @@ namespace hgl::math
         return false;
     }
 
-    void OBB::ExpandToInclude(const math::Vector3f &point)
+    void OBB::ExpandToInclude(const Vector3f &point)
     {
         // 将点转换到OBB的局部空间
         Vector3f local_point = point - center;

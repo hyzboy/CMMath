@@ -64,7 +64,6 @@ SET(CMMATH_GEOMETRY_SOURCE  Geometry/Plane.cpp
                             Geometry/Cone.cpp
                             Geometry/Ray.cpp
                             Geometry/Frustum.cpp
-                            Geometry/TRS.cpp
                             )
 
 SET(CM_CAMERA_INFO_SOURCE ${CMMATH_ROOT_INCLUDE_PATH}/hgl/graph/CameraInfo.h)

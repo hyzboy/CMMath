@@ -46,7 +46,6 @@ SET(CMMATH_GEOMETRY_HEADER  ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Ray.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Frustum.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Coordinate.h
-                            ${MATH_GEOMETRY_INCLUDE_PATH}/TRS.h
                             )
 
 SET(CMMATH_SOURCE   Math/LAtan.cpp

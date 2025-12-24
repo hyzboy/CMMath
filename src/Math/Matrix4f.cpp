@@ -16,21 +16,21 @@
 
 namespace hgl::math
 {
-/**
- * @brief 生成一个正交投影矩阵（列主序，兼容 Vulkan 深度范围 [0,1]）
- *
- * 该函数返回的矩阵将把给定的裁剪体（left,right,bottom,top,znear,zfar）映射到标准裁剪空间。
- * 与 OpenGL 的 [-1,1] 深度不同，此处采用 0..1 深度范围（常用于 Vulkan）。
- * 注意：此处的坐标系为右手，视空间中摄像机朝向为 -Z。
- *
- * @param left  裁剪体左边界（x）
- * @param right 裁剪体右边界（x）
- * @param bottom 裁剪体下边界（y）
- * @param top 裁剪体上边界（y）
- * @param znear 近平面深度（正值），视空间中近平面对应 z=-znear
- * @param zfar  远平面深度（正值），视空间中远平面对应 z=-zfar
- * @return Matrix4f 正交投影矩阵，列主序构造
- */
+    /**
+     * @brief 生成一个正交投影矩阵（列主序，兼容 Vulkan 深度范围 [0,1]）
+     *
+     * 该函数返回的矩阵将把给定的裁剪体（left,right,bottom,top,znear,zfar）映射到标准裁剪空间。
+     * 与 OpenGL 的 [-1,1] 深度不同，此处采用 0..1 深度范围（常用于 Vulkan）。
+     * 注意：此处的坐标系为右手，视空间中摄像机朝向为 -Z。
+     *
+     * @param left  裁剪体左边界（x）
+     * @param right 裁剪体右边界（x）
+     * @param bottom 裁剪体下边界（y）
+     * @param top 裁剪体上边界（y）
+     * @param znear 近平面深度（正值），视空间中近平面对应 z=-znear
+     * @param zfar  远平面深度（正值），视空间中远平面对应 z=-zfar
+     * @return Matrix4f 正交投影矩阵，列主序构造
+     */
     math::Matrix4f OrthoMatrix( float left,
                     float right,
                     float bottom,

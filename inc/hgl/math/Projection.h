@@ -62,6 +62,22 @@ namespace hgl::math
                                 float znear,
                                 float zfar);
 
+    
+    /**
+     * @brief 构造一个在 z==0 时与正交投影一致，但随 z 引入透视效果的投影矩阵
+     *
+     * 用途：需要在屏幕平面（z==0）与 OrthoMatrix 行为严格一致，但当物体沿视深方向
+     * 发生偏离时，產生近大远小的透视效果。
+     *
+     * 说明：矩阵以列主序构造。alpha 控制透视强度（一般取负值以在 camera-space z<0 时产生缩放），
+     * alpha = 0 时退化为正交投影（无透视）。
+     */
+    math::Matrix4f PerspectiveMatchOrtho(
+        float left, float right,
+        float bottom, float top,
+        float znear, float zfar,
+        float alpha /* 透视强度，默认可设为 -(2/(zfar-znear)) 或者 -(1/focus) */);
+
     // ==================== 视图矩阵 ====================
     
     /**

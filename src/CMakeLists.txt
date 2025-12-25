@@ -36,8 +36,6 @@ SET(CMMATH_GEOMETRY_HEADER  ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Torus.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/HollowCylinder.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Cone.h
-                            ${MATH_GEOMETRY_INCLUDE_PATH}/Stairs.h
-                            ${MATH_GEOMETRY_INCLUDE_PATH}/SpiralStairs.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Triangle.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/BoundingSphere.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/AABB.h

@@ -65,6 +65,115 @@ SET(CMMATH_GEOMETRY_SOURCE  Geometry/Plane.cpp
 
 SET(CM_CAMERA_INFO_SOURCE ${CMMATH_ROOT_INCLUDE_PATH}/hgl/graph/CameraInfo.h)
 
+# Organized SOURCE_GROUPs for Visual Studio
+
+# Core math headers
+SOURCE_GROUP("Math\\Core" FILES
+    ${MATH_INCLUDE_PATH}/MathConstants.h
+    ${MATH_INCLUDE_PATH}/TrigConstants.h
+    ${MATH_INCLUDE_PATH}/MathUtils.h
+    ${MATH_INCLUDE_PATH}/Projection.h
+    ${MATH_INCLUDE_PATH}/PhysicsConst.h
+    ${MATH_INCLUDE_PATH}/Sum.h
+)
+
+# Types and basic utilities
+SOURCE_GROUP("Math\\Types" FILES
+    ${MATH_INCLUDE_PATH}/MatrixTypes.h
+    ${MATH_INCLUDE_PATH}/VectorTypes.h
+    ${MATH_INCLUDE_PATH}/bvec.h
+    ${MATH_INCLUDE_PATH}/Vector.h
+)
+
+# Linear algebra and operations
+SOURCE_GROUP("Math\\Linear Algebra" FILES
+    ${MATH_INCLUDE_PATH}/MatrixOperations.h
+    ${MATH_INCLUDE_PATH}/Quaternion.h
+)
+
+# Vector utilities and helpers
+SOURCE_GROUP("Math\\Vectors" FILES
+    ${MATH_INCLUDE_PATH}/VectorOperations.h
+    ${MATH_INCLUDE_PATH}/VectorUtils.h
+    ${MATH_INCLUDE_PATH}/NormalData.h
+)
+
+# Numeric utilities
+SOURCE_GROUP("Math\\Numeric" FILES
+    ${MATH_INCLUDE_PATH}/HalfFloat.h
+    ${MATH_INCLUDE_PATH}/LerpType.h
+    ${MATH_INCLUDE_PATH}/Lerp1D.h
+    ${MATH_INCLUDE_PATH}/Lerp2D.h
+    ${MATH_INCLUDE_PATH}/Lerp3D.h
+)
+
+# Special utilities and algorithms
+SOURCE_GROUP("Math\\Algorithms" FILES
+    ${MATH_INCLUDE_PATH}/FastTriangle.h
+    ${MATH_INCLUDE_PATH}/Area.h
+)
+
+# Geometry headers grouped by function
+SOURCE_GROUP("Geometry\\Primitives" FILES
+    ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
+    ${MATH_GEOMETRY_INCLUDE_PATH}/Sphere.h
+    ${MATH_GEOMETRY_INCLUDE_PATH}/Triangle.h
+)
+
+SOURCE_GROUP("Geometry\\Curves" FILES
+    ${MATH_GEOMETRY_INCLUDE_PATH}/Torus.h
+)
+
+SOURCE_GROUP("Geometry\\Solids" FILES
+    ${MATH_GEOMETRY_INCLUDE_PATH}/Capsule.h
+    ${MATH_GEOMETRY_INCLUDE_PATH}/Cylinder.h
+    ${MATH_GEOMETRY_INCLUDE_PATH}/HollowCylinder.h
+    ${MATH_GEOMETRY_INCLUDE_PATH}/Cone.h
+)
+
+SOURCE_GROUP("Geometry\\Bounding" FILES
+    ${MATH_GEOMETRY_INCLUDE_PATH}/BoundingSphere.h
+    ${MATH_GEOMETRY_INCLUDE_PATH}/AABB.h
+    ${MATH_GEOMETRY_INCLUDE_PATH}/OBB.h
+    ${MATH_GEOMETRY_INCLUDE_PATH}/BoundingVolumes.h
+)
+
+SOURCE_GROUP("Geometry\\Query" FILES
+    ${MATH_GEOMETRY_INCLUDE_PATH}/LineSegment.h
+    ${MATH_GEOMETRY_INCLUDE_PATH}/Ray.h
+    ${MATH_GEOMETRY_INCLUDE_PATH}/Frustum.h
+    ${MATH_GEOMETRY_INCLUDE_PATH}/Coordinate.h
+)
+
+# Camera related header
+SOURCE_GROUP("Graph\\Camera" FILES ${CM_CAMERA_INFO_SOURCE})
+
+# Source files: core math
+SOURCE_GROUP("Source\\Math" FILES
+    ${CMMATH_SOURCE}
+)
+
+# Source files: geometry categorized
+SOURCE_GROUP("Source\\Geometry\\Primitives" FILES
+    Geometry/Plane.cpp
+)
+
+SOURCE_GROUP("Source\\Geometry\\Bounding" FILES
+    Geometry/AABB.cpp
+    Geometry/OBB.cpp
+    Geometry/BoundingSphere.cpp
+    Geometry/BoundingVolumes.cpp
+)
+
+SOURCE_GROUP("Source\\Geometry\\Utilities" FILES
+    Geometry/OBB_SetFromPoints_AVX2.cpp
+    Geometry/Cylinder.cpp
+    Geometry/Cone.cpp
+    Geometry/Ray.cpp
+    Geometry/Frustum.cpp
+)
+
+# Fallback groups used by the original add_cm_library invocation
 SOURCE_GROUP("Header Files" FILES ${CMMATH_HEADER} ${CM_CAMERA_INFO_SOURCE})
 SOURCE_GROUP("Source Files" FILES ${CMMATH_SOURCE})
 SOURCE_GROUP("Geometry\\Header Files" FILES ${CMMATH_GEOMETRY_HEADER})

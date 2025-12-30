@@ -2,6 +2,7 @@
 
 #include<hgl/math/VectorTypes.h>
 #include<hgl/math/VectorOperations.h>
+#include<hgl/math/MathUtils.h>
 #include<hgl/math/FastTriangle.h>
 #include<hgl/math/TrigConstants.h>
 #include<hgl/type/CompareUtil.h>

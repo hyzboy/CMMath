@@ -26,6 +26,10 @@ SET(CMMATH_HEADER   ${MATH_INCLUDE_PATH}/bvec.h
                     ${MATH_INCLUDE_PATH}/Lerp2D.h
                     ${MATH_INCLUDE_PATH}/Lerp3D.h
                     ${MATH_INCLUDE_PATH}/NormalData.h
+                    ${MATH_INCLUDE_PATH}/Easing.h
+                    ${MATH_INCLUDE_PATH}/Transform2D.h
+                    ${MATH_INCLUDE_PATH}/Random.h
+                    ${MATH_INCLUDE_PATH}/Color.h
                     )
 
 SET(CMMATH_GEOMETRY_HEADER  ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
@@ -44,12 +48,16 @@ SET(CMMATH_GEOMETRY_HEADER  ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Ray.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Frustum.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Coordinate.h
+                            ${MATH_GEOMETRY_INCLUDE_PATH}/AABB2D.h
+                            ${MATH_GEOMETRY_INCLUDE_PATH}/Collision2D.h
                             )
 
 SET(CMMATH_SOURCE   Math/LAtan.cpp
                     Math/LSinCos.cpp
                     Math/Matrix4f.cpp
-                    Math/HalfFloat.cpp)
+                    Math/HalfFloat.cpp
+                    Math/Random.cpp
+                    Math/Color.cpp)
 
 SET(CMMATH_GEOMETRY_SOURCE  Geometry/Plane.cpp
                             Geometry/AABB.cpp
@@ -113,6 +121,14 @@ SOURCE_GROUP("Math\\Algorithms" FILES
     ${MATH_INCLUDE_PATH}/Area.h
 )
 
+# Game development utilities
+SOURCE_GROUP("Math\\Game" FILES
+    ${MATH_INCLUDE_PATH}/Easing.h
+    ${MATH_INCLUDE_PATH}/Transform2D.h
+    ${MATH_INCLUDE_PATH}/Random.h
+    ${MATH_INCLUDE_PATH}/Color.h
+)
+
 # Geometry headers grouped by function
 SOURCE_GROUP("Geometry\\Primitives" FILES
     ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
@@ -143,6 +159,11 @@ SOURCE_GROUP("Geometry\\Query" FILES
     ${MATH_GEOMETRY_INCLUDE_PATH}/Ray.h
     ${MATH_GEOMETRY_INCLUDE_PATH}/Frustum.h
     ${MATH_GEOMETRY_INCLUDE_PATH}/Coordinate.h
+)
+
+SOURCE_GROUP("Geometry\\2D" FILES
+    ${MATH_GEOMETRY_INCLUDE_PATH}/AABB2D.h
+    ${MATH_GEOMETRY_INCLUDE_PATH}/Collision2D.h
 )
 
 # Camera related header
@@ -179,4 +200,20 @@ SOURCE_GROUP("Source Files" FILES ${CMMATH_SOURCE})
 SOURCE_GROUP("Geometry\\Header Files" FILES ${CMMATH_GEOMETRY_HEADER})
 SOURCE_GROUP("Geometry\\Source Files" FILES ${CMMATH_GEOMETRY_SOURCE})
 
-add_cm_library(CMMath "CM" ${CMMATH_HEADER} ${CMMATH_SOURCE} ${CMMATH_GEOMETRY_HEADER} ${CMMATH_GEOMETRY_SOURCE} ${CM_CAMERA_INFO_SOURCE})
+# Create CMMath library
+find_package(glm CONFIG)
+if(NOT glm_FOUND)
+    find_package(PkgConfig)
+    if(PkgConfig_FOUND)
+        pkg_check_modules(GLM glm)
+    endif()
+endif()
+
+add_library(CMMath STATIC ${CMMATH_HEADER} ${CMMATH_SOURCE} ${CMMATH_GEOMETRY_HEADER} ${CMMATH_GEOMETRY_SOURCE} ${CM_CAMERA_INFO_SOURCE})
+target_include_directories(CMMath PUBLIC ${CMMATH_ROOT_INCLUDE_PATH})
+
+if(glm_FOUND)
+    target_link_libraries(CMMath PUBLIC glm::glm)
+elseif(GLM_FOUND)
+    target_include_directories(CMMath PUBLIC ${GLM_INCLUDE_DIRS})
+endif()

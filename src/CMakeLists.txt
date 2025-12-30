@@ -62,6 +62,14 @@ SET(CMMATH_ANIMATION_HEADER  ${MATH_ANIMATION_INCLUDE_PATH}/DualQuaternion.h
                             ${MATH_ANIMATION_INCLUDE_PATH}/SkeletonMath.h
                             )
 
+## Transform 变换系统
+SET(MATH_TRANSFORM_INCLUDE_PATH  ${MATH_INCLUDE_PATH}/transform)
+
+SET(CMMATH_TRANSFORM_HEADER ${MATH_TRANSFORM_INCLUDE_PATH}/Transform.h
+                            ${MATH_TRANSFORM_INCLUDE_PATH}/TransformAction.h)
+
+SET(CMMATH_TRANSFORM_SOURCE Transform/Transform.cpp)
+
 SET(CMMATH_SOURCE   Math/LAtan.cpp
                     Math/LSinCos.cpp
                     Math/Matrix4f.cpp
@@ -202,6 +210,9 @@ SOURCE_GROUP("Spatial" FILES
 SOURCE_GROUP("Animation" FILES
     ${MATH_ANIMATION_INCLUDE_PATH}/DualQuaternion.h
     ${MATH_ANIMATION_INCLUDE_PATH}/SkeletonMath.h)
+
+# Transform system headers
+SOURCE_GROUP("Transform\\Headers" FILES ${CMMATH_TRANSFORM_HEADER})
     
 SOURCE_GROUP("Geometry\\2D" FILES
     ${MATH_GEOMETRY_INCLUDE_PATH}/AABB2D.h
@@ -237,6 +248,9 @@ SOURCE_GROUP("Source\\Math\\Animation" FILES
     Math/SkeletonMath.cpp
 )
 
+# Transform system source files
+SOURCE_GROUP("Transform\\Sources" FILES ${CMMATH_TRANSFORM_SOURCE})
+
 # Source files: geometry categorized
 SOURCE_GROUP("Source\\Geometry\\Primitives" FILES
     Geometry/Plane.cpp
@@ -265,11 +279,14 @@ SOURCE_GROUP("Geometry\\Header Files" FILES ${CMMATH_GEOMETRY_HEADER})
 SOURCE_GROUP("Geometry\\Source Files" FILES ${CMMATH_GEOMETRY_SOURCE})
 SOURCE_GROUP("Animation\\Header Files" FILES ${CMMATH_ANIMATION_HEADER})
 SOURCE_GROUP("Animation\\Source Files" FILES Math/DualQuaternion.cpp Math/SkeletonMath.cpp)
+SOURCE_GROUP("Transform\\Header Files" FILES ${CMMATH_TRANSFORM_HEADER})
+SOURCE_GROUP("Transform\\Source Files" FILES ${CMMATH_TRANSFORM_SOURCE})
 
 add_cm_library(CMMath "CM"
                             ${CMMATH_HEADER} ${CMMATH_SOURCE}
                             ${CMMATH_GEOMETRY_HEADER} ${CMMATH_GEOMETRY_SOURCE}
                             ${CMMATH_ANIMATION_HEADER}
+                            ${CMMATH_TRANSFORM_HEADER} ${CMMATH_TRANSFORM_SOURCE}
                             ${CM_CAMERA_INFO_SOURCE})
 
 # Create CMMath library

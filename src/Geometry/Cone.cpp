@@ -32,7 +32,7 @@ namespace hgl::math
         Vector3f to_point = point - apex;
         
         // 计算点在圆锥轴方向的投影长度(即沿轴向的高度)
-        float axis_projection = dot(to_point, axis);
+        float axis_projection = Dot(to_point, axis);
         
         // 检查是否在高度范围内
         // 圆锥从顶点(h=0)开始，到底面(h=height)结束
@@ -45,7 +45,7 @@ namespace hgl::math
         
         // 计算点到圆锥轴的距离(径向距离)
         Vector3f axis_point = apex + axis * axis_projection;
-        float radial_distance = length(point - axis_point);
+        float radial_distance = Length(point - axis_point);
         
         // 如果径向距离小于等于该高度的半径，则点在圆锥内
         return radial_distance <= radius_at_height;
@@ -68,7 +68,7 @@ namespace hgl::math
         Vector3f to_point = point - apex;
         
         // 计算点在圆锥轴方向的投影
-        float axis_projection = dot(to_point, axis);
+        float axis_projection = Dot(to_point, axis);
         
         if (axis_projection <= 0.0f)
         {
@@ -83,13 +83,13 @@ namespace hgl::math
             Vector3f to_base = point - base_center;
             
             // 移除轴向分量，得到径向向量
-            Vector3f radial = to_base - axis * dot(to_base, axis);
-            float radial_length = length(radial);
+            Vector3f radial = to_base - axis * Dot(to_base, axis);
+            float radial_length = Length(radial);
             
             if (radial_length <= base_radius)
             {
                 // 投影在底面圆内
-                return point - axis * dot(to_base, axis);
+                return point - axis * Dot(to_base, axis);
             }
             else
             {
@@ -103,7 +103,7 @@ namespace hgl::math
         float radius_at_height = GetRadiusAtHeight(axis_projection);
         
         Vector3f radial = point - axis_point;
-        float radial_length = length(radial);
+        float radial_length = Length(radial);
         
         if (radial_length <= radius_at_height)
         {
@@ -114,9 +114,9 @@ namespace hgl::math
                 // 点在轴上，选择任意方向
                 Vector3f perpendicular;
                 if (abs(axis.x) < 0.9f)
-                    perpendicular = cross(axis, Vector3f(1, 0, 0));
+                    perpendicular = Cross(axis, Vector3f(1, 0, 0));
                 else
-                    perpendicular = cross(axis, Vector3f(0, 1, 0));
+                    perpendicular = Cross(axis, Vector3f(0, 1, 0));
                 
                 return axis_point + glm::normalize(perpendicular) * radius_at_height;
             }
@@ -135,6 +135,6 @@ namespace hgl::math
     float Cone::DistanceToPoint(const Vector3f &point) const
     {
         Vector3f closest = ClosestPoint(point);
-        return length(point - closest);
+        return Length(point - closest);
     }
 }//namespace hgl::math

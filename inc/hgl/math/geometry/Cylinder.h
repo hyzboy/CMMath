@@ -61,7 +61,7 @@ namespace hgl::math
         void Set(const Vector3f &c, const Vector3f &a, float h, float r)
         {
             center = c;
-            axis = normalize(a);  // 确保轴向为单位向量
+            axis = Normalized(a);  // 确保轴向为单位向量
             height = h;
             radius = r;
         }

@@ -50,7 +50,7 @@ namespace hgl::math
         void Set(const Vector3f &a, const Vector3f &ax, float h, float r)
         {
             apex = a;
-            axis = normalize(ax);
+            axis = Normalized(ax);
             height = h;
             base_radius = r;
         }

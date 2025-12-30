@@ -103,7 +103,7 @@ namespace hgl::math
         */
         Vector3f GetPoint(const Vector3f &direction)const
         {
-            return center+normalize(direction)*radius;
+            return center+Normalized(direction)*radius;
         }
 
         /**
@@ -113,7 +113,7 @@ namespace hgl::math
         */
         bool ContainsPoint(const Vector3f &point)const
         {
-            return length_squared(point - center) <= radius * radius;
+            return LengthSquared(point - center) <= radius * radius;
         }
 
         /**
@@ -124,7 +124,7 @@ namespace hgl::math
         Vector3f ClosestPoint(const Vector3f &point)const
         {
             Vector3f dir = point - center;
-            float dist = length(dir);
+            float dist = Length(dir);
             
             if(dist <= radius)
                 return point;  // 点在球内，最近点是自己
@@ -139,7 +139,7 @@ namespace hgl::math
         */
         float DistanceToPoint(const Vector3f &point)const
         {
-            float dist = length(point - center) - radius;
+            float dist = Length(point - center) - radius;
             return dist > 0.0f ? dist : 0.0f;
         }
     };//class Sphere

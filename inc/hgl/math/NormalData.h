@@ -35,7 +35,7 @@ namespace hgl
     {
         math::Vector2f fenc(input*4.0f-2.0f);
 
-        float f=dot(fenc,fenc);
+        float f=Dot(fenc,fenc);
         float g=sqrt(1.0f-f/4.0f);
 
         return Vector3f(fenc.x*g,

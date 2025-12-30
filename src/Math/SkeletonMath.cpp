@@ -134,9 +134,9 @@ namespace hgl::math
         Vector3f target_dir = glm::normalize(to_target);
         
         // 计算垂直于目标方向的平面，使用极向量
-        Vector3f pole_dir = normalize(pole_vector - start);
-        Vector3f normal = normalize(cross(target_dir, pole_dir));
-        Vector3f bend_dir = normalize(cross(normal, target_dir));
+        Vector3f pole_dir = Normalized(pole_vector - start);
+        Vector3f normal = Normalized(Cross(target_dir, pole_dir));
+        Vector3f bend_dir = Normalized(Cross(normal, target_dir));
         
         // 计算中间关节位置
         out_mid_position = start + target_dir * upper_length * std::cos(angle) +
@@ -174,7 +174,7 @@ namespace hgl::math
         if (distance_to_target > total_length * 0.999f)
         {
             // 目标太远，伸直指向目标
-            Vector3f direction = normalize(target - root);
+            Vector3f direction = Normalized(target - root);
             for (int i = 1; i < joint_count; i++)
             {
                 joints[i] = joints[i - 1] + direction * bone_lengths[i - 1];
@@ -193,7 +193,7 @@ namespace hgl::math
             joints[joint_count - 1] = target;
             for (int i = joint_count - 2; i >= 0; i--)
             {
-                Vector3f direction = normalize(joints[i] - joints[i + 1]);
+                Vector3f direction = Normalized(joints[i] - joints[i + 1]);
                 joints[i] = joints[i + 1] + direction * bone_lengths[i];
             }
             
@@ -201,7 +201,7 @@ namespace hgl::math
             joints[0] = root;
             for (int i = 0; i < joint_count - 1; i++)
             {
-                Vector3f direction = normalize(joints[i + 1] - joints[i]);
+                Vector3f direction = Normalized(joints[i + 1] - joints[i]);
                 joints[i + 1] = joints[i] + direction * bone_lengths[i];
             }
         }

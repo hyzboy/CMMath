@@ -44,7 +44,7 @@ namespace hgl::math
         */
         Vector3f GetLengthPoint(const float len)const
         {
-            return origin+direction*(len/length_2d(direction));
+            return origin+direction*(len/Length2D(direction));
         }
 
         /**
@@ -52,7 +52,7 @@ namespace hgl::math
         */
         float GetAngleCos(const Vector3f &point)const
         {
-            return dot(direction,normalize(point-origin));
+            return Dot(direction,Normalized(point-origin));
         }
 
         /**
@@ -82,7 +82,7 @@ namespace hgl::math
         * @param point 指定点
         * @return 该点与射线的距离
         */
-        float ToPointDistanceSquared(const Vector3f &point)const{return length_squared(point,ClosestPoint(point));}
+        float ToPointDistanceSquared(const Vector3f &point)const{return LengthSquared(point,ClosestPoint(point));}
 
         /**
         * 求指定点与射线的距离

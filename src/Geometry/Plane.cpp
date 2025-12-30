@@ -9,11 +9,11 @@ namespace hgl::math
         Vector3f v=p-rect.center;
 
         // 计算点到平面的垂直距离
-        float normal_dist=abs(dot(v,rect.normal));
+        float normal_dist=abs(Dot(v,rect.normal));
 
         // 计算在矩形平面上的投影坐标
-        float up_len=dot(v,rect.up);
-        float right_len=dot(v,rect.right);
+        float up_len=Dot(v,rect.up);
+        float right_len=Dot(v,rect.right);
 
         // 矩形的范围应该是以中心为原点的 [-size/2, size/2]
         float half_height=rect.size.y*0.5f;
@@ -36,6 +36,6 @@ namespace hgl::math
 
         Vector3f closest_point=rect.center+up_v+right_v;
 
-        return length(p-closest_point);
+        return Length(p-closest_point);
     }
 }//namespace hgl::math

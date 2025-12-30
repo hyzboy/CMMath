@@ -30,7 +30,7 @@ namespace hgl::math
         
         // 计算点在圆柱轴方向的投影长度
         // 这个值表示点沿轴向的位置，0表示在中心平面
-        float axis_projection = dot(to_point, axis);
+        float axis_projection = Dot(to_point, axis);
         
         // 检查是否在高度范围内
         // 圆柱的高度从中心向两侧延伸各 height/2
@@ -41,7 +41,7 @@ namespace hgl::math
         // 计算点到圆柱轴的距离(径向距离)
         // 先找到轴上的投影点，然后计算目标点到投影点的距离
         Vector3f axis_point = center + axis * axis_projection;
-        float radial_distance = length(point - axis_point);
+        float radial_distance = Length(point - axis_point);
         
         // 检查径向距离是否在半径之内
         return radial_distance <= radius;
@@ -69,7 +69,7 @@ namespace hgl::math
         Vector3f to_point = point - center;
         
         // 计算点在圆柱轴方向的投影
-        float axis_projection = dot(to_point, axis);
+        float axis_projection = Dot(to_point, axis);
         
         // 限制在圆柱高度范围内
         // clamp 确保投影值不超出 [-half_height, half_height]
@@ -81,7 +81,7 @@ namespace hgl::math
         
         // 计算径向方向(从轴上的点指向目标点)
         Vector3f radial = point - axis_point;
-        float radial_length = length(radial);
+        float radial_length = Length(radial);
         
         if (radial_length <= radius)
         {
@@ -126,6 +126,6 @@ namespace hgl::math
     float Cylinder::DistanceToPoint(const Vector3f &point) const
     {
         Vector3f closest = ClosestPoint(point);
-        return length(point - closest);
+        return Length(point - closest);
     }
 }//namespace hgl::math

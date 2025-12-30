@@ -13,7 +13,7 @@ namespace hgl::math
     */
     Vector3f Ray::ClosestPoint(const Vector3f &point)const
     {
-        const float length=dot(direction,point-origin);
+        const float length=Dot(direction,point-origin);
 
         if(length<=0)
             return origin;
@@ -88,11 +88,11 @@ namespace hgl::math
         Vector3f v = line_segment_end - line_segment_start;
         Vector3f w = origin - line_segment_start;
 
-        float a = dot(u, u); // = 1，如果u已归一化
-        float b = dot(u, v);
-        float c = dot(v, v);
-        float d = dot(u, w);
-        float e = dot(v, w);
+        float a = Dot(u, u); // = 1，如果u已归一化
+        float b = Dot(u, v);
+        float c = Dot(v, v);
+        float d = Dot(u, w);
+        float e = Dot(v, w);
 
         float D = a * c - b * b;
         float sc, tc;
@@ -151,8 +151,8 @@ namespace hgl::math
 
         const Vector3f oc=origin-sphere_center;
 
-        const float b=dot(oc,direction);
-        const float c=dot(oc,oc)-sphere_radius*sphere_radius;
+        const float b=Dot(oc,direction);
+        const float c=Dot(oc,oc)-sphere_radius*sphere_radius;
 
         if(c>0&&b>0)return(false);
 
@@ -170,8 +170,8 @@ namespace hgl::math
 
         const Vector3f oc=origin-es_center;
 
-        const float b=dot(oc,direction);
-        const float c=dot(oc,oc)-es_radius.x*es_radius.y*es_radius.z;
+        const float b=Dot(oc,direction);
+        const float c=Dot(oc,oc)-es_radius.x*es_radius.y*es_radius.z;
 
         if(c>0&&b>0)return(false);
 
@@ -191,9 +191,9 @@ namespace hgl::math
         const Vector3f a2=tri[1];
         const Vector3f a3=tri[2];
 
-        const Vector3f normal=cross(a2-a1,a3-a1);
+        const Vector3f normal=Cross(a2-a1,a3-a1);
 
-        float rad=dot(normal,direction);
+        float rad=Dot(normal,direction);
             
         if(rad>=0)              //射线与三角形背对
         {
@@ -203,21 +203,21 @@ namespace hgl::math
             rad=-rad;
         }
 
-        const float d=dot(normal,a1);
+        const float d=Dot(normal,a1);
 
-        const float t=(d-dot(normal,origin))/rad;
+        const float t=(d-Dot(normal,origin))/rad;
 
         if(t<0)return(false);            //射线与三角形不相交
 
         const Vector3f hit_point=origin+direction*t;
 
-        const Vector3f v1=cross(a2-a1,hit_point-a1);
-        const Vector3f v2=cross(a3-a2,hit_point-a2);
-        const Vector3f v3=cross(a1-a3,hit_point-a3);
+        const Vector3f v1=Cross(a2-a1,hit_point-a1);
+        const Vector3f v2=Cross(a3-a2,hit_point-a2);
+        const Vector3f v3=Cross(a1-a3,hit_point-a3);
 
-        if(dot(v1,v2)<0)return(false);
-        if(dot(v2,v3)<0)return(false);
-        if(dot(v3,v1)<0)return(false);
+        if(Dot(v1,v2)<0)return(false);
+        if(Dot(v2,v3)<0)return(false);
+        if(Dot(v3,v1)<0)return(false);
 
         return(true);
     }
@@ -227,7 +227,7 @@ namespace hgl::math
     */
     bool Ray::CrossPlane(const Vector3f &v1,const Vector3f &v2,const Vector3f &v3,const Vector3f &v4,const bool two_side)const
     {
-        const Vector3f normal=cross(v2-v1,v3-v1);
+        const Vector3f normal=Cross(v2-v1,v3-v1);
 
         float rad=dot(normal,direction);
 

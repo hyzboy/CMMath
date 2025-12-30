@@ -67,7 +67,7 @@ namespace hgl::math
         void Set(const Vector3f &c, const Vector3f &a, float major_r, float minor_r)
         {
             center = c;
-            axis = normalize(a);  // 确保轴向为单位向量
+            axis = Normalized(a);  // 确保轴向为单位向量
             major_radius = major_r;
             minor_radius = minor_r;
         }
@@ -124,12 +124,12 @@ namespace hgl::math
             Vector3f to_point = point - center;
             
             // 计算点在轴方向的分量(高度z)
-            float axis_component = dot(to_point, axis);
+            float axis_component = Dot(to_point, axis);
             
             // 计算点在主平面上的投影
             // plane_projection 是移除了轴向分量后的向量
             Vector3f plane_projection = to_point - axis * axis_component;
-            float plane_distance = length(plane_projection);  // 到中心轴的水平距离
+            float plane_distance = Length(plane_projection);  // 到中心轴的水平距离
             
             // 计算到管道中心线的距离
             // 管道中心线在距离中心轴 major_radius 的圆周上

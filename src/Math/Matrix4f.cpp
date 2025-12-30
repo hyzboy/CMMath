@@ -280,7 +280,7 @@ namespace hgl::math
         math::Vector4f ndc_pos(ndc_x, ndc_y, ndc_z, 1.0f);
 
         // 2. 逆变换到世界空间
-        math::Matrix4f inv_proj_view = inverse(projection * view);
+        math::Matrix4f inv_proj_view = Inverse(projection * view);
         math::Vector4f world_pos = inv_proj_view * ndc_pos;
 
         // 3. 齐次除法

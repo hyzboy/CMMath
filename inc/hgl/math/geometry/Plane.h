@@ -25,7 +25,7 @@ namespace hgl::math
             normal=face_normal;
             // 平面方程: dot(normal, p) + d = 0
             // 对于平面上的点: d = -dot(normal, point_on_plane)
-            d=-dot(face_center_point,face_normal);
+            d=-Dot(face_center_point,face_normal);
         }
 
         void Set(const Vector4f &p)
@@ -38,7 +38,7 @@ namespace hgl::math
         {
             // 平面方程: dot(normal, p) + d = 0
             // 距离为正表示在正半空间（平面法线方向）
-            return dot(normal, p) + d;
+            return Dot(normal, p) + d;
         }
     };//struct Plane
 

@@ -112,25 +112,25 @@ namespace hgl::math
     // ==================== 归一化 ====================
 
     template<typename T>
-    inline T normalized(const T &v)
+    inline T Normalized(const T &v)
     {
         return glm::normalize(v);
     }
 
     template<typename T>
-    inline void normalize(T &v)
+    inline void Normalize(T &v)
     {
         v=glm::normalize(v);
     }
 
     // ==================== 叉乘 ====================
 
-    inline Vector3f cross(const Vector3f &v1,const Vector3f &v2)
+    inline Vector3f Cross(const Vector3f &v1,const Vector3f &v2)
     {
         return glm::cross(v1,v2);
     }
 
-    inline Vector4f cross(const Vector4f &v1,const Vector4f &v2)
+    inline Vector4f Cross(const Vector4f &v1,const Vector4f &v2)
     {
         Vector3f v31=v1;
         Vector3f v32=v2;
@@ -143,58 +143,58 @@ namespace hgl::math
     // ==================== 点乘 ====================
 
     template<typename T>
-    inline float dot(const T &v1,const T &v2)
+    inline float Dot(const T &v1,const T &v2)
     {
         return glm::dot(v1,v2);
     }
 
     // ==================== 长度计算 ====================
 
-    inline float length_squared(const Vector2f &v)
+    inline float LengthSquared(const Vector2f &v)
     {
         return (v.x*v.x) + (v.y*v.y);
     }
 
-    inline float length_squared_2d(const Vector3f &v)
+    inline float LengthSquared2D(const Vector3f &v)
     {
         return (v.x*v.x) + (v.y*v.y);
     }
 
-    inline float length_squared(const Vector3f &v)
+    inline float LengthSquared(const Vector3f &v)
     {
         return (v.x*v.x) + (v.y*v.y) + (v.z*v.z);
     }
 
-    inline float length_squared(const Vector4f &v)
+    inline float LengthSquared(const Vector4f &v)
     {
         return (v.x*v.x) + (v.y*v.y) + (v.z*v.z);
     }
 
     template<typename T>
-    inline float length(const T &v)
+    inline float Length(const T &v)
     {
-        return sqrt(length_squared(v));
+        return sqrt(LengthSquared(v));
     }
 
-    inline float length_2d(const Vector3f &v)
+    inline float Length2D(const Vector3f &v)
     {
-        return sqrt(length_squared_2d(v));
-    }
-
-    template<typename T1, typename T2>
-    inline float length(const T1 &v1, const T2 &v2)
-    {
-        return sqrt(length_squared(v1-v2));
+        return sqrt(LengthSquared2D(v));
     }
 
     template<typename T1, typename T2>
-    inline float length_squared(const T1 &v1, const T2 &v2)
+    inline float Length(const T1 &v1, const T2 &v2)
     {
-        return length_squared(v1-v2);
+        return sqrt(LengthSquared(v1-v2));
     }
 
     template<typename T1, typename T2>
-    inline float length_squared_2d(const T1 &v1, const T2 &v2)
+    inline float LengthSquared(const T1 &v1, const T2 &v2)
+    {
+        return LengthSquared(v1-v2);
+    }
+
+    template<typename T1, typename T2>
+    inline float LengthSquared2D(const T1 &v1, const T2 &v2)
     {
         const double x = double(v1.x) - double(v2.x);
         const double y = double(v1.y) - double(v2.y);
@@ -203,9 +203,9 @@ namespace hgl::math
     }
 
     template<typename T1, typename T2>
-    inline float length_2d(const T1 &v1, const T2 &v2)
+    inline float Length2D(const T1 &v1, const T2 &v2)
     {
-        return sqrt(length_squared_2d(v1, v2));
+        return sqrt(LengthSquared2D(v1, v2));
     }
 
     // ==================== 插值 ====================

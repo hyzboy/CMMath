@@ -64,13 +64,13 @@ namespace hgl::math
         * 获取胶囊中心轴的方向（归一化）
         * @return 从起点指向终点的单位向量
         */
-        Vector3f GetDirection()const{return normalize(end - start);}
+        Vector3f GetDirection()const{return Normalized(end - start);}
         
         /**
         * 获取胶囊中心轴的长度（不包括两端半球）
         * @return 圆柱部分的高度
         */
-        float GetCylinderHeight()const{return length(end - start);}
+        float GetCylinderHeight()const{return Length(end - start);}
         
         /**
         * 获取胶囊的总长度（包括两端半球）

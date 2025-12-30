@@ -122,13 +122,13 @@ namespace hgl::math
         * 在只需要比较距离大小时，使用平方可以避免开方运算，提高性能
         * @return 长度的平方值
         */
-        const float DistanceSquared()const{return length_squared(start,end);}
+        const float DistanceSquared()const{return LengthSquared(start,end);}
         
         /**
         * 计算线段长度
         * @return 起点到终点的欧几里得距离
         */
-        const float Distance()const{return length(start,end);}
+        const float Distance()const{return Length(start,end);}
         
         /**
         * 获取线段上的参数化点
@@ -148,12 +148,12 @@ namespace hgl::math
         const Vector3f ClosestPoint(const Vector3f &point)const
         {
             Vector3f dir = end - start;
-            float len_sq = dot(dir, dir);
+            float len_sq = Dot(dir, dir);
             
             if(len_sq < 0.0001f)  // 线段退化为点
                 return start;
             
-            float t = dot(point - start, dir) / len_sq;
+            float t = Dot(point - start, dir) / len_sq;
             t = clamp(t, 0.0f, 1.0f);  // 限制在[0,1]范围内
             
             return start + dir * t;

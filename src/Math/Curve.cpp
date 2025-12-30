@@ -66,8 +66,8 @@ namespace hgl::math
     Vector3f CubicBezierNormal(const Vector3f &p0, const Vector3f &p1, const Vector3f &p2, const Vector3f &p3, float t, const Vector3f &up)
     {
         Vector3f tangent = CubicBezierTangent(p0, p1, p2, p3, t);
-        Vector3f binormal = normalize(cross(tangent, up));
-        Vector3f normal = cross(binormal, tangent);
+        Vector3f binormal = Normalized(Cross(tangent, up));
+        Vector3f normal = Cross(binormal, tangent);
         return glm::normalize(normal);
     }
     

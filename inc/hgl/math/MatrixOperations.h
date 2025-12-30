@@ -206,6 +206,26 @@ namespace hgl::math
 
     // ==================== 相对矩阵 ====================
     
+    // ==================== 矩阵运算 ====================
+    
+    /**
+     * 矩阵求逆
+     */
+    template<typename T>
+    inline T Inverse(const T &m)
+    {
+        return glm::inverse(m);
+    }
+    
+    /**
+     * 矩阵转置
+     */
+    template<typename T>
+    inline T Transpose(const T &m)
+    {
+        return glm::transpose(m);
+    }
+    
     /**
      * 获取相对矩阵
      * @param self_matrix 自身矩阵
@@ -213,7 +233,7 @@ namespace hgl::math
      */
     inline Matrix4f RelativeMatrix(const Matrix4f &self_matrix,const Matrix4f &reference_matrix)
     {
-        return inverse(reference_matrix)*self_matrix;
+        return Inverse(reference_matrix)*self_matrix;
     }
 
     // ==================== 向量变换 ====================
@@ -239,7 +259,7 @@ namespace hgl::math
      */
     inline Vector3f TransformNormal(const Matrix4f &m,const Vector3f &v)
     {
-        return normalize(Vector3f(transpose(inverse(m))*Vector4f(v,0.0f)));
+        return Normalize(Vector3f(Transpose(Inverse(m))*Vector4f(v,0.0f)));
     }
 
     /**
@@ -247,7 +267,7 @@ namespace hgl::math
      */
     inline Vector3f TransformNormal(const Matrix3f &m,const Vector3f &v)
     {
-        return normalize(m*v);
+        return Normalize(m*v);
     }
 
     // ==================== 高级矩阵操作 ====================

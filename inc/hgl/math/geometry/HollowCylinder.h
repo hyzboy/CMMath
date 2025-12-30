@@ -49,7 +49,7 @@ namespace hgl::math
         void Set(const Vector3f &c, const Vector3f &a, float h, float outer_r, float inner_r)
         {
             center = c;
-            axis = normalize(a);
+            axis = Normalized(a);
             height = h;
             outer_radius = outer_r;
             inner_radius = inner_r;
@@ -106,7 +106,7 @@ namespace hgl::math
             Vector3f to_point = point - center;
             
             // 计算点在圆柱轴方向的投影长度
-            float axis_projection = dot(to_point, axis);
+            float axis_projection = Dot(to_point, axis);
             
             // 检查是否在高度范围内
             float half_height = height * 0.5f;
@@ -115,7 +115,7 @@ namespace hgl::math
             
             // 计算点到圆柱轴的距离
             Vector3f axis_point = center + axis * axis_projection;
-            float radial_distance = length(point - axis_point);
+            float radial_distance = Length(point - axis_point);
             
             // 在外半径内且在内半径外
             return radial_distance <= outer_radius && radial_distance >= inner_radius;

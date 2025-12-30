@@ -26,6 +26,7 @@ SET(CMMATH_HEADER   ${MATH_INCLUDE_PATH}/bvec.h
                     ${MATH_INCLUDE_PATH}/Lerp2D.h
                     ${MATH_INCLUDE_PATH}/Lerp3D.h
                     ${MATH_INCLUDE_PATH}/NormalData.h
+                    ${MATH_INCLUDE_PATH}/Noise.h
                     )
 
 SET(CMMATH_GEOMETRY_HEADER  ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
@@ -49,7 +50,9 @@ SET(CMMATH_GEOMETRY_HEADER  ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
 SET(CMMATH_SOURCE   Math/LAtan.cpp
                     Math/LSinCos.cpp
                     Math/Matrix4f.cpp
-                    Math/HalfFloat.cpp)
+                    Math/HalfFloat.cpp
+                    Math/PerlinNoise.cpp
+                    Math/SimplexNoise.cpp)
 
 SET(CMMATH_GEOMETRY_SOURCE  Geometry/Plane.cpp
                             Geometry/AABB.cpp
@@ -113,6 +116,11 @@ SOURCE_GROUP("Math\\Algorithms" FILES
     ${MATH_INCLUDE_PATH}/Area.h
 )
 
+# Noise functions
+SOURCE_GROUP("Math\\Noise" FILES
+    ${MATH_INCLUDE_PATH}/Noise.h
+)
+
 # Geometry headers grouped by function
 SOURCE_GROUP("Geometry\\Primitives" FILES
     ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
@@ -150,7 +158,15 @@ SOURCE_GROUP("Graph\\Camera" FILES ${CM_CAMERA_INFO_SOURCE})
 
 # Source files: core math
 SOURCE_GROUP("Source\\Math" FILES
-    ${CMMATH_SOURCE}
+    Math/LAtan.cpp
+    Math/LSinCos.cpp
+    Math/Matrix4f.cpp
+    Math/HalfFloat.cpp
+)
+
+SOURCE_GROUP("Source\\Math\\Noise" FILES
+    Math/PerlinNoise.cpp
+    Math/SimplexNoise.cpp
 )
 
 # Source files: geometry categorized

@@ -1,7 +1,7 @@
 #pragma once
 
 #include<hgl/math/Vector.h>
-#include<hgl/type/EnumUtil.h>
+#include<hgl/color/AlphaBlend.h>
 #include<cmath>
 #include<algorithm>
 #include<type_traits>
@@ -10,61 +10,8 @@ namespace hgl
 {
     namespace graph
     {
-        /**
-         * @brief Alpha混合模式枚举
-         * 定义各种常见的颜色混合算法
-         * 基于Photoshop/游戏引擎中的标准混合模式
-         */
-        enum class AlphaBlendMode
-        {
-            Normal,             ///<正常混合 - 标准线性插值 A*(1-alpha) + B*alpha
-            Add,                ///<相加混合 - A + B*alpha
-            Subtract,           ///<相减混合 - A - B*alpha
-            Multiply,           ///<正片叠底 - A * (1-alpha + B*alpha)
-            Screen,             ///<滤色混合 - 1 - (1-A)*(1-B*alpha)
-            Overlay,            ///<叠加混合 - Screen和Multiply的组合
-            HardLight,          ///<强光混合 - 与Overlay相似但基于上层
-            SoftLight,          ///<柔光混合 - 更柔和的光照效果
-            ColorDodge,         ///<颜色减淡 - A / (1 - B*alpha)
-            ColorBurn,          ///<颜色加深 - 1 - (1-A) / (B*alpha)
-            LinearDodge,        ///<线性减淡 - A + B*alpha (同Add)
-            LinearBurn,         ///<线性加深 - A + B*alpha - 1
-            Darken,             ///<变暗 - min(A, B*alpha)
-            Lighten,            ///<变亮 - max(A, B*alpha)
-            Difference,         ///<差值 - abs(A - B*alpha)
-            Exclusion,          ///<排除 - A + B*alpha - 2*A*B*alpha
-            PremultipliedAlpha, ///<预乘Alpha - A*(1-alpha) + B (B已预乘)
-
-            ENUM_CLASS_RANGE(Normal, PremultipliedAlpha)
-        };
-
-        /**
-         * @brief 获取混合模式的名称
-         */
-        inline const char* GetAlphaBlendModeName(AlphaBlendMode mode)
-        {
-            switch (mode)
-            {
-                case AlphaBlendMode::Normal:            return "Normal";
-                case AlphaBlendMode::Add:               return "Add";
-                case AlphaBlendMode::Subtract:          return "Subtract";
-                case AlphaBlendMode::Multiply:          return "Multiply";
-                case AlphaBlendMode::Screen:            return "Screen";
-                case AlphaBlendMode::Overlay:           return "Overlay";
-                case AlphaBlendMode::HardLight:         return "HardLight";
-                case AlphaBlendMode::SoftLight:         return "SoftLight";
-                case AlphaBlendMode::ColorDodge:        return "ColorDodge";
-                case AlphaBlendMode::ColorBurn:         return "ColorBurn";
-                case AlphaBlendMode::LinearDodge:       return "LinearDodge";
-                case AlphaBlendMode::LinearBurn:        return "LinearBurn";
-                case AlphaBlendMode::Darken:            return "Darken";
-                case AlphaBlendMode::Lighten:           return "Lighten";
-                case AlphaBlendMode::Difference:        return "Difference";
-                case AlphaBlendMode::Exclusion:         return "Exclusion";
-                case AlphaBlendMode::PremultipliedAlpha:return "PremultipliedAlpha";
-                default:                                return "Unknown";
-            }
-        }
+        // Import AlphaBlendMode enum from CMCoreType for easy access
+        using hgl::AlphaBlendMode;
 
         // ==================== 基础混合函数模板 ====================
 

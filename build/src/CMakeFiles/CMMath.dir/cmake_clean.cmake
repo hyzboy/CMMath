@@ -1,0 +1,41 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/CMMath.dir/Geometry/AABB.cpp.o"
+  "CMakeFiles/CMMath.dir/Geometry/AABB.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Geometry/BoundingSphere.cpp.o"
+  "CMakeFiles/CMMath.dir/Geometry/BoundingSphere.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Geometry/BoundingVolumes.cpp.o"
+  "CMakeFiles/CMMath.dir/Geometry/BoundingVolumes.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Geometry/Cone.cpp.o"
+  "CMakeFiles/CMMath.dir/Geometry/Cone.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Geometry/Cylinder.cpp.o"
+  "CMakeFiles/CMMath.dir/Geometry/Cylinder.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Geometry/Frustum.cpp.o"
+  "CMakeFiles/CMMath.dir/Geometry/Frustum.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Geometry/OBB.cpp.o"
+  "CMakeFiles/CMMath.dir/Geometry/OBB.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Geometry/OBB_SetFromPoints_AVX2.cpp.o"
+  "CMakeFiles/CMMath.dir/Geometry/OBB_SetFromPoints_AVX2.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Geometry/Plane.cpp.o"
+  "CMakeFiles/CMMath.dir/Geometry/Plane.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Geometry/Ray.cpp.o"
+  "CMakeFiles/CMMath.dir/Geometry/Ray.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Math/Color.cpp.o"
+  "CMakeFiles/CMMath.dir/Math/Color.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Math/HalfFloat.cpp.o"
+  "CMakeFiles/CMMath.dir/Math/HalfFloat.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Math/LAtan.cpp.o"
+  "CMakeFiles/CMMath.dir/Math/LAtan.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Math/LSinCos.cpp.o"
+  "CMakeFiles/CMMath.dir/Math/LSinCos.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Math/Matrix4f.cpp.o"
+  "CMakeFiles/CMMath.dir/Math/Matrix4f.cpp.o.d"
+  "CMakeFiles/CMMath.dir/Math/Random.cpp.o"
+  "CMakeFiles/CMMath.dir/Math/Random.cpp.o.d"
+  "libCMMath.a"
+  "libCMMath.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/CMMath.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

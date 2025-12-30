@@ -15,6 +15,7 @@
 #include <hgl/math/MatrixTypes.h>
 #include <hgl/math/VectorTypes.h>
 #include <hgl/math/Angle.h>
+#include <hgl/math/TrigConstants.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <cmath>
 

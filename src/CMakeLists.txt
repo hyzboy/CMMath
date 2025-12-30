@@ -29,6 +29,7 @@ SET(CMMATH_HEADER   ${MATH_INCLUDE_PATH}/bvec.h
                     ${MATH_INCLUDE_PATH}/NormalData.h
                     ${MATH_INCLUDE_PATH}/Noise.h
                     ${MATH_INCLUDE_PATH}/SIMD.h
+                    ${MATH_INCLUDE_PATH}/Curve.h
                     )
 
 SET(CMMATH_GEOMETRY_HEADER  ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
@@ -61,7 +62,8 @@ SET(CMMATH_SOURCE   Math/LAtan.cpp
                     Math/PerlinNoise.cpp
                     Math/SimplexNoise.cpp
                     Math/SIMD_SSE.cpp
-                    Math/SIMD_AVX.cpp)
+                    Math/SIMD_AVX.cpp
+                    Math/Curve.cpp)
 
 SET(CMMATH_GEOMETRY_SOURCE  Geometry/Plane.cpp
                             Geometry/AABB.cpp
@@ -140,6 +142,11 @@ SOURCE_GROUP("Math\\SIMD" FILES
     ${MATH_INCLUDE_PATH}/SIMD.h
 )
 
+# Curve system
+SOURCE_GROUP("Math\\Curves" FILES
+    ${MATH_INCLUDE_PATH}/Curve.h
+)
+
 # Geometry headers grouped by function
 SOURCE_GROUP("Geometry\\Primitives" FILES
     ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
@@ -198,6 +205,10 @@ SOURCE_GROUP("Source\\Math\\Noise" FILES
 SOURCE_GROUP("Source\\Math\\SIMD" FILES
     Math/SIMD_SSE.cpp
     Math/SIMD_AVX.cpp
+)
+
+SOURCE_GROUP("Source\\Math\\Curves" FILES
+    Math/Curve.cpp
 )
 
 # Source files: geometry categorized

@@ -28,6 +28,7 @@ SET(CMMATH_HEADER   ${MATH_INCLUDE_PATH}/bvec.h
                     ${MATH_INCLUDE_PATH}/Lerp3D.h
                     ${MATH_INCLUDE_PATH}/NormalData.h
                     ${MATH_INCLUDE_PATH}/Noise.h
+                    ${MATH_INCLUDE_PATH}/SIMD.h
                     )
 
 SET(CMMATH_GEOMETRY_HEADER  ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
@@ -58,7 +59,9 @@ SET(CMMATH_SOURCE   Math/LAtan.cpp
                     Math/Matrix4f.cpp
                     Math/HalfFloat.cpp
                     Math/PerlinNoise.cpp
-                    Math/SimplexNoise.cpp)
+                    Math/SimplexNoise.cpp
+                    Math/SIMD_SSE.cpp
+                    Math/SIMD_AVX.cpp)
 
 SET(CMMATH_GEOMETRY_SOURCE  Geometry/Plane.cpp
                             Geometry/AABB.cpp
@@ -132,6 +135,11 @@ SOURCE_GROUP("Math\\Noise" FILES
     ${MATH_INCLUDE_PATH}/Noise.h
 )
 
+# SIMD optimizations
+SOURCE_GROUP("Math\\SIMD" FILES
+    ${MATH_INCLUDE_PATH}/SIMD.h
+)
+
 # Geometry headers grouped by function
 SOURCE_GROUP("Geometry\\Primitives" FILES
     ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
@@ -187,6 +195,11 @@ SOURCE_GROUP("Source\\Math\\Noise" FILES
     Math/SimplexNoise.cpp
 )
 
+SOURCE_GROUP("Source\\Math\\SIMD" FILES
+    Math/SIMD_SSE.cpp
+    Math/SIMD_AVX.cpp
+)
+
 # Source files: geometry categorized
 SOURCE_GROUP("Source\\Geometry\\Primitives" FILES
     Geometry/Plane.cpp
@@ -222,3 +235,16 @@ SOURCE_GROUP("Spatial\\Header Files" FILES ${CMMATH_SPATIAL_HEADER})
 SOURCE_GROUP("Spatial\\Source Files" FILES ${CMMATH_SPATIAL_SOURCE})
 
 add_cm_library(CMMath "CM" ${CMMATH_HEADER} ${CMMATH_SOURCE} ${CMMATH_GEOMETRY_HEADER} ${CMMATH_GEOMETRY_SOURCE} ${CMMATH_SPATIAL_HEADER} ${CMMATH_SPATIAL_SOURCE} ${CM_CAMERA_INFO_SOURCE})
+
+# SIMD 编译选项配置
+# 为 SIMD 源文件设置特定的编译标志以启用相应的指令集
+if(MSVC)
+    # Microsoft Visual C++ 编译器
+    set_source_files_properties(Math/SIMD_SSE.cpp PROPERTIES COMPILE_FLAGS "/arch:SSE2")
+    set_source_files_properties(Math/SIMD_AVX.cpp PROPERTIES COMPILE_FLAGS "/arch:AVX2")
+else()
+    # GCC/Clang 编译器
+    set_source_files_properties(Math/SIMD_SSE.cpp PROPERTIES COMPILE_FLAGS "-msse4.1")
+    set_source_files_properties(Math/SIMD_AVX.cpp PROPERTIES COMPILE_FLAGS "-mavx2 -mfma")
+endif()
+

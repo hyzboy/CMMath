@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Curve.cpp - 曲线系统实现
  */
 
@@ -60,7 +60,7 @@ namespace hgl::math
                           6.0f * u * t * (p2 - p1) +
                           3.0f * tt * (p3 - p2);
         
-        return normalize(tangent);
+        return glm::normalize(tangent);
     }
     
     Vector3f CubicBezierNormal(const Vector3f &p0, const Vector3f &p1, const Vector3f &p2, const Vector3f &p3, float t, const Vector3f &up)
@@ -68,7 +68,7 @@ namespace hgl::math
         Vector3f tangent = CubicBezierTangent(p0, p1, p2, p3, t);
         Vector3f binormal = normalize(cross(tangent, up));
         Vector3f normal = cross(binormal, tangent);
-        return normalize(normal);
+        return glm::normalize(normal);
     }
     
     // ==================== Catmull-Rom Spline 实现 ====================
@@ -190,7 +190,7 @@ namespace hgl::math
             (-p0 + 3.0f * p1 - 3.0f * p2 + p3) * 3.0f * t2
         );
         
-        return normalize(tangent);
+        return glm::normalize(tangent);
     }
     
     Vector3f CatmullRomSpline::GetTangent(float t) const

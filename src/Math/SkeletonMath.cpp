@@ -1,4 +1,4 @@
-/**
+﻿/**
  * SkeletonMath.cpp - 骨骼层级和反向运动学实现
  */
 
@@ -111,7 +111,7 @@ namespace hgl::math
         if (target_distance > total_length * 0.999f)
         {
             // 目标太远，伸直指向目标
-            Vector3f direction = normalize(to_target);
+            Vector3f direction = glm::normalize(to_target);
             out_mid_position = start + direction * upper_length;
             out_end_position = start + direction * std::min(target_distance, total_length);
             return false;
@@ -131,7 +131,7 @@ namespace hgl::math
         float angle = std::acos(cos_angle);
         
         // 计算指向目标的方向
-        Vector3f target_dir = normalize(to_target);
+        Vector3f target_dir = glm::normalize(to_target);
         
         // 计算垂直于目标方向的平面，使用极向量
         Vector3f pole_dir = normalize(pole_vector - start);

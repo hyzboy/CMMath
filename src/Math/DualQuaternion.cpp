@@ -64,8 +64,9 @@ namespace hgl::math
             return DualQuaternion();
         
         DualQuaternion result;
-        result.real = real / len;
-        result.dual = dual / len;
+        float inv_len = 1.0f / len;
+        result.real = real * inv_len;
+        result.dual = dual * inv_len;
         return result;
     }
     
@@ -79,8 +80,9 @@ namespace hgl::math
             return;
         }
         
-        real /= len;
-        dual /= len;
+        float inv_len = 1.0f / len;
+        real = real * inv_len;
+        dual = dual * inv_len;
     }
     
     DualQuaternion DualQuaternion::operator*(const DualQuaternion &other) const

@@ -440,7 +440,7 @@ namespace hgl::math
             UpdateVersion();
         }
 
-        TransActionLookAt(const Vector3f &e,const Vector3f &c,const Vector3f &u=AxisVector::Z)
+        TransActionLookAt(const Vector3f &e,const Vector3f &c,const Vector3f &u=AxisVector::Z):TransformAction()
         {
             eye     =e;
             center  =c;

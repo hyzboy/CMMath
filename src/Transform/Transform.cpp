@@ -134,5 +134,7 @@ namespace hgl::math
         DecomposeTransform(m,translation_vector,rotation_quat,scale_vector);
 
         ExtractedQuat(rotation_quat,rotation_axis,rotate_angle);
+        
+        UpdateVersion();
     }
 }//namespace hgl::math

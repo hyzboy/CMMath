@@ -2,6 +2,7 @@
 
 #include<hgl/math/VectorTypes.h>
 #include<hgl/math/FloatPrecision.h>
+#include<hgl/CoreType.h>
 #include<glm/glm.hpp>
 
 namespace hgl::math

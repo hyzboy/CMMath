@@ -4,6 +4,7 @@
 SET(MATH_INCLUDE_PATH   ${CMMATH_ROOT_INCLUDE_PATH}/hgl/math)
 SET(MATH_GEOMETRY_INCLUDE_PATH  ${MATH_INCLUDE_PATH}/geometry)
 SET(MATH_SPATIAL_INCLUDE_PATH  ${MATH_INCLUDE_PATH}/spatial)
+SET(MATH_ANIMATION_INCLUDE_PATH  ${MATH_INCLUDE_PATH}/animation)
 
 SET(CMMATH_HEADER   ${MATH_INCLUDE_PATH}/bvec.h
                     ${MATH_INCLUDE_PATH}/FastTriangle.h
@@ -55,6 +56,10 @@ SET(CMMATH_SPATIAL_HEADER  ${MATH_SPATIAL_INCLUDE_PATH}/QuadTree.h
                           ${MATH_SPATIAL_INCLUDE_PATH}/BVH.h
                           )
 
+SET(CMMATH_ANIMATION_HEADER  ${MATH_ANIMATION_INCLUDE_PATH}/DualQuaternion.h
+                            ${MATH_ANIMATION_INCLUDE_PATH}/SkeletonMath.h
+                            )
+
 SET(CMMATH_SOURCE   Math/LAtan.cpp
                     Math/LSinCos.cpp
                     Math/Matrix4f.cpp
@@ -63,7 +68,9 @@ SET(CMMATH_SOURCE   Math/LAtan.cpp
                     Math/SimplexNoise.cpp
                     Math/SIMD_SSE.cpp
                     Math/SIMD_AVX.cpp
-                    Math/Curve.cpp)
+                    Math/Curve.cpp
+                    Math/DualQuaternion.cpp
+                    Math/SkeletonMath.cpp)
 
 SET(CMMATH_GEOMETRY_SOURCE  Geometry/Plane.cpp
                             Geometry/AABB.cpp
@@ -186,6 +193,12 @@ SOURCE_GROUP("Spatial" FILES
     ${MATH_SPATIAL_INCLUDE_PATH}/BVH.h
 )
 
+# Animation math headers
+SOURCE_GROUP("Animation" FILES
+    ${MATH_ANIMATION_INCLUDE_PATH}/DualQuaternion.h
+    ${MATH_ANIMATION_INCLUDE_PATH}/SkeletonMath.h
+)
+
 # Camera related header
 SOURCE_GROUP("Graph\\Camera" FILES ${CM_CAMERA_INFO_SOURCE})
 
@@ -209,6 +222,11 @@ SOURCE_GROUP("Source\\Math\\SIMD" FILES
 
 SOURCE_GROUP("Source\\Math\\Curves" FILES
     Math/Curve.cpp
+)
+
+SOURCE_GROUP("Source\\Math\\Animation" FILES
+    Math/DualQuaternion.cpp
+    Math/SkeletonMath.cpp
 )
 
 # Source files: geometry categorized
@@ -244,8 +262,10 @@ SOURCE_GROUP("Geometry\\Header Files" FILES ${CMMATH_GEOMETRY_HEADER})
 SOURCE_GROUP("Geometry\\Source Files" FILES ${CMMATH_GEOMETRY_SOURCE})
 SOURCE_GROUP("Spatial\\Header Files" FILES ${CMMATH_SPATIAL_HEADER})
 SOURCE_GROUP("Spatial\\Source Files" FILES ${CMMATH_SPATIAL_SOURCE})
+SOURCE_GROUP("Animation\\Header Files" FILES ${CMMATH_ANIMATION_HEADER})
+SOURCE_GROUP("Animation\\Source Files" FILES Math/DualQuaternion.cpp Math/SkeletonMath.cpp)
 
-add_cm_library(CMMath "CM" ${CMMATH_HEADER} ${CMMATH_SOURCE} ${CMMATH_GEOMETRY_HEADER} ${CMMATH_GEOMETRY_SOURCE} ${CMMATH_SPATIAL_HEADER} ${CMMATH_SPATIAL_SOURCE} ${CM_CAMERA_INFO_SOURCE})
+add_cm_library(CMMath "CM" ${CMMATH_HEADER} ${CMMATH_SOURCE} ${CMMATH_GEOMETRY_HEADER} ${CMMATH_GEOMETRY_SOURCE} ${CMMATH_SPATIAL_HEADER} ${CMMATH_SPATIAL_SOURCE} ${CMMATH_ANIMATION_HEADER} ${CM_CAMERA_INFO_SOURCE})
 
 # SIMD 编译选项配置
 # 为 SIMD 源文件设置特定的编译标志以启用相应的指令集

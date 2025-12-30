@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/runner/work/CMMath/CMMath/inc
 
-CXX_FLAGS = 
+CXX_FLAGS = -std=c++20
 

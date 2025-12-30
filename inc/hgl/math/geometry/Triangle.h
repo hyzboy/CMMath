@@ -140,9 +140,9 @@ namespace hgl::math
 
         const T GetEdgeLength(const int index)const
         {
-            if(index==0)return length_2d(vertex[0],vertex[1]);else
-            if(index==1)return length_2d(vertex[1],vertex[2]);else
-            if(index==2)return length_2d(vertex[2],vertex[0]);else
+            if(index==0)return Length2D(vertex[0],vertex[1]);else
+            if(index==1)return Length2D(vertex[1],vertex[2]);else
+            if(index==2)return Length2D(vertex[2],vertex[0]);else
                 return 0;
         }
 

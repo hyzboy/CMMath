@@ -183,9 +183,9 @@ namespace hgl::math
      */
     math::Matrix4f LookAtMatrix(const math::Vector3f &eye,const math::Vector3f &target,const math::Vector3f &up)
     {
-        math::Vector3f forward=normalize(target-eye);
-        math::Vector3f right  =normalize(cross(forward,up));
-        math::Vector3f nup    =cross(right,forward);
+        math::Vector3f forward=Normalized(target-eye);
+        math::Vector3f right  =Normalized(Cross(forward,up));
+        math::Vector3f nup    =Cross(right,forward);
 
         return Matrix4f(   right.x,
                              nup.x,
@@ -202,9 +202,9 @@ namespace hgl::math
                         -forward.z,
                               0.0f,
 
-                 -dot(eye,right  ),
-                 -dot(eye,nup    ),
-                  dot(eye,forward),
+                 -Dot(eye,right  ),
+                 -Dot(eye,nup    ),
+                  Dot(eye,forward),
                               1.0f
         );
 
@@ -320,12 +320,12 @@ namespace hgl::math
                 Row[i][j] = LocalMatrix[i][j];
 
         // 提取缩放
-        outScale.x = length(Row[0]);
-        outScale.y = length(Row[1]);
-        outScale.z = length(Row[2]);
+        outScale.x = Length(Row[0]);
+        outScale.y = Length(Row[1]);
+        outScale.z = Length(Row[2]);
 
         // 检测镜像变换（负缩放）
-        if (dot(cross(Row[0], Row[1]), Row[2]) < 0.0f)
+        if (Dot(Cross(Row[0], Row[1]), Row[2]) < 0.0f)
         {
             outScale.x = -outScale.x;
         }

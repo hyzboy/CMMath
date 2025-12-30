@@ -141,7 +141,7 @@ namespace hgl::math
 
         ClosestPoint(pointOnRay,pointOnSeg,start,end);
 
-        return length_squared(pointOnRay - pointOnSeg);
+        return LengthSquared(pointOnRay - pointOnSeg);
     }
 
     bool Ray::CrossSphere(const Sphere &s)const
@@ -229,7 +229,7 @@ namespace hgl::math
     {
         const Vector3f normal=Cross(v2-v1,v3-v1);
 
-        float rad=dot(normal,direction);
+        float rad=Dot(normal,direction);
 
         if(rad>=0)              //射线与三角形背对
         {
@@ -239,9 +239,9 @@ namespace hgl::math
             rad=-rad;
         }
 
-        const float d=dot(normal,v1);
+        const float d=Dot(normal,v1);
 
-        const float t=(d-dot(normal,origin))/rad;
+        const float t=(d-Dot(normal,origin))/rad;
 
         if(t<0)return(false);            //射线与平面不相交
 
@@ -251,16 +251,16 @@ namespace hgl::math
     bool Ray::CrossCircle(const Vector3f &center,const Vector3f &normal,const float radius)const
     {
         // 计算射线与平面的交点
-        float denom = dot(normal, direction);
+        float denom = Dot(normal, direction);
         if(IsNearlyZero(denom)) return false; // 射线与平面平行
 
-        float t = dot(normal, center - origin) / denom;
+        float t = Dot(normal, center - origin) / denom;
         if (t < 0) return false; // 平面在射线的反方向
 
         // 计算交点
         Vector3f hit_point = origin + t * direction;
 
         // 判断交点是否在圆内
-        return length_squared(hit_point - center) <= radius * radius;
+        return LengthSquared(hit_point - center) <= radius * radius;
     }
 }//namespace hgl::math

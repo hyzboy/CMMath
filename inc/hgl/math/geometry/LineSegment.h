@@ -102,14 +102,14 @@ namespace hgl::math
         * 这是线段的正向方向
         * @return 归一化的方向向量
         */
-        const Vector3f GetStartDirection()const{return normalized(end-start);}
+        const Vector3f GetStartDirection()const{return Normalized(end-start);}
         
         /**
         * 获取从终点到起点的方向（归一化）
         * 这是线段的反向方向
         * @return 归一化的反方向向量
         */
-        const Vector3f GetEndDirection()const{return normalized(start-end);}
+        const Vector3f GetEndDirection()const{return Normalized(start-end);}
         
         /**
         * 获取从起点到终点的向量（未归一化）

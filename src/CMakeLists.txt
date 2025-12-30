@@ -55,6 +55,7 @@ SET(CMMATH_GEOMETRY_HEADER  ${MATH_GEOMETRY_INCLUDE_PATH}/Plane.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Coordinate.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/AABB2D.h
                             ${MATH_GEOMETRY_INCLUDE_PATH}/Collision2D.h
+                            ${MATH_GEOMETRY_INCLUDE_PATH}/GeometryUtils.h
                             )
 
 SET(CMMATH_ANIMATION_HEADER  ${MATH_ANIMATION_INCLUDE_PATH}/DualQuaternion.h
@@ -83,6 +84,7 @@ SET(CMMATH_GEOMETRY_SOURCE  Geometry/Plane.cpp
                             Geometry/Cone.cpp
                             Geometry/Ray.cpp
                             Geometry/Frustum.cpp
+                            Geometry/GeometryUtils.cpp
                             )
 
 SET(CM_CAMERA_INFO_SOURCE ${CMMATH_ROOT_INCLUDE_PATH}/hgl/graph/CameraInfo.h)
@@ -206,6 +208,10 @@ SOURCE_GROUP("Geometry\\2D" FILES
     ${MATH_GEOMETRY_INCLUDE_PATH}/Collision2D.h
 )
 
+SOURCE_GROUP("Geometry\\Utils" FILES
+    ${MATH_GEOMETRY_INCLUDE_PATH}/GeometryUtils.h
+)
+
 # Camera related header
 SOURCE_GROUP("Graph\\Camera" FILES ${CM_CAMERA_INFO_SOURCE})
 
@@ -243,12 +249,13 @@ SOURCE_GROUP("Source\\Geometry\\Bounding" FILES
     Geometry/BoundingVolumes.cpp
 )
 
-SOURCE_GROUP("Source\\Geometry\\Utilities" FILES
+SOURCE_GROUP("Geometry\\Utilities" FILES
     Geometry/OBB_SetFromPoints_AVX2.cpp
     Geometry/Cylinder.cpp
     Geometry/Cone.cpp
     Geometry/Ray.cpp
     Geometry/Frustum.cpp
+    Geometry/GeometryUtils.cpp
 )
 
 # Fallback groups used by the original add_cm_library invocation

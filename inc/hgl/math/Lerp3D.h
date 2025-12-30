@@ -218,7 +218,9 @@ namespace hgl
          * @param to Ending color
          * @param t Interpolation parameter (0.0 to 1.0)
          * @return Interpolated color
+         * @deprecated Use CMCoreType's Color3f::lerp() instead for better color management
          */
+        [[deprecated("Use CMCoreType's Color3f::lerp() instead for better color management")]]
         inline math::Vector3f LerpColor(const math::Vector3f &from, const math::Vector3f &to, const float t)
         {
             return LerpLinear(from, to, t);
@@ -231,7 +233,9 @@ namespace hgl
          * @param to Ending color
          * @param t Interpolation parameter (0.0 to 1.0)
          * @return Interpolated color
+         * @deprecated Use CMCoreType's ColorLerp with appropriate easing function instead
          */
+        [[deprecated("Use CMCoreType's ColorLerp with appropriate easing function instead")]]
         inline math::Vector3f LerpColorSmooth(const math::Vector3f &from, const math::Vector3f &to, const float t)
         {
             return LerpCos(from, to, t);
@@ -243,7 +247,9 @@ namespace hgl
          * @param to Ending color
          * @param t Interpolation parameter (0.0 to 1.0)
          * @return Interpolated color
+         * @deprecated Use CMCoreType's ColorLerp with cubic easing function instead
          */
+        [[deprecated("Use CMCoreType's ColorLerp with cubic easing function instead")]]
         inline math::Vector3f LerpColorCubic(const math::Vector3f &from, const math::Vector3f &to, const float t)
         {
             return LerpCubic(from, to, t);
@@ -258,7 +264,9 @@ namespace hgl
          * @param c3 Ending color
          * @param t Interpolation parameter (0.0 to 1.0)
          * @return Interpolated color
+         * @deprecated Use CMCoreType's ColorLerp with Bezier curve support instead
          */
+        [[deprecated("Use CMCoreType's ColorLerp with Bezier curve support instead")]]
         inline math::Vector3f LerpColorBezier(const math::Vector3f &c0, const math::Vector3f &c1, const math::Vector3f &c2, const math::Vector3f &c3, const float t)
         {
             return LerpBezier(c0, c1, c2, c3, t);

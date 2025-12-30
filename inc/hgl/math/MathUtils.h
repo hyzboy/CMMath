@@ -13,47 +13,6 @@
 
 namespace hgl
 {
-    // ==================== 比较函数 ====================
-    
-    namespace math
-    {
-        /**
-         * @brief 返回两个值中的最小值
-         */
-        template<typename T>
-        inline constexpr T hgl_min(const T& a, const T& b)
-        {
-            return (a < b) ? a : b;
-        }
-        
-        /**
-         * @brief 返回两个值中的最大值
-         */
-        template<typename T>
-        inline constexpr T hgl_max(const T& a, const T& b)
-        {
-            return (a > b) ? a : b;
-        }
-        
-        /**
-         * @brief 返回三个值中的最小值
-         */
-        template<typename T>
-        inline constexpr T hgl_min(const T& a, const T& b, const T& c)
-        {
-            return hgl_min(hgl_min(a, b), c);
-        }
-        
-        /**
-         * @brief 返回三个值中的最大值
-         */
-        template<typename T>
-        inline constexpr T hgl_max(const T& a, const T& b, const T& c)
-        {
-            return hgl_max(hgl_max(a, b), c);
-        }
-    }//namespace math
-    
     // ==================== 浮点数处理 ====================
     
     /**

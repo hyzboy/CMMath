@@ -12,6 +12,7 @@
 #pragma once
 
 #include<hgl/math/VectorTypes.h>
+#include<hgl/math/VectorOperations.h>
 #include<hgl/math/MatrixTypes.h>
 #include<hgl/math/Quaternion.h>
 #include<glm/gtc/matrix_transform.hpp>
@@ -257,17 +258,17 @@ namespace hgl::math
     /**
      * 变换法线（使用逆转置矩阵）
      */
-    inline Vector3f TransformNormal(const Matrix4f &m,const Vector3f &v)
+    inline Vector3f TransformNormal(const Matrix4f& m, const Vector3f& v)
     {
-        return Normalize(Vector3f(Transpose(Inverse(m))*Vector4f(v,0.0f)));
+        return Normalized(Vector3f(Transpose(Inverse(m)) * Vector4f(v, 0.0f)));
     }
 
     /**
-     * 变换法线（3x3矩阵版本）
+     * Transform normal (3x3 matrix version)
      */
-    inline Vector3f TransformNormal(const Matrix3f &m,const Vector3f &v)
+    inline Vector3f TransformNormal(const Matrix3f& m, const Vector3f& v)
     {
-        return Normalize(m*v);
+        return Normalized(m * v);
     }
 
     // ==================== 高级矩阵操作 ====================

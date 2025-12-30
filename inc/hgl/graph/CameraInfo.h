@@ -97,11 +97,11 @@ namespace hgl::graph
     inline const Matrix4f CalculateFacingRotationMatrix(const Vector3f &world_position,const Matrix4f &view_matrix,const Vector3f &origin_direction)
     {
         //因为精度问题会造成偏差，所以千万不要直接使用CameraInfo中的view_line
-        //const Vector3f view_line=normalized(Vector3f(view_matrix[0][2],view_matrix[1][2],view_matrix[2][2]));
+        //const Vector3f view_line=Normalized(Vector3f(view_matrix[0][2],view_matrix[1][2],view_matrix[2][2]));
 
         return GetRotateMatrix(world_position,
                                 origin_direction,
-                                normalized(math::Vector3f(view_matrix[0][2],view_matrix[1][2],view_matrix[2][2])));
+                                Normalized(math::Vector3f(view_matrix[0][2],view_matrix[1][2],view_matrix[2][2])));
     }
 
     /**
@@ -111,6 +111,6 @@ namespace hgl::graph
     {
         return GetRotateQuat(world_position,
                                 origin_direction,
-                                normalized(math::Vector3f(view_matrix[0][2],view_matrix[1][2],view_matrix[2][2])));
+                                Normalized(math::Vector3f(view_matrix[0][2],view_matrix[1][2],view_matrix[2][2])));
     }
 }//namespace hgl::graph

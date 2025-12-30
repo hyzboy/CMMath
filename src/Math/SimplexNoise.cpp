@@ -11,12 +11,17 @@
 
 #include<hgl/math/Noise.h>
 #include<cmath>
+#include<mutex>
 
 namespace hgl::math
 {
-    // 使用与 Perlin 相同的置换表
+    // 使用与 Perlin 相同的置换表机制
+    // 声明外部变量以共享初始化逻辑
     extern int p[512];
     extern bool permutation_initialized;
+    extern std::mutex init_mutex;
+    
+    // 声明外部初始化函数
     extern void InitializePermutation();
 
     // Simplex 噪声的梯度向量 (3D)

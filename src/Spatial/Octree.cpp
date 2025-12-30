@@ -50,7 +50,7 @@ namespace hgl::math
         /**
          * 分裂节点创建八个子节点
          */
-        void Split()
+        void Split(int max_objects, int max_depth)
         {
             if (!is_leaf)
                 return;
@@ -87,14 +87,14 @@ namespace hgl::math
             
             for (auto obj : temp_objects)
             {
-                InsertIntoChildren(obj);
+                InsertIntoChildren(obj, max_objects, max_depth);
             }
         }
 
         /**
          * 将对象插入到合适的子节点
          */
-        bool InsertIntoChildren(IOctreeData *data)
+        bool InsertIntoChildren(IOctreeData *data, int max_objects, int max_depth)
         {
             AABB obj_bounds = data->GetBounds();
             bool inserted = false;
@@ -103,7 +103,7 @@ namespace hgl::math
             {
                 if (children[i] && children[i]->bounds.Cross(obj_bounds))
                 {
-                    if (children[i]->Insert(data))
+                    if (children[i]->Insert(data, max_objects, max_depth))
                         inserted = true;
                 }
             }
@@ -126,14 +126,14 @@ namespace hgl::math
                 // 检查是否需要分裂
                 if (objects.size() > static_cast<size_t>(max_objects) && depth < max_depth)
                 {
-                    Split();
+                    Split(max_objects, max_depth);
                 }
 
                 return true;
             }
             else
             {
-                return InsertIntoChildren(data);
+                return InsertIntoChildren(data, max_objects, max_depth);
             }
         }
 

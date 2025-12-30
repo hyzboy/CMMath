@@ -11,6 +11,7 @@
 
 #include<hgl/math/Noise.h>
 #include<cmath>
+#include<mutex>
 
 namespace hgl::math
 {
@@ -34,15 +35,20 @@ namespace hgl::math
     // 扩展置换表到 512，避免索引溢出
     static int p[512];
     static bool permutation_initialized = false;
+    static std::mutex init_mutex;  // 线程安全的初始化
 
     // 初始化扩展置换表
     static void InitializePermutation()
     {
         if (!permutation_initialized)
         {
-            for (int i = 0; i < 256; i++)
-                p[i] = p[256 + i] = permutation[i];
-            permutation_initialized = true;
+            std::lock_guard<std::mutex> lock(init_mutex);
+            if (!permutation_initialized)  // 双重检查
+            {
+                for (int i = 0; i < 256; i++)
+                    p[i] = p[256 + i] = permutation[i];
+                permutation_initialized = true;
+            }
         }
     }
 

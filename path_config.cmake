@@ -6,8 +6,3 @@ macro(CMMathSetup CMMATH_ROOT_PATH)
 
     include_directories(${CMMATH_ROOT_INCLUDE_PATH})
 endmacro()
-
-# Simple add_cm_library macro to create a library with the given name
-macro(add_cm_library LIB_NAME PREFIX)
-    add_library(${LIB_NAME} STATIC ${ARGN})
-endmacro()

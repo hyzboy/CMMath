@@ -80,6 +80,7 @@ set(CMMATH_MATH_GAME_HEADERS
     ${CMMATH_MATH_INCLUDE_PATH}/Transform2D.h
     ${CMMATH_MATH_INCLUDE_PATH}/Random.h
     ${CMMATH_MATH_INCLUDE_PATH}/Color.h
+    ${CMMATH_MATH_INCLUDE_PATH}/Luminance.h
 )
 
 # Combined Math headers list
@@ -205,6 +206,7 @@ set(CMMATH_MATH_CURVES_SOURCES
 set(CMMATH_MATH_GAME_SOURCES
     Math/Random.cpp
     Math/Color.cpp
+    Math/Luminance.cpp
 )
 
 # Combined Math sources list

@@ -434,11 +434,17 @@ namespace hgl::math
      * @param distance 距离（米）
      * @return 照度（勒克斯 lx）
      * 
-     * 使用反平方定律：照度 = 光通量 / (4π * 距离²)
+     * 对于点光源，光强度 I = 光通量 / 4π
+     * 然后照度 E = I / 距离²
+     * 因此 E = 光通量 / (4π * 距离²)
+     * 
+     * 注意：此公式假设光源为均匀全向发光的点光源。
+     * 对于有方向性的光源（如射灯），需要考虑光束角度和方向因子。
      */
     inline float CalculateIlluminance(float luminousFlux, float distance)
     {
         if (distance <= 0.0f) return 0.0f;
+        // E = Φ / (4π * r²)
         return luminousFlux / (4.0f * pi_f * distance * distance);
     }
     

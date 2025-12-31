@@ -8,6 +8,10 @@
 
 namespace hgl::math
 {
+    // 单位转换常量
+    constexpr float FOOTLAMBERT_TO_NIT = 3.426f;        // 1 fL = 3.426 cd/m² = 3.426 nit
+    constexpr float NIT_TO_FOOTLAMBERT = 1.0f / 3.426f; // 1 nit = 0.2919 fL (反向转换)
+    
     // ==================== Luminance 类实现 ====================
     
     Luminance::Luminance(float value, LuminanceUnit unit) noexcept
@@ -20,16 +24,14 @@ namespace hgl::math
                 break;
                 
             case LuminanceUnit::FootLambert:
-                // 英尺朗伯转尼特：1 fL = 3.426 cd/m² = 3.426 nit
-                nits_ = value * 3.426f;
+                nits_ = value * FOOTLAMBERT_TO_NIT;
                 break;
         }
     }
     
     float Luminance::AsFootLambert() const noexcept
     {
-        // 尼特转英尺朗伯：1 cd/m² = 0.2919 fL
-        return nits_ * 0.2919f;
+        return nits_ * NIT_TO_FOOTLAMBERT;
     }
     
     float Luminance::As(LuminanceUnit unit) const noexcept

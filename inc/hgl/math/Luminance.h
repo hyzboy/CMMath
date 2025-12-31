@@ -430,8 +430,8 @@ namespace hgl::math
     
     /**
      * @brief 计算点光源在指定距离处的照度（勒克斯）
-     * @param luminousFlux 光通量（流明）
-     * @param distance 距离（米）
+     * @param luminousFlux 光通量（流明），必须为非负值
+     * @param distance 距离（米），必须为正值
      * @return 照度（勒克斯 lx）
      * 
      * 对于点光源，光强度 I = 光通量 / 4π
@@ -443,7 +443,7 @@ namespace hgl::math
      */
     inline float CalculateIlluminance(float luminousFlux, float distance)
     {
-        if (distance <= 0.0f) return 0.0f;
+        if (distance <= 0.0f || luminousFlux < 0.0f) return 0.0f;
         // E = Φ / (4π * r²)
         return luminousFlux / (4.0f * pi_f * distance * distance);
     }
@@ -451,11 +451,12 @@ namespace hgl::math
     /**
      * @brief 根据亮度调整颜色
      * @param baseColor 基础颜色
-     * @param luminance 亮度值
+     * @param luminance 亮度值，必须为非负值
      * @return 调整后的颜色
      */
     inline Color3f ApplyLuminance(const Color3f& baseColor, float luminance)
     {
+        if (luminance < 0.0f) return Color3f(0.0f);
         return baseColor * luminance;
     }
     

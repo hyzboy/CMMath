@@ -19,6 +19,16 @@
 
 namespace hgl::math
 {
+    // ==================== 光通量单位枚举 ====================
+    
+    /**
+     * 光通量单位类型
+     */
+    enum class LuminousFluxUnit
+    {
+        Lumen           // 流明 (lm) - 光通量，SI单位
+    };
+    
     // ==================== 亮度单位枚举 ====================
     
     /**
@@ -29,6 +39,143 @@ namespace hgl::math
     {
         Nit,            // 尼特 (cd/m²) - 亮度，SI单位
         FootLambert     // 英尺朗伯 (fL) - 亮度（美制单位）
+    };
+    
+    // ==================== 光通量数据类 ====================
+    
+    /**
+     * @brief 光通量数据类
+     * 
+     * 存储光通量值（Luminous Flux），以流明(Lumen)为单位。
+     * 光通量表示光源发出的可见光总量。
+     * 
+     * 用途：
+     * - 灯泡、LED等点光源的光输出
+     * - 计算照度（需要结合距离和面积）
+     * - 评估光源效率（流明/瓦特）
+     */
+    class LuminousFlux
+    {
+    private:
+        float lumens_;  // 内部存储：流明 (lm)
+        
+    public:
+        // ==================== 构造函数 ====================
+        
+        /**
+         * 默认构造函数，初始化为0
+         */
+        constexpr LuminousFlux() noexcept : lumens_(0.0f) {}
+        
+        /**
+         * 从指定单位的数值构造
+         * @param value 光通量数值
+         * @param unit 光通量单位
+         */
+        constexpr LuminousFlux(float value, LuminousFluxUnit unit) noexcept : lumens_(value) {}
+        
+        /**
+         * 从流明值直接构造
+         */
+        static constexpr LuminousFlux FromLumen(float lumen) noexcept
+        {
+            LuminousFlux lf;
+            lf.lumens_ = lumen;
+            return lf;
+        }
+        
+        // ==================== 单位转换输出 ====================
+        
+        /**
+         * 获取流明值
+         */
+        constexpr float AsLumen() const noexcept { return lumens_; }
+        
+        /**
+         * 按指定单位获取值
+         */
+        constexpr float As(LuminousFluxUnit unit) const noexcept
+        {
+            return lumens_;
+        }
+        
+        // ==================== 光度学转换 ====================
+        
+        /**
+         * @brief 转换为光强度（坎德拉）
+         * @return 光强度（假设均匀全向发光）
+         * 
+         * 对于均匀全向发光的点光源：I = Φ / 4π
+         */
+        constexpr float ToCandela() const noexcept
+        {
+            return lumens_ / (4.0f * 3.14159265359f);
+        }
+        
+        /**
+         * @brief 计算在指定距离处的照度
+         * @param distance 距离（米）
+         * @return 照度（勒克斯）
+         * 
+         * 对于均匀全向发光的点光源：E = Φ / (4π * r²)
+         */
+        float CalculateIlluminance(float distance) const noexcept
+        {
+            if (distance <= 0.0f) return 0.0f;
+            return lumens_ / (4.0f * 3.14159265359f * distance * distance);
+        }
+        
+        // ==================== 操作符重载 ====================
+        
+        constexpr LuminousFlux operator+(const LuminousFlux& other) const noexcept
+        {
+            return FromLumen(lumens_ + other.lumens_);
+        }
+        
+        constexpr LuminousFlux operator-(const LuminousFlux& other) const noexcept
+        {
+            return FromLumen(lumens_ - other.lumens_);
+        }
+        
+        constexpr LuminousFlux operator*(float scale) const noexcept
+        {
+            return FromLumen(lumens_ * scale);
+        }
+        
+        constexpr LuminousFlux operator/(float scale) const noexcept
+        {
+            return FromLumen(lumens_ / scale);
+        }
+        
+        constexpr bool operator<(const LuminousFlux& other) const noexcept
+        {
+            return lumens_ < other.lumens_;
+        }
+        
+        constexpr bool operator>(const LuminousFlux& other) const noexcept
+        {
+            return lumens_ > other.lumens_;
+        }
+        
+        constexpr bool operator<=(const LuminousFlux& other) const noexcept
+        {
+            return lumens_ <= other.lumens_;
+        }
+        
+        constexpr bool operator>=(const LuminousFlux& other) const noexcept
+        {
+            return lumens_ >= other.lumens_;
+        }
+        
+        constexpr bool operator==(const LuminousFlux& other) const noexcept
+        {
+            return lumens_ == other.lumens_;
+        }
+        
+        constexpr bool operator!=(const LuminousFlux& other) const noexcept
+        {
+            return lumens_ != other.lumens_;
+        }
     };
     
     // ==================== 亮度数据类 ====================
@@ -162,7 +309,7 @@ namespace hgl::math
     struct LightSourceData
     {
         const char* name;           // 光源名称
-        float luminousFlux;         // 光通量 (流明 lm)，用于灯泡等
+        LuminousFlux luminousFlux;  // 光通量（流明），用于灯泡等
         Luminance luminance;        // 亮度 (尼特)，用于显示器等发光表面
         float colorTemperature;     // 色温 (开尔文)
         Color3f color;              // 近似颜色 (RGB)
@@ -175,7 +322,7 @@ namespace hgl::math
     {
         // ==================== 自然光源 ====================
         // 注意：环境光照使用照度（勒克斯）表示，这里给出参考值
-        // 实际使用时可用 CalculateIlluminanceFromLux 函数
+        // 实际使用时可用 CalculateIlluminance 函数
         
         /**
          * 阳光（正午，海平面）- 照度约 100,000 lux
@@ -183,7 +330,7 @@ namespace hgl::math
         const LightSourceData Sunlight
         {
             "阳光",
-            0.0f,  // 环境光照，非点光源
+            LuminousFlux::FromLumen(0.0f),  // 环境光照，非点光源
             Luminance::FromNit(0.0f),  // 不适用
             5500.0f,
             Color3f(1.0f, 1.0f, 0.95f),
@@ -196,7 +343,7 @@ namespace hgl::math
         const LightSourceData Moonlight
         {
             "满月",
-            0.0f,  // 环境光照，非点光源
+            LuminousFlux::FromLumen(0.0f),  // 环境光照，非点光源
             Luminance::FromNit(0.0f),  // 不适用
             4100.0f,
             Color3f(0.7f, 0.75f, 0.85f),
@@ -209,7 +356,7 @@ namespace hgl::math
         const LightSourceData Twilight
         {
             "黎明/黄昏",
-            0.0f,  // 环境光照，非点光源
+            LuminousFlux::FromLumen(0.0f),  // 环境光照，非点光源
             Luminance::FromNit(0.0f),  // 不适用
             4500.0f,
             Color3f(1.0f, 0.8f, 0.6f),
@@ -222,7 +369,7 @@ namespace hgl::math
         const LightSourceData Overcast
         {
             "阴天",
-            0.0f,  // 环境光照，非点光源
+            LuminousFlux::FromLumen(0.0f),  // 环境光照，非点光源
             Luminance::FromNit(0.0f),  // 不适用
             6500.0f,
             Color3f(0.8f, 0.85f, 0.9f),
@@ -237,7 +384,7 @@ namespace hgl::math
         const LightSourceData Incandescent40W
         {
             "40W 白炽灯泡",
-            450.0f,  // 流明
+            LuminousFlux::FromLumen(450.0f),
             Luminance::FromNit(0.0f),  // 点光源，不使用亮度
             2700.0f,
             Color3f(1.0f, 0.85f, 0.6f),
@@ -250,7 +397,7 @@ namespace hgl::math
         const LightSourceData Incandescent60W
         {
             "60W 白炽灯泡",
-            800.0f,  // 流明
+            LuminousFlux::FromLumen(800.0f),
             Luminance::FromNit(0.0f),  // 点光源，不使用亮度
             2700.0f,
             Color3f(1.0f, 0.85f, 0.6f),
@@ -263,7 +410,7 @@ namespace hgl::math
         const LightSourceData Incandescent100W
         {
             "100W 白炽灯泡",
-            1600.0f,  // 流明
+            LuminousFlux::FromLumen(1600.0f),
             Luminance::FromNit(0.0f),
             2850.0f,
             Color3f(1.0f, 0.87f, 0.65f),
@@ -278,7 +425,7 @@ namespace hgl::math
         const LightSourceData LED9W_WarmWhite
         {
             "9W LED 灯泡（暖白）",
-            800.0f,  // 流明
+            LuminousFlux::FromLumen(800.0f),
             Luminance::FromNit(0.0f),
             3000.0f,
             Color3f(1.0f, 0.9f, 0.75f),
@@ -291,7 +438,7 @@ namespace hgl::math
         const LightSourceData LED9W_CoolWhite
         {
             "9W LED 灯泡（冷白）",
-            850.0f,  // 流明
+            LuminousFlux::FromLumen(850.0f),
             Luminance::FromNit(0.0f),
             5000.0f,
             Color3f(0.95f, 0.98f, 1.0f),
@@ -304,7 +451,7 @@ namespace hgl::math
         const LightSourceData LED13W
         {
             "13W LED 灯泡",
-            1600.0f,  // 流明
+            LuminousFlux::FromLumen(1600.0f),
             Luminance::FromNit(0.0f),
             4000.0f,
             Color3f(1.0f, 0.95f, 0.85f),
@@ -319,7 +466,7 @@ namespace hgl::math
         const LightSourceData CFL18W
         {
             "18W 荧光灯",
-            1200.0f,  // 流明
+            LuminousFlux::FromLumen(1200.0f),
             Luminance::FromNit(0.0f),
             4100.0f,
             Color3f(0.9f, 0.95f, 1.0f),
@@ -332,7 +479,7 @@ namespace hgl::math
         const LightSourceData CFL23W
         {
             "23W 荧光灯",
-            1600.0f,  // 流明
+            LuminousFlux::FromLumen(1600.0f),
             Luminance::FromNit(0.0f),
             4100.0f,
             Color3f(0.9f, 0.95f, 1.0f),
@@ -347,7 +494,7 @@ namespace hgl::math
         const LightSourceData Halogen50W
         {
             "50W 卤素射灯",
-            900.0f,  // 流明
+            LuminousFlux::FromLumen(900.0f),
             Luminance::FromNit(0.0f),
             3000.0f,
             Color3f(1.0f, 0.92f, 0.78f),
@@ -362,7 +509,7 @@ namespace hgl::math
         const LightSourceData Candle
         {
             "蜡烛",
-            12.5f,  // 流明
+            LuminousFlux::FromLumen(12.5f),
             Luminance::FromNit(0.0f),
             1850.0f,
             Color3f(1.0f, 0.65f, 0.3f),
@@ -377,7 +524,7 @@ namespace hgl::math
         const LightSourceData StandardMonitor
         {
             "标准显示器",
-            0.0f,  // 不使用光通量
+            LuminousFlux::FromLumen(0.0f),  // 不使用光通量
             Luminance::FromNit(250.0f),  // 250 nits
             6500.0f,
             Color3f(1.0f, 1.0f, 1.0f),
@@ -390,7 +537,7 @@ namespace hgl::math
         const LightSourceData HDRMonitor
         {
             "HDR 显示器",
-            0.0f,  // 不使用光通量
+            LuminousFlux::FromLumen(0.0f),  // 不使用光通量
             Luminance::FromNit(1000.0f),  // 1000 nits
             6500.0f,
             Color3f(1.0f, 1.0f, 1.0f),
@@ -441,11 +588,24 @@ namespace hgl::math
      * 注意：此公式假设光源为均匀全向发光的点光源。
      * 对于有方向性的光源（如射灯），需要考虑光束角度和方向因子。
      */
-    inline float CalculateIlluminance(float luminousFlux, float distance)
+    inline float CalculateIlluminance(const LuminousFlux& luminousFlux, float distance)
     {
-        if (distance <= 0.0f || luminousFlux < 0.0f) return 0.0f;
+        if (distance <= 0.0f) return 0.0f;
         // E = Φ / (4π * r²)
-        return luminousFlux / (4.0f * pi_f * distance * distance);
+        return luminousFlux.AsLumen() / (4.0f * pi_f * distance * distance);
+    }
+    
+    /**
+     * @brief 计算点光源在指定距离处的照度（勒克斯）- 浮点数重载版本
+     * @param luminousFluxLumens 光通量（流明），必须为非负值
+     * @param distance 距离（米），必须为正值
+     * @return 照度（勒克斯 lx）
+     */
+    inline float CalculateIlluminance(float luminousFluxLumens, float distance)
+    {
+        if (distance <= 0.0f || luminousFluxLumens < 0.0f) return 0.0f;
+        // E = Φ / (4π * r²)
+        return luminousFluxLumens / (4.0f * pi_f * distance * distance);
     }
     
     /**
@@ -459,5 +619,5 @@ namespace hgl::math
         if (luminance < 0.0f) return Color3f(0.0f);
         return baseColor * luminance;
     }
-    
+
 }//namespace hgl::math

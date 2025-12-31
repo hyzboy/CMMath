@@ -282,51 +282,36 @@ set(CMMATH_TRANSFORM_SOURCES
 ## Visual Studio Source Groups Organization
 ##==================================================================================================
 
-# Math module headers organized by category
-source_group("Math\\Core" FILES ${CMMATH_MATH_CORE_HEADERS})
+# Math module - headers and sources grouped together by category
+source_group("Math\\Core" FILES ${CMMATH_MATH_CORE_HEADERS} ${CMMATH_MATH_CORE_SOURCES})
 source_group("Math\\Vectors" FILES ${CMMATH_MATH_VECTORS_HEADERS})
 source_group("Math\\Linear Algebra" FILES ${CMMATH_MATH_LINALG_HEADERS})
 source_group("Math\\Numeric" FILES ${CMMATH_MATH_NUMERIC_HEADERS})
 source_group("Math\\Algorithms" FILES ${CMMATH_MATH_ALGORITHMS_HEADERS})
-source_group("Math\\Noise" FILES ${CMMATH_MATH_NOISE_HEADERS})
-source_group("Math\\Curves" FILES ${CMMATH_MATH_CURVES_HEADERS})
+source_group("Math\\Noise" FILES ${CMMATH_MATH_NOISE_HEADERS} ${CMMATH_MATH_NOISE_SOURCES})
+source_group("Math\\Curves" FILES ${CMMATH_MATH_CURVES_HEADERS} ${CMMATH_MATH_CURVES_SOURCES})
 source_group("Math\\SIMD" FILES ${CMMATH_MATH_SIMD_HEADERS})
-source_group("Math\\Game" FILES ${CMMATH_MATH_GAME_HEADERS})
+source_group("Math\\Game" FILES ${CMMATH_MATH_GAME_HEADERS} ${CMMATH_MATH_GAME_SOURCES})
 
-# Math module sources organized by category
-source_group("Source\\Math\\Core" FILES ${CMMATH_MATH_CORE_SOURCES})
-source_group("Source\\Math\\Noise" FILES ${CMMATH_MATH_NOISE_SOURCES})
-source_group("Source\\Math\\Curves" FILES ${CMMATH_MATH_CURVES_SOURCES})
-source_group("Source\\Math\\Game" FILES ${CMMATH_MATH_GAME_SOURCES})
-
-# Geometry module headers organized by category
-source_group("Geometry\\Primitives" FILES ${CMMATH_GEOMETRY_PRIMITIVES_HEADERS})
-source_group("Geometry\\Solids" FILES ${CMMATH_GEOMETRY_SOLIDS_HEADERS})
-source_group("Geometry\\Bounding" FILES ${CMMATH_GEOMETRY_BOUNDING_HEADERS})
-source_group("Geometry\\Query" FILES ${CMMATH_GEOMETRY_QUERY_HEADERS})
+# Geometry module - headers and sources grouped together by category
+source_group("Geometry\\Primitives" FILES ${CMMATH_GEOMETRY_PRIMITIVES_HEADERS} ${CMMATH_GEOMETRY_PRIMITIVES_SOURCES})
+source_group("Geometry\\Solids" FILES ${CMMATH_GEOMETRY_SOLIDS_HEADERS} ${CMMATH_GEOMETRY_SOLIDS_SOURCES})
+source_group("Geometry\\Bounding" FILES ${CMMATH_GEOMETRY_BOUNDING_HEADERS} ${CMMATH_GEOMETRY_BOUNDING_SOURCES})
+source_group("Geometry\\Query" FILES ${CMMATH_GEOMETRY_QUERY_HEADERS} ${CMMATH_GEOMETRY_QUERY_SOURCES})
 source_group("Geometry\\2D" FILES ${CMMATH_GEOMETRY_2D_HEADERS})
-source_group("Geometry\\Utils" FILES ${CMMATH_GEOMETRY_UTILS_HEADERS})
+source_group("Geometry\\Utils" FILES ${CMMATH_GEOMETRY_UTILS_HEADERS} ${CMMATH_GEOMETRY_UTILS_SOURCES})
 
-# Geometry module sources organized by category
-source_group("Source\\Geometry\\Primitives" FILES ${CMMATH_GEOMETRY_PRIMITIVES_SOURCES})
-source_group("Source\\Geometry\\Bounding" FILES ${CMMATH_GEOMETRY_BOUNDING_SOURCES})
-source_group("Source\\Geometry\\Query" FILES ${CMMATH_GEOMETRY_QUERY_SOURCES})
-source_group("Source\\Geometry\\Solids" FILES ${CMMATH_GEOMETRY_SOLIDS_SOURCES})
-source_group("Source\\Geometry\\Utils" FILES ${CMMATH_GEOMETRY_UTILS_SOURCES})
+# Animation module - headers and sources grouped together
+source_group("Animation" FILES ${CMMATH_ANIMATION_HEADERS} ${CMMATH_ANIMATION_SOURCES})
 
-# Animation module
-source_group("Animation" FILES ${CMMATH_ANIMATION_HEADERS})
-source_group("Source\\Animation" FILES ${CMMATH_ANIMATION_SOURCES})
-
-# Transform module
-source_group("Transform" FILES ${CMMATH_TRANSFORM_HEADERS})
-source_group("Source\\Transform" FILES ${CMMATH_TRANSFORM_SOURCES})
+# Transform module - headers and sources grouped together
+source_group("Transform" FILES ${CMMATH_TRANSFORM_HEADERS} ${CMMATH_TRANSFORM_SOURCES})
 
 # Graph module (CameraInfo)
 source_group("Graph\\Camera" FILES ${CMMATH_GRAPH_HEADERS})
 
 # Note: Spatial module is currently excluded due to build issues
-# When fixed, add: source_group("Spatial" FILES ${CMMATH_SPATIAL_HEADERS})
+# When fixed, add: source_group("Spatial" FILES ${CMMATH_SPATIAL_HEADERS} ${CMMATH_SPATIAL_SOURCES})
 
 ##==================================================================================================
 ## Library Creation

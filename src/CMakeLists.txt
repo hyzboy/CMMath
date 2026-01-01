@@ -53,6 +53,7 @@ set(CMMATH_MATH_NUMERIC_HEADERS
     ${CMMATH_MATH_INCLUDE_PATH}/Lerp2D.h
     ${CMMATH_MATH_INCLUDE_PATH}/Lerp3D.h
     ${CMMATH_MATH_INCLUDE_PATH}/VectorLerp.h
+    ${CMMATH_MATH_INCLUDE_PATH}/Gradient.h
 )
 
 # Math Algorithms: Specialized algorithms
@@ -145,6 +146,32 @@ set(CMMATH_GEOMETRY_UTILS_HEADERS
     ${CMMATH_GEOMETRY_INCLUDE_PATH}/GeometryUtils.h
 )
 
+# Geometry New Primitives: Refactored lightweight geometry classes
+set(CMMATH_GEOMETRY_NEW_PRIMITIVES_HEADERS
+    ${CMMATH_GEOMETRY_INCLUDE_PATH}/primitives/GeometryBase.h
+    ${CMMATH_GEOMETRY_INCLUDE_PATH}/primitives/Sphere.h
+    ${CMMATH_GEOMETRY_INCLUDE_PATH}/primitives/Capsule.h
+    ${CMMATH_GEOMETRY_INCLUDE_PATH}/primitives/Cylinder.h
+    ${CMMATH_GEOMETRY_INCLUDE_PATH}/primitives/Cone.h
+    ${CMMATH_GEOMETRY_INCLUDE_PATH}/primitives/Torus.h
+)
+
+# Geometry Queries: Collision detection and query tools
+set(CMMATH_GEOMETRY_QUERIES_HEADERS
+    ${CMMATH_GEOMETRY_INCLUDE_PATH}/queries/CollisionDetector.h
+    ${CMMATH_GEOMETRY_INCLUDE_PATH}/queries/RaycastQuery.h
+    ${CMMATH_GEOMETRY_INCLUDE_PATH}/queries/DistanceQuery.h
+    ${CMMATH_GEOMETRY_INCLUDE_PATH}/queries/ContainmentQuery.h
+)
+
+# Geometry Unified Entry Points
+set(CMMATH_GEOMETRY_UNIFIED_HEADERS
+    ${CMMATH_MATH_INCLUDE_PATH}/Geometry.h
+    ${CMMATH_MATH_INCLUDE_PATH}/GeometryCore.h
+    ${CMMATH_MATH_INCLUDE_PATH}/GeometryExtended.h
+    ${CMMATH_MATH_INCLUDE_PATH}/GeometryQueries.h
+)
+
 # Combined Geometry headers list
 set(CMMATH_GEOMETRY_HEADERS
     ${CMMATH_GEOMETRY_PRIMITIVES_HEADERS}
@@ -153,6 +180,9 @@ set(CMMATH_GEOMETRY_HEADERS
     ${CMMATH_GEOMETRY_QUERY_HEADERS}
     ${CMMATH_GEOMETRY_2D_HEADERS}
     ${CMMATH_GEOMETRY_UTILS_HEADERS}
+    ${CMMATH_GEOMETRY_NEW_PRIMITIVES_HEADERS}
+    ${CMMATH_GEOMETRY_QUERIES_HEADERS}
+    ${CMMATH_GEOMETRY_UNIFIED_HEADERS}
 )
 
 ##==================================================================================================
@@ -254,6 +284,14 @@ set(CMMATH_GEOMETRY_UTILS_SOURCES
     Geometry/GeometryUtils.cpp
 )
 
+# Geometry Queries sources
+set(CMMATH_GEOMETRY_QUERIES_SOURCES
+    Geometry/queries/CollisionDetector.cpp
+    Geometry/queries/RaycastQuery.cpp
+    Geometry/queries/DistanceQuery.cpp
+    Geometry/queries/ContainmentQuery.cpp
+)
+
 # Combined Geometry sources list
 set(CMMATH_GEOMETRY_SOURCES
     ${CMMATH_GEOMETRY_PRIMITIVES_SOURCES}
@@ -261,6 +299,7 @@ set(CMMATH_GEOMETRY_SOURCES
     ${CMMATH_GEOMETRY_QUERY_SOURCES}
     ${CMMATH_GEOMETRY_SOLIDS_SOURCES}
     ${CMMATH_GEOMETRY_UTILS_SOURCES}
+    ${CMMATH_GEOMETRY_QUERIES_SOURCES}
 )
 
 ##==================================================================================================
@@ -302,6 +341,9 @@ source_group("Geometry\\Bounding" FILES ${CMMATH_GEOMETRY_BOUNDING_HEADERS} ${CM
 source_group("Geometry\\Query" FILES ${CMMATH_GEOMETRY_QUERY_HEADERS} ${CMMATH_GEOMETRY_QUERY_SOURCES})
 source_group("Geometry\\2D" FILES ${CMMATH_GEOMETRY_2D_HEADERS})
 source_group("Geometry\\Utils" FILES ${CMMATH_GEOMETRY_UTILS_HEADERS} ${CMMATH_GEOMETRY_UTILS_SOURCES})
+source_group("Geometry\\New Primitives" FILES ${CMMATH_GEOMETRY_NEW_PRIMITIVES_HEADERS})
+source_group("Geometry\\Queries" FILES ${CMMATH_GEOMETRY_QUERIES_HEADERS} ${CMMATH_GEOMETRY_QUERIES_SOURCES})
+source_group("Geometry\\Unified" FILES ${CMMATH_GEOMETRY_UNIFIED_HEADERS})
 
 # Animation module - headers and sources grouped together
 source_group("Animation" FILES ${CMMATH_ANIMATION_HEADERS} ${CMMATH_ANIMATION_SOURCES})
@@ -320,7 +362,7 @@ source_group("Graph\\Camera" FILES ${CMMATH_GRAPH_HEADERS})
 ##==================================================================================================
 
 # Create CMMath library with all modules
-add_cm_library(CMMath "CM"
+add_library(CMMath STATIC
     ${CMMATH_MATH_HEADERS}
     ${CMMATH_MATH_SOURCES}
     ${CMMATH_GEOMETRY_HEADERS}

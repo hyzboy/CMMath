@@ -152,10 +152,12 @@ namespace hgl::math
          * @param start 起始值
          * @param end 结束值
          * @param t 插值参数 [0, 1]
+         * 
+         * 默认使用 hgl::math::lerp 进行线性插值
          */
         virtual void Interpolate(T& result, const T& start, const T& end, float t) const
         {
-            result = lerp(start, end, t);
+            result = lerp(start, end, t);  // 使用 hgl::math::lerp
         }
 
         /**
@@ -194,8 +196,16 @@ namespace hgl::math
                     const auto& prev = stop_list[i - 1];
                     const auto& curr = stop_list[i];
                     
+                    // 防止除零错误
+                    P posDiff = curr.pos - prev.pos;
+                    if (posDiff <= static_cast<P>(0))
+                    {
+                        result = prev.data;
+                        return;
+                    }
+                    
                     float t = static_cast<float>(pos - prev.pos) / 
-                             static_cast<float>(curr.pos - prev.pos);
+                             static_cast<float>(posDiff);
                     
                     Interpolate(result, prev.data, curr.data, t);
                     return;

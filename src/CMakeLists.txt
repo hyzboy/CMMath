@@ -51,6 +51,7 @@ set(CMMATH_MATH_NUMERIC_HEADERS
     ${CMMATH_MATH_INCLUDE_PATH}/Lerp1D.h
     ${CMMATH_MATH_INCLUDE_PATH}/Lerp2D.h
     ${CMMATH_MATH_INCLUDE_PATH}/Lerp3D.h
+    ${CMMATH_MATH_INCLUDE_PATH}/Gradient.h
 )
 
 # Math Algorithms: Specialized algorithms

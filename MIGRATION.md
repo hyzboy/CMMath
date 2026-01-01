@@ -239,6 +239,122 @@ If you encounter issues during migration:
 
 ---
 
+## 3. Gradient 类迁移 / Gradient Class Migration
+
+### 变更内容 / Changes
+
+**之前：**
+- `Gradient` 类位于 CMCore 库的 `inc/hgl/type/Gradient.h`
+- 虽然是数学插值工具，但放在了类型库中
+
+**现在：**
+- `Gradient` 类迁移到 CMMath 库的 `inc/hgl/math/Gradient.h`
+- 作为数学插值工具，更符合其本质功能
+
+### 迁移步骤 / Migration Steps
+
+#### 旧代码 / Old Code:
+
+```cpp
+#include <hgl/type/Gradient.h>
+
+using namespace hgl;
+
+Gradient<float, Color3f> colorGradient;
+colorGradient.Add(0.0f, Color3f(1, 0, 0));  // 红色
+colorGradient.Add(0.5f, Color3f(0, 1, 0));  // 绿色
+colorGradient.Add(1.0f, Color3f(0, 0, 1));  // 蓝色
+
+Color3f result;
+colorGradient.Get(result, 0.25f);
+```
+
+#### 新代码 / New Code:
+
+```cpp
+#include <hgl/math/Gradient.h>
+
+using namespace hgl::math;
+
+Gradient<float, Color3f> colorGradient;
+colorGradient.Add(0.0f, Color3f(1, 0, 0));  // 红色
+colorGradient.Add(0.5f, Color3f(0, 1, 0));  // 绿色
+colorGradient.Add(1.0f, Color3f(0, 0, 1));  // 蓝色
+
+Color3f result;
+colorGradient.Get(result, 0.25f);
+```
+
+### 主要改进 / Key Improvements
+
+1. **更清晰的职责划分**：数学插值工具放在数学库中
+2. **更好的语义**：`hgl::math::Gradient` 比 `hgl::Gradient` 更明确表达其数学本质
+3. **依赖关系更清晰**：CMMath 提供数学算法，CMCore 提供基础类型
+4. **提供预定义类型别名**：
+   - `FloatGradient` - 浮点数渐变
+   - `VectorGradient2f` - 2D 向量渐变
+   - `VectorGradient3f` - 3D 向量渐变
+   - 注意：颜色渐变请使用 `Gradient<float, Color3f>` 并包含 `<hgl/math/Color.h>`
+
+### 使用示例 / Usage Examples
+
+#### 颜色渐变 / Color Gradient
+
+```cpp
+#include <hgl/math/Gradient.h>
+#include <hgl/math/Color.h>
+
+using namespace hgl::math;
+
+// 使用 Gradient 模板定义颜色渐变
+Gradient<float, Color3f> gradient;
+
+// 添加关键点
+gradient.Add(0.0f, Colors::Red);
+gradient.Add(0.5f, Colors::Yellow);
+gradient.Add(1.0f, Colors::Blue);
+
+// 获取插值结果
+Color3f color;
+gradient.Get(color, 0.25f);  // 红色到黄色之间 25% 的位置
+
+// 或使用操作符
+Color3f color2 = gradient(0.75f);  // 黄色到蓝色之间 75% 的位置
+```
+
+#### 数值动画 / Numeric Animation
+
+```cpp
+#include <hgl/math/Gradient.h>
+
+using namespace hgl::math;
+
+FloatGradient animation;
+animation.Add(0.0f, 0.0f);    // 起始值
+animation.Add(0.5f, 100.0f);  // 中间值
+animation.Add(1.0f, 50.0f);   // 结束值
+
+float value = animation(0.3f);  // 获取 30% 时间点的值
+```
+
+#### 向量路径 / Vector Path
+
+```cpp
+#include <hgl/math/Gradient.h>
+
+using namespace hgl::math;
+
+VectorGradient3f path;
+path.Add(0.0f, Vector3f(0, 0, 0));
+path.Add(0.5f, Vector3f(10, 5, 0));
+path.Add(1.0f, Vector3f(20, 0, 0));
+
+Vector3f position;
+path.Get(position, 0.7f);  // 获取路径上 70% 位置的坐标
+```
+
+---
+
 ## 总结 / Summary
 
 这次重构提高了代码的组织性和可维护性。虽然需要一些迁移工作，但长期来看会带来更清晰的架构和更好的开发体验。

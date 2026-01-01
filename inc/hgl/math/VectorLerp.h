@@ -115,7 +115,7 @@ namespace hgl::math
      */
     inline Vector2d Lerp(const Vector2d &a, const Vector2d &b, double t)
     {
-        return lerp(a, b, static_cast<float>(t));
+        return a + (b - a) * t;
     }
     
     /**
@@ -127,7 +127,7 @@ namespace hgl::math
      */
     inline Vector3d Lerp(const Vector3d &a, const Vector3d &b, double t)
     {
-        return lerp(a, b, static_cast<float>(t));
+        return a + (b - a) * t;
     }
     
     /**
@@ -139,7 +139,7 @@ namespace hgl::math
      */
     inline Vector4d Lerp(const Vector4d &a, const Vector4d &b, double t)
     {
-        return lerp(a, b, static_cast<float>(t));
+        return a + (b - a) * t;
     }
     
     // ==================== 标量 Lerp ====================
@@ -177,7 +177,7 @@ namespace hgl::math
      */
     inline double Lerp(double a, double b, double t)
     {
-        return lerp(a, b, static_cast<float>(t));
+        return a + (b - a) * t;
     }
 
 } // namespace hgl::math

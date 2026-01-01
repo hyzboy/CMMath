@@ -15,6 +15,7 @@
 
 #include <hgl/math/VectorTypes.h>
 #include <hgl/math/VectorOperations.h>
+#include <hgl/math/VectorLerp.h>
 #include <hgl/math/MathConstants.h>
 #include <algorithm>
 #include <cmath>
@@ -277,6 +278,32 @@ namespace hgl::math
     inline Color4f ColorFromBytes(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
     {
         return Color4f(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+    }
+    
+    // ==================== uint8 颜色插值 ====================
+    
+    /**
+     * @brief uint8 RGB 颜色插值
+     * @param c1 起始颜色
+     * @param c2 目标颜色
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
+     */
+    inline Vector3u8 ColorLerpU8(const Vector3u8 &c1, const Vector3u8 &c2, float t)
+    {
+        return Lerp(c1, c2, t);
+    }
+
+    /**
+     * @brief uint8 RGBA 颜色插值
+     * @param c1 起始颜色
+     * @param c2 目标颜色
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
+     */
+    inline Vector4u8 ColorLerpU8(const Vector4u8 &c1, const Vector4u8 &c2, float t)
+    {
+        return Lerp(c1, c2, t);
     }
     
 }//namespace hgl::math

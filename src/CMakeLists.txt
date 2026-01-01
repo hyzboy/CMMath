@@ -25,6 +25,7 @@ set(CMMATH_MATH_CORE_HEADERS
     ${CMMATH_MATH_INCLUDE_PATH}/PhysicsConst.h
     ${CMMATH_MATH_INCLUDE_PATH}/Projection.h
     ${CMMATH_MATH_INCLUDE_PATH}/Sum.h
+    ${CMMATH_MATH_INCLUDE_PATH}/Clamp.h
 )
 
 # Math Vectors: Vector types and operations
@@ -51,6 +52,7 @@ set(CMMATH_MATH_NUMERIC_HEADERS
     ${CMMATH_MATH_INCLUDE_PATH}/Lerp1D.h
     ${CMMATH_MATH_INCLUDE_PATH}/Lerp2D.h
     ${CMMATH_MATH_INCLUDE_PATH}/Lerp3D.h
+    ${CMMATH_MATH_INCLUDE_PATH}/VectorLerp.h
 )
 
 # Math Algorithms: Specialized algorithms

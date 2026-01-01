@@ -250,3 +250,135 @@ This refactoring improves code organization and maintainability. While some migr
 - ✅ 枚举定义从 CMCoreType 导入（透明变更）
 - ✅ 颜色插值函数迁移到 CMCoreType（更好的语义）
 - ✅ 提供了平滑的迁移路径和完整文档
+
+---
+
+## Vector Lerp 函数 / Vector Lerp Functions
+
+### 功能 / Features
+
+为所有向量类型提供统一的 Lerp 插值函数，包括整数向量和浮点向量。
+
+Provides unified Lerp interpolation functions for all vector types, including integer and floating-point vectors.
+
+### 使用方法 / Usage
+
+#### 整数向量插值 / Integer Vector Interpolation
+
+```cpp
+#include <hgl/math/VectorLerp.h>
+using namespace hgl::math;
+
+// Vector2u8 插值
+Vector2u8 v1(0, 0);
+Vector2u8 v2(255, 255);
+Vector2u8 result = Lerp(v1, v2, 0.5f);  // 结果: (128, 128)
+
+// Vector3u8 RGB 颜色插值
+Vector3u8 red(255, 0, 0);
+Vector3u8 blue(0, 0, 255);
+Vector3u8 purple = Lerp(red, blue, 0.5f);  // 结果: (128, 0, 128)
+
+// Vector4u8 RGBA 颜色插值（带透明度）
+Vector4u8 c1(255, 0, 0, 255);
+Vector4u8 c2(0, 0, 255, 128);
+Vector4u8 mixed = Lerp(c1, c2, 0.5f);  // 插值包括 alpha 通道
+```
+
+#### 浮点向量插值 / Float Vector Interpolation
+
+```cpp
+#include <hgl/math/VectorLerp.h>
+using namespace hgl::math;
+
+// Vector2f 插值
+Vector2f a(0.0f, 0.0f);
+Vector2f b(1.0f, 1.0f);
+Vector2f result = Lerp(a, b, 0.5f);  // 结果: (0.5, 0.5)
+
+// Vector3f 插值
+Vector3f p1(1.0f, 2.0f, 3.0f);
+Vector3f p2(4.0f, 5.0f, 6.0f);
+Vector3f mid = Lerp(p1, p2, 0.5f);  // 结果: (2.5, 3.5, 4.5)
+
+// Vector4f 插值
+Vector4f v1(1.0f, 2.0f, 3.0f, 4.0f);
+Vector4f v2(5.0f, 6.0f, 7.0f, 8.0f);
+Vector4f result = Lerp(v1, v2, 0.25f);
+```
+
+#### 颜色插值便捷函数 / Color Interpolation Convenience Functions
+
+```cpp
+#include <hgl/math/Color.h>
+using namespace hgl::math;
+
+// uint8 RGB 颜色插值
+Vector3u8 red(255, 0, 0);
+Vector3u8 green(0, 255, 0);
+Vector3u8 yellow = ColorLerpU8(red, green, 0.5f);
+
+// uint8 RGBA 颜色插值
+Vector4u8 color1(255, 0, 0, 255);
+Vector4u8 color2(0, 0, 255, 128);
+Vector4u8 mixed = ColorLerpU8(color1, color2, 0.5f);
+```
+
+### Vector Clamp 函数 / Vector Clamp Functions
+
+```cpp
+#include <hgl/math/Clamp.h>
+using namespace hgl::math;
+
+// Vector2u8/Vector3u8/Vector4u8 已经在有效范围内
+Vector3u8 color(255, 128, 64);
+Vector3u8 clamped = ClampVector(color);  // 返回原值
+
+// 将浮点向量转换为 uint8 向量（自动钳制）
+Vector2f fv2(300.0f, -50.0f);
+Vector2u8 uv2 = ClampVectorU8(fv2);  // 结果: (255, 0)
+
+Vector3f fv3(300.0f, 128.5f, -10.0f);
+Vector3u8 uv3 = ClampVectorU8(fv3);  // 结果: (255, 129, 0)
+
+Vector4f fv4(400.0f, 200.0f, 100.0f, 50.0f);
+Vector4u8 uv4 = ClampVectorU8(fv4);  // 结果: (255, 200, 100, 50)
+```
+
+### 标量插值 / Scalar Interpolation
+
+```cpp
+#include <hgl/math/VectorLerp.h>
+using namespace hgl::math;
+
+// uint8 插值
+uint8_t a = 0;
+uint8_t b = 255;
+uint8_t mid = Lerp(a, b, 0.5f);  // 结果: 128
+
+// float 插值
+float x = 0.0f;
+float y = 10.0f;
+float z = Lerp(x, y, 0.3f);  // 结果: 3.0
+
+// double 插值
+double d1 = 0.0;
+double d2 = 100.0;
+double d3 = Lerp(d1, d2, 0.25);  // 结果: 25.0
+```
+
+### 特性 / Features
+
+- **自动钳制**: 整数向量插值自动钳制到有效范围 [0, 255]
+- **类型安全**: 为每种向量类型提供专门的重载
+- **统一接口**: 所有向量类型使用相同的 `Lerp()` 函数名
+- **颜色支持**: 特别优化了 RGB 和 RGBA 颜色插值
+
+### 注意事项 / Notes
+
+1. 整数向量插值使用浮点数计算，然后钳制并四舍五入到整数
+2. 参数 `t` 通常在 [0, 1] 范围内，但可以超出此范围
+3. 颜色插值在 RGB 空间进行（如需 HSV 空间插值，使用 `ColorLerpHSV`）
+4. 所有函数都是内联的，性能开销最小
+
+---

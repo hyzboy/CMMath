@@ -250,7 +250,6 @@ If you encounter issues during migration:
 **现在：**
 - `Gradient` 类迁移到 CMMath 库的 `inc/hgl/math/Gradient.h`
 - 作为数学插值工具，更符合其本质功能
-- 提供了向后兼容的别名（在 `inc/hgl/type/Gradient.h` 中）
 
 ### 迁移步骤 / Migration Steps
 
@@ -353,22 +352,6 @@ path.Add(1.0f, Vector3f(20, 0, 0));
 Vector3f position;
 path.Get(position, 0.7f);  // 获取路径上 70% 位置的坐标
 ```
-
-### 向后兼容 / Backward Compatibility
-
-为了兼容旧代码，`inc/hgl/type/Gradient.h` 文件仍然存在，但会：
-1. 显示编译警告提示迁移
-2. 自动包含新的 `<hgl/math/Gradient.h>`
-3. 在 `hgl` 命名空间中创建别名
-
-这意味着旧代码仍然可以编译运行，但建议尽早迁移到新的头文件和命名空间。
-
-For backward compatibility, `inc/hgl/type/Gradient.h` still exists but will:
-1. Show a compile warning suggesting migration
-2. Automatically include the new `<hgl/math/Gradient.h>`
-3. Create aliases in the `hgl` namespace
-
-This means old code will still compile and run, but migration to the new header and namespace is recommended.
 
 ---
 

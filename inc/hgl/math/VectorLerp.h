@@ -30,8 +30,8 @@ namespace hgl::math
     inline Vector2u8 Lerp(const Vector2u8 &a, const Vector2u8 &b, float t)
     {
         return Vector2u8(
-            ClampU8(a.x + (b.x - a.x) * t),
-            ClampU8(a.y + (b.y - a.y) * t)
+            ClampU8(float(a.x) + (float(b.x) - float(a.x)) * t),
+            ClampU8(float(a.y) + (float(b.y) - float(a.y)) * t)
         );
     }
     
@@ -45,9 +45,9 @@ namespace hgl::math
     inline Vector3u8 Lerp(const Vector3u8 &a, const Vector3u8 &b, float t)
     {
         return Vector3u8(
-            ClampU8(a.r + (b.r - a.r) * t),
-            ClampU8(a.g + (b.g - a.g) * t),
-            ClampU8(a.b + (b.b - a.b) * t)
+            ClampU8(float(a.r) + (float(b.r) - float(a.r)) * t),
+            ClampU8(float(a.g) + (float(b.g) - float(a.g)) * t),
+            ClampU8(float(a.b) + (float(b.b) - float(a.b)) * t)
         );
     }
     
@@ -61,10 +61,10 @@ namespace hgl::math
     inline Vector4u8 Lerp(const Vector4u8 &a, const Vector4u8 &b, float t)
     {
         return Vector4u8(
-            ClampU8(a.r + (b.r - a.r) * t),
-            ClampU8(a.g + (b.g - a.g) * t),
-            ClampU8(a.b + (b.b - a.b) * t),
-            ClampU8(a.a + (b.a - a.a) * t)
+            ClampU8(float(a.r) + (float(b.r) - float(a.r)) * t),
+            ClampU8(float(a.g) + (float(b.g) - float(a.g)) * t),
+            ClampU8(float(a.b) + (float(b.b) - float(a.b)) * t),
+            ClampU8(float(a.a) + (float(b.a) - float(a.a)) * t)
         );
     }
     
@@ -153,7 +153,7 @@ namespace hgl::math
      */
     inline uint8_t Lerp(uint8_t a, uint8_t b, float t)
     {
-        return ClampU8(a + (b - a) * t);
+        return ClampU8(float(a) + (float(b) - float(a)) * t);
     }
     
     /**

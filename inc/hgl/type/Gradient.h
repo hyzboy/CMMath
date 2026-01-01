@@ -12,8 +12,9 @@ namespace hgl
     using math::Gradient;
     using math::GradientStop;
     using math::FloatGradient;
-    using math::ColorGradient3f;
-    using math::ColorGradient4f;
     using math::VectorGradient2f;
     using math::VectorGradient3f;
+    
+    // Note: Color gradient aliases are not provided here.
+    // Use Gradient<float, Color3f> after including <hgl/math/Color.h>
 }

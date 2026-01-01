@@ -157,7 +157,7 @@ namespace hgl::math
          */
         virtual void Interpolate(T& result, const T& start, const T& end, float t) const
         {
-            result = lerp(start, end, t);  // 使用 hgl::math::lerp
+            result = hgl::math::lerp(start, end, t);
         }
 
         /**
@@ -226,9 +226,12 @@ namespace hgl::math
 
     // 常用类型别名
     using FloatGradient = Gradient<float, float>;
-    using ColorGradient3f = Gradient<float, Color3f>;
-    using ColorGradient4f = Gradient<float, Color4f>;
     using VectorGradient2f = Gradient<float, Vector2f>;
     using VectorGradient3f = Gradient<float, Vector3f>;
+    
+    // 注意：以下 Color 类型别名需要先包含 <hgl/math/Color.h>
+    // Note: The following Color type aliases require including <hgl/math/Color.h> first
+    // using ColorGradient3f = Gradient<float, Color3f>;
+    // using ColorGradient4f = Gradient<float, Color4f>;
 
 } // namespace hgl::math

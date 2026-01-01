@@ -293,10 +293,9 @@ colorGradient.Get(result, 0.25f);
 3. **依赖关系更清晰**：CMMath 提供数学算法，CMCore 提供基础类型
 4. **提供预定义类型别名**：
    - `FloatGradient` - 浮点数渐变
-   - `ColorGradient3f` - RGB 颜色渐变
-   - `ColorGradient4f` - RGBA 颜色渐变
    - `VectorGradient2f` - 2D 向量渐变
    - `VectorGradient3f` - 3D 向量渐变
+   - 注意：颜色渐变请使用 `Gradient<float, Color3f>` 并包含 `<hgl/math/Color.h>`
 
 ### 使用示例 / Usage Examples
 
@@ -308,8 +307,8 @@ colorGradient.Get(result, 0.25f);
 
 using namespace hgl::math;
 
-// 使用预定义类型别名
-ColorGradient3f gradient;
+// 使用 Gradient 模板定义颜色渐变
+Gradient<float, Color3f> gradient;
 
 // 添加关键点
 gradient.Add(0.0f, Colors::Red);

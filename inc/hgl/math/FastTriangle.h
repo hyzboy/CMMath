@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include<hgl/math/MathConstants.h>
+#include<numbers>
 #include<cmath>
 
 namespace hgl::math
@@ -20,7 +20,7 @@ namespace hgl::math
         float y = fabs(x);
         float p = -0.1565827 * y + 1.570796;
         p *= sqrt(1.0 - y);
-        return x >= 0.0 ? p : math::pi - p;
+        return x >= 0.0 ? p : std::numbers::pi_v<float> - p;
     }
 
     /**

@@ -1,6 +1,6 @@
 #pragma once
 
-#include<hgl/math/MathConstants.h>
+#include<numbers>
 
 namespace hgl::math
 {
@@ -21,13 +21,13 @@ namespace hgl::math
     public:
         constexpr Angle() noexcept : radians_(0.0) {}
         constexpr Angle(Radians rad) noexcept : radians_(rad.value) {}
-        constexpr Angle(Degrees deg) noexcept : radians_(deg.value * math::pi / 180.0) {}
+        constexpr Angle(Degrees deg) noexcept : radians_(deg.value * std::numbers::pi_v<double> / 180.0) {}
 
         static constexpr Angle FromRadians(double value) noexcept { return Angle(Radians(value)); }
         static constexpr Angle FromDegrees(double value) noexcept { return Angle(Degrees(value)); }
 
         constexpr double AsRadians() const noexcept { return radians_; }
-        constexpr double AsDegrees() const noexcept { return radians_ * 180.0 / math::pi; }
+        constexpr double AsDegrees() const noexcept { return radians_ * 180.0 / std::numbers::pi_v<double>; }
 
         constexpr Angle &operator+=(const Angle &rhs) noexcept { radians_ += rhs.radians_; return *this; }
         constexpr Angle &operator-=(const Angle &rhs) noexcept { radians_ -= rhs.radians_; return *this; }

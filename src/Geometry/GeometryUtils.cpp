@@ -1,5 +1,4 @@
 #include<hgl/math/geometry/GeometryUtils.h>
-#include<hgl/math/MathConstants.h>
 #include<hgl/math/FloatPrecision.h>
 #include<glm/glm.hpp>
 #include<cmath>

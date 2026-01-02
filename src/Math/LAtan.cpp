@@ -1,4 +1,4 @@
-﻿#include<hgl/math/MathConstants.h>
+﻿#include<numbers>
 #include<cmath>
 
 namespace hgl::math
@@ -17,12 +17,12 @@ namespace hgl::math
         if (x >= 0)
         {
             r = (x - abs_y) / (x + abs_y);
-            angle = math::pi_4 - math::pi_4 * r;
+            angle = std::numbers::pi_v<double> / 4.0 - std::numbers::pi_v<double> / 4.0 * r;
         }
         else
         {
             r = (x + abs_y) / (abs_y - x);
-            angle = math::pi_3_4 - math::pi_4 * r;
+            angle = 3.0 * std::numbers::pi_v<double> / 4.0 - std::numbers::pi_v<double> / 4.0 * r;
         }
 
         if (y < 0)

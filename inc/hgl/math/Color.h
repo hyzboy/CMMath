@@ -16,7 +16,6 @@
 #include <hgl/math/VectorTypes.h>
 #include <hgl/math/VectorOperations.h>
 #include <hgl/math/VectorLerp.h>
-#include <hgl/math/MathConstants.h>
 #include <algorithm>
 #include <cmath>
 

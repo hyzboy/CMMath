@@ -334,7 +334,7 @@ source_group("Graph\\Camera"            FILES ${CMMATH_GRAPH_HEADERS})
 ## Library Target
 ##==================================================================================================
 
-add_library(CMMath STATIC
+add_cm_library(CMMath "CM"
     ${CMMATH_MATH_HEADERS}
     ${CMMATH_MATH_SOURCES}
     ${CMMATH_GEOMETRY_HEADERS}

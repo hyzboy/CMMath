@@ -91,7 +91,7 @@ namespace hgl::math
          */
         float GetVolume() const
         {
-            return (4.0f / 3.0f) * pi * radius * radius * radius;
+            return (4.0f / 3.0f) * math::pi * radius * radius * radius;
         }
 
         /**
@@ -101,7 +101,7 @@ namespace hgl::math
          */
         float GetSurfaceArea() const
         {
-            return 4.0f * pi * radius * radius;
+            return 4.0f * math::pi * radius * radius;
         }
 
         /**
@@ -247,7 +247,7 @@ namespace hgl::math
          */
         float GetVolume() const
         {
-            return (4.0f / 3.0f) * pi * radius.x * radius.y * radius.z;
+            return (4.0f / 3.0f) * math::pi * radius.x * radius.y * radius.z;
         }
 
         /**
@@ -263,7 +263,7 @@ namespace hgl::math
             float ap = pow(radius.x, p);
             float bp = pow(radius.y, p);
             float cp = pow(radius.z, p);
-            return 4.0f * pi * pow((ap * bp + ap * cp + bp * cp) / 3.0f, 1.0f / p);
+            return 4.0f * math::pi * pow((ap * bp + ap * cp + bp * cp) / 3.0f, 1.0f / p);
         }
 
         /**

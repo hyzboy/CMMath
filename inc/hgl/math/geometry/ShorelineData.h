@@ -198,6 +198,9 @@ namespace hgl::math
          * - shore_normal.x, shore_normal.y
          * - contour_id (as float)
          * 
+         * @warning 此函数使用 new[] 分配内存，调用者必须使用 delete[] 释放
+         * @warning This function allocates memory using new[], caller must free with delete[]
+         * 
          * @param vertex_data 输出顶点数据数组指针
          * @param vertex_count 输出顶点数量
          * @param vertex_stride 顶点步长（浮点数个数）
@@ -216,6 +219,16 @@ namespace hgl::math
             // 分配顶点数据
             if (*vertex_count > 0)
             {
+                // 检查整数溢出
+                if (*vertex_count > std::numeric_limits<int>::max() / vertex_stride)
+                {
+                    *vertex_data = nullptr;
+                    *vertex_count = 0;
+                    *index_data = nullptr;
+                    *index_count = 0;
+                    return;
+                }
+                
                 *vertex_data = new float[*vertex_count * vertex_stride];
                 float* vptr = *vertex_data;
 

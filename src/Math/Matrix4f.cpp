@@ -422,4 +422,216 @@ namespace hgl::math
         
         return glm::angleAxis(angle, axis);
     }
+
+    /**
+     * @brief 生成等距视角投影矩阵（Isometric Projection）
+     *
+     * 等距投影是一种特殊的正交投影，通过固定的旋转角度产生经典2D游戏的视觉效果。
+     * 
+     * 数学原理：
+     * 1. 绕X轴旋转角度α（俯视角度）
+     * 2. 绕Y轴旋转45°（使对角线平行于屏幕）
+     * 3. 应用正交投影
+     * 
+     * 标准等距角度：
+     * - 精确2:1比例：α = arctan(1/√2) ≈ 35.264°
+     * - 传统近似值：α = 30°（Dimetric投影）
+     * 
+     * 坐标系说明：
+     * - 使用右手坐标系（Y轴向上）
+     * - 深度范围 [0, 1]（Vulkan标准）
+     *
+     * @param width 正交视口宽度（世界单位）
+     * @param height 正交视口高度（世界单位）
+     * @param znear 近裁剪面（正值）
+     * @param zfar 远裁剪面（正值）
+     * @param use_precise_ratio 是否使用精确2:1比例角度
+     * @return Matrix4f 等距投影矩阵（列主序）
+     */
+    math::Matrix4f IsometricMatrix(float width, float height, float znear, float zfar, bool use_precise_ratio)
+    {
+        // 1. 确定俯视角度（X轴旋转）
+        float x_rotation_angle;
+        if (use_precise_ratio)
+        {
+            // 精确2:1比例：arctan(1/sqrt(2)) ≈ 35.264°
+            x_rotation_angle = std::atan(1.0f / std::sqrt(2.0f));
+        }
+        else
+        {
+            // 传统30°角度（Dimetric投影）
+            x_rotation_angle = deg2rad(30.0f);
+        }
+        
+        // 2. Y轴旋转固定为45°（π/4）
+        constexpr float y_rotation_angle = std::numbers::pi_v<float> / 4.0f;
+        
+        // 3. 计算旋转矩阵
+        // 注意：矩阵乘法顺序为 Ortho * RotY * RotX
+        // 这样物体先绕X轴旋转（俯视），再绕Y轴旋转（对角线对齐）
+        
+        const float cos_x = std::cos(x_rotation_angle);
+        const float sin_x = std::sin(x_rotation_angle);
+        const float cos_y = std::cos(y_rotation_angle);
+        const float sin_y = std::sin(y_rotation_angle);
+        
+        // 组合旋转矩阵 R = RotY(45°) * RotX(α)
+        // 手动展开矩阵乘法以提高效率
+        const float r00 =  cos_y;
+        const float r01 =  sin_y * sin_x;
+        const float r02 =  sin_y * cos_x;
+        
+        const float r10 =  0.0f;
+        const float r11 =  cos_x;
+        const float r12 = -sin_x;
+        
+        const float r20 = -sin_y;
+        const float r21 =  cos_y * sin_x;
+        const float r22 =  cos_y * cos_x;
+        
+        // 4. 构建正交投影缩放
+        const float sx = 2.0f / width;
+        const float sy = 2.0f / height;
+        const float sz = 1.0f / (znear - zfar);
+        const float tz = znear / (znear - zfar);
+        
+        // 5. 组合为最终投影矩阵：P = Ortho * Rotation
+        // 展开矩阵乘法（列主序）
+        return Matrix4f(
+            /* col0 */ sx * r00,  sy * r01,  sz * r02,  0.0f,
+            /* col1 */ sx * r10,  sy * r11,  sz * r12,  0.0f,
+            /* col2 */ sx * r20,  sy * r21,  sz * r22,  0.0f,
+            /* col3 */ 0.0f,      0.0f,      tz,        1.0f
+        );
+    }
+
+    /**
+     * @brief 简化版等距投影矩阵（使用默认深度范围 0.1 ~ 100）
+     */
+    math::Matrix4f IsometricMatrix(float width, float height)
+    {
+        return IsometricMatrix(width, height, 0.1f, 100.0f, true);
+    }
+
+    /**
+     * 为等距视角生成标准视图矩阵
+     * @param center 场景中心点
+     * @param distance 相机到中心的距离
+     */
+    Matrix4f IsometricViewMatrix(const Vector3f& center, float distance)
+    {
+        // 等距视角的标准相机位置（正上方偏移）
+        Vector3f cam_pos = center + Vector3f(distance, distance, distance);
+        Vector3f up(0, 1, 0);  // 或根据你的坐标系调整
+        
+        return LookAtMatrix(cam_pos, center, up);
+    }
+
+    /**
+     * @brief 将等距投影参数转换为透视投影矩阵
+     *
+     * 用途：实现从等距视角到透视视角的转换。常用于游戏中从策略视角切换到第三人称视角。
+     * 
+     * 转换策略：
+     * 1. 如果未指定FOV，根据等距视口尺寸自动计算合理的FOV（通常45-60度）
+     * 2. 计算宽高比
+     * 3. 使用标准透视投影矩阵
+     * 
+     * 注意：由于等距投影是正交的（无透视），转换后需要配合相机位置调整才能保持相似的场景覆盖范围。
+     * 建议配合 CalculatePerspectiveCameraDistance 函数使用。
+     *
+     * @param iso_width 等距投影的世界宽度
+     * @param iso_height 等距投影的世界高度
+     * @param znear 近裁剪面（正值）
+     * @param zfar 远裁剪面（正值）
+     * @param fov_override 手动指定的垂直FOV（度），0表示自动计算
+     * @return Matrix4f 透视投影矩阵
+     */
+    math::Matrix4f IsometricToPerspectiveMatrix(
+        float iso_width, 
+        float iso_height, 
+        float znear, 
+        float zfar,
+        float fov_override)
+    {
+        // 1. 计算宽高比
+        float aspect_ratio = iso_width / iso_height;
+    
+        // 2. 确定FOV
+        float fov;
+        if (fov_override > 0.0f)
+        {
+            fov = fov_override;
+        }
+        else
+        {
+            // 自动计算FOV：根据等距视口的高度来推算合理的透视FOV
+            // 策略：假设相机距离场景中心的距离约为 iso_height
+            // 使用反正切计算视场角：fov = 2 * atan(iso_height / (2 * distance))
+            // 这里使用经验值，使得转换后的透视视角与等距视角在视觉上相近
+        
+            // 方案1：固定FOV（简单但可能不够灵活）
+            // fov = 45.0f;
+        
+            // 方案2：根据视口尺寸动态计算（推荐）
+            // 假设相机距离为视口高度的1.5倍，这样可以看到完整的等距场景
+            float camera_distance = iso_height * 1.5f;
+            float half_fov_rad = std::atan((iso_height * 0.5f) / camera_distance);
+            fov = rad2deg(half_fov_rad * 2.0f);
+        
+            // 限制FOV在合理范围内（30-90度）
+            fov = std::clamp(fov, 30.0f, 90.0f);
+        }
+    
+        // 3. 使用标准透视投影矩阵
+        return PerspectiveMatrix(fov, aspect_ratio, znear, zfar);
+    }
+
+    /**
+     * 从透视投影参数估算等效的等距投影尺寸
+     * 
+     * @param fov 透视FOV（度）
+     * @param aspect_ratio 宽高比
+     * @param camera_distance 相机到场景的距离
+     * @return Vector2f 推荐的等距投影宽度和高度 (width, height)
+     */
+    Vector2f PerspectiveToIsometricSize(float fov, float aspect_ratio, float camera_distance)
+    {
+        float half_fov_rad = deg2rad(fov * 0.5f);
+        float height = 2.0f * camera_distance * std::tan(half_fov_rad);
+        float width = height * aspect_ratio;
+    
+        return Vector2f(width, height);
+    }
+
+    /**
+     * @brief 计算从等距投影转换到透视投影时的相机距离
+     *
+     * 等距投影使用正交相机，转换为透视投影后，需要将相机后退到合适的距离，
+     * 以保证透视视角下能看到相似范围的场景。
+     *
+     * 计算原理：
+     * 根据透视投影的FOV和期望的视口尺寸，通过三角函数计算相机到场景中心的距离。
+     * distance = (height / 2) / tan(fov / 2)
+     *
+     * @param iso_width 等距投影的世界宽度
+     * @param iso_height 等距投影的世界高度
+     * @param target_fov 目标透视FOV（度）
+     * @return float 推荐的相机距离（世界单位）
+     */
+    float CalculatePerspectiveCameraDistance(
+        float iso_width, 
+        float iso_height, 
+        float target_fov)
+    {
+        // 使用高度作为基准计算距离
+        // 公式：distance = (height / 2) / tan(fov / 2)
+        float half_fov_rad = deg2rad(target_fov * 0.5f);
+        float distance = (iso_height * 0.5f) / std::tan(half_fov_rad);
+    
+        // 可选：添加额外的偏移量以获得更好的视角
+        // distance *= 1.2f;  // 稍微后退一点，避免场景边缘被裁剪
+    
+        return distance;
+    }
 }//namespace hgl::math

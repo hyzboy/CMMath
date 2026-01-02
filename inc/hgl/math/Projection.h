@@ -117,4 +117,67 @@ namespace hgl::math
         const Matrix4f &view,
         const Matrix4f &projection,
         const Vector2u &viewport_size);
+
+    /**
+     * 生成等距视角投影矩阵（Isometric Projection）
+     * 
+     * 实现经典2D游戏风格的2:1等距视角（如《模拟城市》《红色警戒》等）
+     * 
+     * @param width 视口宽度（世界单位）
+     * @param height 视口高度（世界单位）
+     * @param znear 近裁剪面
+     * @param zfar 远裁剪面
+     * @param use_precise_ratio 是否使用精确的2:1比例（默认true）
+     *        true: 使用 arctan(1/√2) ≈ 35.264°（精确2:1）
+     *        false: 使用传统的30°（更平缓，但不是严格2:1）
+     * @return Matrix4f 等距投影矩阵
+     */
+    Matrix4f IsometricMatrix(float width, float height, float znear, float zfar, bool use_precise_ratio = true);
+
+    /**
+     * 生成等距视角投影矩阵（简化版本，使用默认深度范围）
+     */
+    Matrix4f IsometricMatrix(float width, float height);
+
+    /**
+     * 为等距视角生成标准视图矩阵
+     * @param center 场景中心点
+     * @param distance 相机到中心的距离
+     */
+    Matrix4f IsometricViewMatrix(const Vector3f& center, float distance);
+
+    /**
+     * 将等距投影参数转换为透视投影矩阵
+     * 
+     * 该函数用于从等距视角平滑过渡到标准3D透视视角。
+     * 它会自动计算合适的FOV和相机位置，使得透视投影能够显示相似的场景范围。
+     * 
+     * @param iso_width 等距投影的宽度（世界单位）
+     * @param iso_height 等距投影的高度（世界单位）
+     * @param znear 近裁剪面
+     * @param zfar 远裁剪面
+     * @param fov_override 可选：手动指定FOV（度），0表示自动计算
+     * @return Matrix4f 透视投影矩阵
+     */
+    Matrix4f IsometricToPerspectiveMatrix(
+        float iso_width, 
+        float iso_height, 
+        float znear, 
+        float zfar,
+        float fov_override = 0.0f);
+
+    /**
+     * 计算从等距视角到透视视角的相机位置偏移
+     * 
+     * 等距投影通常使用正交相机，转换为透视投影后需要调整相机位置以保持相似的视野范围。
+     * 
+     * @param iso_width 等距投影宽度
+     * @param iso_height 等距投影高度
+     * @param target_fov 目标透视FOV（度）
+     * @return float 推荐的相机后退距离
+     */
+    float CalculatePerspectiveCameraDistance(
+        float iso_width, 
+        float iso_height, 
+        float target_fov);
 }//namespace hgl::math

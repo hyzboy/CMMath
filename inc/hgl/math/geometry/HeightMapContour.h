@@ -23,6 +23,7 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include <functional>
 
 namespace hgl::math
 {

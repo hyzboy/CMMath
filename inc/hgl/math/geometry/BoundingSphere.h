@@ -1,4 +1,5 @@
 #pragma once
+#include<numbers>
 
 #include<hgl/math/Vector.h>
 
@@ -135,7 +136,7 @@ namespace hgl::math
          */
         float GetSurfaceArea() const
         {
-            return 4.0f * math::pi * radius * radius;
+            return 4.0f * std::numbers::pi_v<float> * radius * radius;
         }
 
         /**
@@ -143,7 +144,7 @@ namespace hgl::math
          */
         float GetVolume() const
         {
-            return (4.0f / 3.0f) * math::pi * radius * radius * radius;
+            return (4.0f / 3.0f) * std::numbers::pi_v<float> * radius * radius * radius;
         }
 
     public:

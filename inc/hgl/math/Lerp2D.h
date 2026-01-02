@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include<numbers>
 
 #include<hgl/math/Vector.h>
 #include<hgl/math/LerpType.h>
@@ -24,7 +25,7 @@ namespace hgl
 
         inline float LerpCos(const float from,const float to,const float t)
         {
-            float t2=(1.0f-cos(t*math::pi))/2.0f;
+            float t2=(1.0f-cos(t*std::numbers::pi_v<float>))/2.0f;
 
             return from*(1.0f-t2)+to*t2;
         }
@@ -52,7 +53,7 @@ namespace hgl
 
         inline Vector2f LerpCos(const math::Vector2f &from,const math::Vector2f &to,const float t)
         {
-            float t2=(1.0f-cos(t*math::pi))/2.0f;
+            float t2=(1.0f-cos(t*std::numbers::pi_v<float>))/2.0f;
 
             return from*(1.0f-t2)+to*t2;
         }

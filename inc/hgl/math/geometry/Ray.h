@@ -1,4 +1,5 @@
 #pragma once
+#include<numbers>
 
 #include<hgl/math/geometry/LineSegment.h>
 #include<hgl/math/geometry/Triangle.h>
@@ -60,7 +61,7 @@ namespace hgl::math
         */
         float GetAngle(const Vector3f &point)const
         {
-            return acos(GetAngleCos(point))*180.0f/math::pi;
+            return acos(GetAngleCos(point))*180.0f/std::numbers::pi_v<float>;
         }
 
     public: //距离计算

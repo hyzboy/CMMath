@@ -1,4 +1,5 @@
 #pragma once
+#include<numbers>
 
 #include<hgl/math/Vector.h>
 
@@ -82,7 +83,7 @@ namespace hgl::math
         */
         float GetVolume() const
         {
-            return math::pi * (outer_radius * outer_radius - inner_radius * inner_radius) * height;
+            return std::numbers::pi_v<float> * (outer_radius * outer_radius - inner_radius * inner_radius) * height;
         }
 
         /**
@@ -91,9 +92,9 @@ namespace hgl::math
         float GetSurfaceArea() const
         {
             // 外侧面 + 内侧面 + 顶部圆环 + 底部圆环
-            float lateral_outer = 2.0f * math::pi * outer_radius * height;
-            float lateral_inner = 2.0f * math::pi * inner_radius * height;
-            float ring_area = math::pi * (outer_radius * outer_radius - inner_radius * inner_radius);
+            float lateral_outer = 2.0f * std::numbers::pi_v<float> * outer_radius * height;
+            float lateral_inner = 2.0f * std::numbers::pi_v<float> * inner_radius * height;
+            float ring_area = std::numbers::pi_v<float> * (outer_radius * outer_radius - inner_radius * inner_radius);
             
             return lateral_outer + lateral_inner + 2.0f * ring_area;
         }

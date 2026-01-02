@@ -1,4 +1,5 @@
 #pragma once
+#include<numbers>
 
 #include<hgl/math/VectorTypes.h>
 #include<hgl/math/VectorOperations.h>
@@ -120,7 +121,7 @@ namespace hgl::math
         double val=Dot(ray_dir, Normalized(pos - ray_pos));
 
         if(val>1)return 0;
-        if(val<-1)return math::pi;
+        if(val<-1)return std::numbers::pi_v<float>;
     
         return acos(val);
     }

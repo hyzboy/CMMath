@@ -15,7 +15,7 @@
 #pragma once
 
 #include<cmath>
-#include<hgl/math/MathConstants.h>
+#include<numbers>
 #include<hgl/math/Vector.h>
 #include<hgl/math/geometry/AABB.h>
 
@@ -92,7 +92,7 @@ namespace hgl::math
          */
         float GetVolume() const
         {
-            return (4.0f / 3.0f) * math::pi * radius * radius * radius;
+            return (4.0f / 3.0f) * std::numbers::pi_v<float> * radius * radius * radius;
         }
 
         /**
@@ -102,7 +102,7 @@ namespace hgl::math
          */
         float GetSurfaceArea() const
         {
-            return 4.0f * math::pi * radius * radius;
+            return 4.0f * std::numbers::pi_v<float> * radius * radius;
         }
 
         /**
@@ -245,7 +245,7 @@ namespace hgl::math
          */
         float GetVolume() const
         {
-            return (4.0f / 3.0f) * math::pi * radius.x * radius.y * radius.z;
+            return (4.0f / 3.0f) * std::numbers::pi_v<float> * radius.x * radius.y * radius.z;
         }
 
         /**
@@ -261,7 +261,7 @@ namespace hgl::math
             float ap = pow(radius.x, p);
             float bp = pow(radius.y, p);
             float cp = pow(radius.z, p);
-            return 4.0f * math::pi * pow((ap * bp + ap * cp + bp * cp) / 3.0f, 1.0f / p);
+            return 4.0f * std::numbers::pi_v<float> * pow((ap * bp + ap * cp + bp * cp) / 3.0f, 1.0f / p);
         }
 
         /**

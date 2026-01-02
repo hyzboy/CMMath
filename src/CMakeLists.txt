@@ -19,10 +19,9 @@ set(CMMATH_GRAPH_INCLUDE_PATH       ${CMMATH_ROOT_INCLUDE_PATH}/hgl/graph)
 
 # Core: Constants and fundamental utilities
 set(CMMATH_MATH_CORE_HEADERS
-    ${CMMATH_MATH_INCLUDE_PATH}/MathConstants.h
     ${CMMATH_MATH_INCLUDE_PATH}/TrigConstants.h
     ${CMMATH_MATH_INCLUDE_PATH}/MathUtils.h
-    ${CMMATH_MATH_INCLUDE_PATH}/PhysicsConst.h
+    ${CMMATH_MATH_INCLUDE_PATH}/PhysicsCalculations.h
     ${CMMATH_MATH_INCLUDE_PATH}/Projection.h
     ${CMMATH_MATH_INCLUDE_PATH}/Sum.h
     ${CMMATH_MATH_INCLUDE_PATH}/Clamp.h

@@ -14,7 +14,7 @@
 
 #include <hgl/math/VectorTypes.h>
 #include <hgl/math/Color.h>
-#include <hgl/math/MathConstants.h>
+#include <numbers>
 #include <cmath>
 
 namespace hgl::math
@@ -109,7 +109,7 @@ namespace hgl::math
          */
         constexpr float ToCandela() const noexcept
         {
-            return lumens_ / (4.0f * 3.14159265359f);
+            return lumens_ / (4.0f * std::numbers::pi_v<float>);
         }
         
         /**
@@ -122,7 +122,7 @@ namespace hgl::math
         float CalculateIlluminance(float distance) const noexcept
         {
             if (distance <= 0.0f) return 0.0f;
-            return lumens_ / (4.0f * 3.14159265359f * distance * distance);
+            return lumens_ / (4.0f * std::numbers::pi_v<float> * distance * distance);
         }
         
         // ==================== 操作符重载 ====================
@@ -592,7 +592,7 @@ namespace hgl::math
     {
         if (distance <= 0.0f) return 0.0f;
         // E = Φ / (4π * r²)
-        return luminousFlux.AsLumen() / (4.0f * pi_f * distance * distance);
+        return luminousFlux.AsLumen() / (4.0f * std::numbers::pi_v<float> * distance * distance);
     }
     
     /**
@@ -605,7 +605,7 @@ namespace hgl::math
     {
         if (distance <= 0.0f || luminousFluxLumens < 0.0f) return 0.0f;
         // E = Φ / (4π * r²)
-        return luminousFluxLumens / (4.0f * pi_f * distance * distance);
+        return luminousFluxLumens / (4.0f * std::numbers::pi_v<float> * distance * distance);
     }
     
     /**

@@ -10,7 +10,6 @@
 
 #pragma once
 
-#include<hgl/math/MathConstants.h>
 #include<numbers>
 #include<concepts>
 
@@ -18,57 +17,53 @@ namespace hgl::math
 {    
     // ==================== 常用三角函数值（C++20 constexpr） ====================
     
-    // √2/2 的精确值
-    inline constexpr double sqrt2_over_2 = std::numbers::sqrt2_v<double> / 2.0;
-    inline constexpr float sqrt2_over_2_f = std::numbers::sqrt2_v<float> / 2.0f;
-    
     // 余弦值
     namespace cos_values {
         inline constexpr double deg_0   = 1.0;
-        inline constexpr double deg_45  = sqrt2_over_2;
+        inline constexpr double deg_45  = std::numbers::sqrt2_v<double> / 2.0;
         inline constexpr double deg_90  = 0.0;
-        inline constexpr double deg_135 = -sqrt2_over_2;
+        inline constexpr double deg_135 = -(std::numbers::sqrt2_v<double> / 2.0);
         inline constexpr double deg_180 = -1.0;
-        inline constexpr double deg_225 = -sqrt2_over_2;
+        inline constexpr double deg_225 = -(std::numbers::sqrt2_v<double> / 2.0);
         inline constexpr double deg_270 = 0.0;
-        inline constexpr double deg_315 = sqrt2_over_2;
+        inline constexpr double deg_315 = std::numbers::sqrt2_v<double> / 2.0;
     }
     
     // 正弦值
     namespace sin_values {
         inline constexpr double deg_0   = 0.0;
-        inline constexpr double deg_45  = sqrt2_over_2;
+        inline constexpr double deg_45  = std::numbers::sqrt2_v<double> / 2.0;
         inline constexpr double deg_90  = 1.0;
-        inline constexpr double deg_135 = sqrt2_over_2;
+        inline constexpr double deg_135 = std::numbers::sqrt2_v<double> / 2.0;
         inline constexpr double deg_180 = 0.0;
-        inline constexpr double deg_225 = -sqrt2_over_2;
+        inline constexpr double deg_225 = -(std::numbers::sqrt2_v<double> / 2.0);
         inline constexpr double deg_270 = -1.0;
-        inline constexpr double deg_315 = -sqrt2_over_2;
+        inline constexpr double deg_315 = -(std::numbers::sqrt2_v<double> / 2.0);
     }
     
     // ==================== 常用角度的弧度值 ====================
     
     namespace radians {
         inline constexpr double deg_0   = 0.0;
-        inline constexpr double deg_45  = pi / 4.0;
-        inline constexpr double deg_90  = pi / 2.0;
-        inline constexpr double deg_135 = 3.0 * pi / 4.0;
-        inline constexpr double deg_180 = pi;
-        inline constexpr double deg_225 = 5.0 * pi / 4.0;
-        inline constexpr double deg_270 = 3.0 * pi / 2.0;
-        inline constexpr double deg_315 = 7.0 * pi / 4.0;
-        inline constexpr double deg_360 = 2.0 * pi;
+        inline constexpr double deg_45  = std::numbers::pi_v<double> / 4.0;
+        inline constexpr double deg_90  = std::numbers::pi_v<double> / 2.0;
+        inline constexpr double deg_135 = 3.0 * std::numbers::pi_v<double> / 4.0;
+        inline constexpr double deg_180 = std::numbers::pi_v<double>;
+        inline constexpr double deg_225 = 5.0 * std::numbers::pi_v<double> / 4.0;
+        inline constexpr double deg_270 = 3.0 * std::numbers::pi_v<double> / 2.0;
+        inline constexpr double deg_315 = 7.0 * std::numbers::pi_v<double> / 4.0;
+        inline constexpr double deg_360 = 2.0 * std::numbers::pi_v<double>;
         
         // float 版本
         inline constexpr float deg_0_f   = 0.0f;
-        inline constexpr float deg_45_f  = pi_f / 4.0f;
-        inline constexpr float deg_90_f  = pi_f / 2.0f;
-        inline constexpr float deg_135_f = 3.0f * pi_f / 4.0f;
-        inline constexpr float deg_180_f = pi_f;
-        inline constexpr float deg_225_f = 5.0f * pi_f / 4.0f;
-        inline constexpr float deg_270_f = 3.0f * pi_f / 2.0f;
-        inline constexpr float deg_315_f = 7.0f * pi_f / 4.0f;
-        inline constexpr float deg_360_f = 2.0f * pi_f;
+        inline constexpr float deg_45_f  = std::numbers::pi_v<float> / 4.0f;
+        inline constexpr float deg_90_f  = std::numbers::pi_v<float> / 2.0f;
+        inline constexpr float deg_135_f = 3.0f * std::numbers::pi_v<float> / 4.0f;
+        inline constexpr float deg_180_f = std::numbers::pi_v<float>;
+        inline constexpr float deg_225_f = 5.0f * std::numbers::pi_v<float> / 4.0f;
+        inline constexpr float deg_270_f = 3.0f * std::numbers::pi_v<float> / 2.0f;
+        inline constexpr float deg_315_f = 7.0f * std::numbers::pi_v<float> / 4.0f;
+        inline constexpr float deg_360_f = 2.0f * std::numbers::pi_v<float>;
     }
     
     // ==================== 角度与弧度转换（C++20 Concepts） ====================

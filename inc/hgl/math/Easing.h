@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <hgl/math/MathConstants.h>
+#include <numbers>
 #include <cmath>
 
 namespace hgl::math
@@ -166,7 +166,7 @@ namespace hgl::math
      */
     inline float EaseInSine(float t)
     {
-        return 1.0f - std::cos(t * pi_2);
+        return 1.0f - std::cos(t * std::numbers::pi_v<float> / 2.0f);
     }
     
     /**
@@ -174,7 +174,7 @@ namespace hgl::math
      */
     inline float EaseOutSine(float t)
     {
-        return std::sin(t * pi_2);
+        return std::sin(t * std::numbers::pi_v<float> / 2.0f);
     }
     
     /**
@@ -182,7 +182,7 @@ namespace hgl::math
      */
     inline float EaseInOutSine(float t)
     {
-        return -(std::cos(pi * t) - 1.0f) / 2.0f;
+        return -(std::cos(std::numbers::pi_v<float> * t) - 1.0f) / 2.0f;
     }
     
     // ==================== 指数缓动 (Exponential) ====================
@@ -256,7 +256,7 @@ namespace hgl::math
         if (t == 0.0f) return 0.0f;
         if (t == 1.0f) return 1.0f;
         
-        constexpr float c4 = (2.0f * pi) / 3.0f;
+        constexpr float c4 = (2.0f * std::numbers::pi_v<float>) / 3.0f;
         return -std::pow(2.0f, 10.0f * t - 10.0f) * std::sin((t * 10.0f - 10.75f) * c4);
     }
     
@@ -269,7 +269,7 @@ namespace hgl::math
         if (t == 0.0f) return 0.0f;
         if (t == 1.0f) return 1.0f;
         
-        constexpr float c4 = (2.0f * pi) / 3.0f;
+        constexpr float c4 = (2.0f * std::numbers::pi_v<float>) / 3.0f;
         return std::pow(2.0f, -10.0f * t) * std::sin((t * 10.0f - 0.75f) * c4) + 1.0f;
     }
     
@@ -281,7 +281,7 @@ namespace hgl::math
         if (t == 0.0f) return 0.0f;
         if (t == 1.0f) return 1.0f;
         
-        constexpr float c5 = (2.0f * pi) / 4.5f;
+        constexpr float c5 = (2.0f * std::numbers::pi_v<float>) / 4.5f;
         
         return t < 0.5f
             ? -(std::pow(2.0f, 20.0f * t - 10.0f) * std::sin((20.0f * t - 11.125f) * c5)) / 2.0f

@@ -2,6 +2,7 @@
 
 #include<hgl/math/Vector.h>
 #include<hgl/math/LerpType.h>
+#include<numbers>
 
 namespace hgl
 {
@@ -46,7 +47,7 @@ namespace hgl
         template<typename T>
         inline T LerpCos(const T &from, const T &to, const float t)
         {
-            float t2 = (1.0f - cos(t * math::pi)) / 2.0f;
+            float t2 = (1.0f - cos(t * std::numbers::pi_v<float>)) / 2.0f;
             return from * (1.0f - t2) + to * t2;
         }
 
@@ -187,7 +188,7 @@ namespace hgl
          */
         inline float LerpCos(const float from, const float to, const float t)
         {
-            float t2 = (1.0f - cos(t * math::pi)) / 2.0f;
+            float t2 = (1.0f - cos(t * std::numbers::pi_v<float>)) / 2.0f;
             return from * (1.0f - t2) + to * t2;
         }
 
@@ -463,7 +464,7 @@ namespace hgl
         inline float LerpEaseInElastic(const float from, const float to, const float t)
         {
             float eased = (t == 0.0f) ? 0.0f : (t == 1.0f) ? 1.0f :
-                         -pow(2.0f, 10.0f * t - 10.0f) * sin((t * 10.0f - 10.75f) * (2.0f * math::pi) / 3.0f);
+                         -pow(2.0f, 10.0f * t - 10.0f) * sin((t * 10.0f - 10.75f) * (2.0f * std::numbers::pi_v<float>) / 3.0f);
             return from + (to - from) * eased;
         }
 
@@ -473,7 +474,7 @@ namespace hgl
         inline float LerpEaseOutElastic(const float from, const float to, const float t)
         {
             float eased = (t == 0.0f) ? 0.0f : (t == 1.0f) ? 1.0f :
-                         pow(2.0f, -10.0f * t) * sin((t * 10.0f - 0.75f) * (2.0f * math::pi) / 3.0f) + 1.0f;
+                         pow(2.0f, -10.0f * t) * sin((t * 10.0f - 0.75f) * (2.0f * std::numbers::pi_v<float>) / 3.0f) + 1.0f;
             return from + (to - from) * eased;
         }
 
@@ -483,8 +484,8 @@ namespace hgl
         inline float LerpEaseInOutElastic(const float from, const float to, const float t)
         {
             float eased = (t == 0.0f) ? 0.0f : (t == 1.0f) ? 1.0f :
-                         (t < 0.5f) ? -(pow(2.0f, 20.0f * t - 10.0f) * sin((20.0f * t - 11.125f) * (2.0f * math::pi) / 4.5f)) / 2.0f :
-                         (pow(2.0f, -20.0f * t + 10.0f) * sin((20.0f * t - 11.125f) * (2.0f * math::pi) / 4.5f)) / 2.0f + 1.0f;
+                         (t < 0.5f) ? -(pow(2.0f, 20.0f * t - 10.0f) * sin((20.0f * t - 11.125f) * (2.0f * std::numbers::pi_v<float>) / 4.5f)) / 2.0f :
+                         (pow(2.0f, -20.0f * t + 10.0f) * sin((20.0f * t - 11.125f) * (2.0f * std::numbers::pi_v<float>) / 4.5f)) / 2.0f + 1.0f;
             return from + (to - from) * eased;
         }
 

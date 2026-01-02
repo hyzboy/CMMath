@@ -14,8 +14,8 @@
  */
 #pragma once
 
-#include<hgl/math/Vector.h>
 #include<hgl/math/MathConstants.h>
+#include<hgl/math/Vector.h>
 #include<hgl/math/geometry/AABB.h>
 
 namespace hgl::math
@@ -197,8 +197,8 @@ namespace hgl::math
      */
     class EllipseSphere
     {
-        Vector3f center;  // Ellipsoid center position
-        Vector3f radius;  // Three axis radii (rx, ry, rz)
+        Vector3f center{0, 0, 0};  // Ellipsoid center position
+        Vector3f radius{1, 1, 1};  // Three axis radii (rx, ry, rz)
 
     public:
 
@@ -214,10 +214,7 @@ namespace hgl::math
          * Default constructor
          * Creates a unit ellipsoid at origin with all radii = 1 (degenerates to sphere)
          */
-        EllipseSphere()
-            : center(0, 0, 0), radius(1, 1, 1)
-        {
-        }
+        EllipseSphere() = default;
 
         /**
          * Parameterized constructor

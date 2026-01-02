@@ -157,6 +157,8 @@ set(CMMATH_GEOMETRY_2D_HEADERS
     ${CMMATH_GEOMETRY_INCLUDE_PATH}/AABB2D.h
     ${CMMATH_GEOMETRY_INCLUDE_PATH}/Collision2D.h
     ${CMMATH_GEOMETRY_INCLUDE_PATH}/Polygon2D.h
+    ${CMMATH_GEOMETRY_INCLUDE_PATH}/HeightMapContour.h
+    ${CMMATH_GEOMETRY_INCLUDE_PATH}/ShorelineData.h
 )
 
 # Queries: Collision detection and query algorithms
@@ -196,6 +198,12 @@ set(CMMATH_GEOMETRY_BOUNDING_SOURCES
     Geometry/OBB_SetFromPoints_AVX2.cpp
     Geometry/BoundingSphere.cpp
     Geometry/BoundingVolumes.cpp
+)
+
+# 2D sources
+set(CMMATH_GEOMETRY_2D_SOURCES
+    Geometry/HeightMapContour.cpp
+    Geometry/ShorelineData.cpp
 )
 
 # Query sources
@@ -294,6 +302,7 @@ set(CMMATH_GEOMETRY_SOURCES
     ${CMMATH_GEOMETRY_QUERY_SOURCES}
     ${CMMATH_GEOMETRY_QUERIES_SOURCES}
     ${CMMATH_GEOMETRY_UTILS_SOURCES}
+    ${CMMATH_GEOMETRY_2D_SOURCES}
 )
 
 ##==================================================================================================
@@ -316,7 +325,7 @@ source_group("Geometry\\Primitives"     FILES ${CMMATH_GEOMETRY_PRIMITIVES_HEADE
 source_group("Geometry\\Solids"         FILES ${CMMATH_GEOMETRY_SOLIDS_HEADERS})
 source_group("Geometry\\Bounding"       FILES ${CMMATH_GEOMETRY_BOUNDING_HEADERS}       ${CMMATH_GEOMETRY_BOUNDING_SOURCES})
 source_group("Geometry\\Query"          FILES ${CMMATH_GEOMETRY_QUERY_HEADERS}          ${CMMATH_GEOMETRY_QUERY_SOURCES})
-source_group("Geometry\\2D"             FILES ${CMMATH_GEOMETRY_2D_HEADERS})
+source_group("Geometry\\2D"             FILES ${CMMATH_GEOMETRY_2D_HEADERS}             ${CMMATH_GEOMETRY_2D_SOURCES})
 source_group("Geometry\\Queries"        FILES ${CMMATH_GEOMETRY_QUERIES_HEADERS}        ${CMMATH_GEOMETRY_QUERIES_SOURCES})
 source_group("Geometry\\Utils"          FILES ${CMMATH_GEOMETRY_UTILS_HEADERS}          ${CMMATH_GEOMETRY_UTILS_SOURCES})
 source_group("Geometry\\Unified"        FILES ${CMMATH_GEOMETRY_UNIFIED_HEADERS})

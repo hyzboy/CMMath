@@ -1,5 +1,5 @@
 #include<hgl/math/geometry/Ray.h>
-#include<hgl/math/geometry/Sphere.h>
+#include<hgl/math/geometry/primitives/Sphere.h>
 #include<hgl/math/geometry/AABB.h>
 #include<hgl/math/geometry/OBB.h>
 #include<hgl/graph/CameraInfo.h>

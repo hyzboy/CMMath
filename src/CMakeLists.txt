@@ -104,19 +104,16 @@ set(CMMATH_MATH_HEADERS
 ##==================================================================================================
 
 # Geometry Primitives: Basic geometric shapes
+# Note: Sphere moved to primitives/ directory
 set(CMMATH_GEOMETRY_PRIMITIVES_HEADERS
     ${CMMATH_GEOMETRY_INCLUDE_PATH}/Plane.h
-    ${CMMATH_GEOMETRY_INCLUDE_PATH}/Sphere.h
     ${CMMATH_GEOMETRY_INCLUDE_PATH}/Triangle.h
 )
 
 # Geometry Solids: 3D solid shapes
+# Note: Capsule, Cylinder, Cone, Torus moved to primitives/ directory
 set(CMMATH_GEOMETRY_SOLIDS_HEADERS
-    ${CMMATH_GEOMETRY_INCLUDE_PATH}/Capsule.h
-    ${CMMATH_GEOMETRY_INCLUDE_PATH}/Cylinder.h
     ${CMMATH_GEOMETRY_INCLUDE_PATH}/HollowCylinder.h
-    ${CMMATH_GEOMETRY_INCLUDE_PATH}/Cone.h
-    ${CMMATH_GEOMETRY_INCLUDE_PATH}/Torus.h
 )
 
 # Geometry Bounding: Bounding volumes
@@ -274,9 +271,8 @@ set(CMMATH_GEOMETRY_QUERY_SOURCES
 )
 
 # Geometry Solids sources
+# Note: Cone.cpp and Cylinder.cpp removed - implementations now inline in primitives/ headers
 set(CMMATH_GEOMETRY_SOLIDS_SOURCES
-    Geometry/Cylinder.cpp
-    Geometry/Cone.cpp
 )
 
 # Geometry Utils sources

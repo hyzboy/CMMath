@@ -27,6 +27,12 @@ set(TEST_EXECUTABLES
     test_raycast_query
     test_distance_query
     test_containment_query
+    test_obb
+    test_triangle
+    test_frustum
+    test_collision_2d
+    test_line_segment
+    test_hollow_cylinder
 )
 
 # Create test executables
@@ -61,6 +67,24 @@ add_custom_target(run_all_tests
     COMMAND echo ""
     COMMAND echo "Running Containment Query Tests..."
     COMMAND test_containment_query
+    COMMAND echo ""
+    COMMAND echo "Running OBB Tests..."
+    COMMAND test_obb
+    COMMAND echo ""
+    COMMAND echo "Running Triangle Tests..."
+    COMMAND test_triangle
+    COMMAND echo ""
+    COMMAND echo "Running Frustum Tests..."
+    COMMAND test_frustum
+    COMMAND echo ""
+    COMMAND echo "Running 2D Collision Tests..."
+    COMMAND test_collision_2d
+    COMMAND echo ""
+    COMMAND echo "Running LineSegment Tests..."
+    COMMAND test_line_segment
+    COMMAND echo ""
+    COMMAND echo "Running HollowCylinder Tests..."
+    COMMAND test_hollow_cylinder
     DEPENDS ${TEST_EXECUTABLES}
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )

@@ -1,7 +1,8 @@
 ﻿#include<hgl/math/MatrixOperations.h>
 #include<hgl/math/Projection.h>
 #include<hgl/math/TrigConstants.h>
-#include<hgl/math/MathConstants.h>
+#include<numbers>
+#include<cmath>
 
 // Vulkan Cookbook
 // ISBN: 9781786468154
@@ -101,7 +102,7 @@ namespace hgl::math
                                 float znear,
                                 float zfar)
     {
-        float f = 1.0f / tanf( deg2rad( 0.5f * field_of_view ) );
+        float f = 1.0f / std::tan( deg2rad( 0.5f * field_of_view ) );
 
         return Matrix4f(
           -f / aspect_ratio,
@@ -374,12 +375,12 @@ namespace hgl::math
                 : glm::cross(old_direction, math::Vector3f(1.0f, 0.0f, 0.0f));
             
             axis = glm::normalize(axis);
-            return glm::rotate(Matrix4f(1.0f), pi_f, axis);
+            return glm::rotate(Matrix4f(1.0f), std::numbers::pi_v<float>, axis);
         }
         
         // 一般情况：计算旋转轴和角度
         math::Vector3f axis = glm::normalize(glm::cross(old_direction, new_direction));
-        float angle = acos(glm::clamp(dot_product, -1.0f, 1.0f));
+        float angle = std::acos(glm::clamp(dot_product, -1.0f, 1.0f));
         
         return glm::rotate(Matrix4f(1.0f), angle, axis);
     }
@@ -412,12 +413,12 @@ namespace hgl::math
                 : glm::cross(old_direction, math::Vector3f(1.0f, 0.0f, 0.0f));
             
             axis = glm::normalize(axis);
-            return glm::angleAxis(float(pi), axis);
+            return glm::angleAxis(std::numbers::pi_v<float>, axis);
         }
         
         // 一般情况：计算旋转轴和角度
         math::Vector3f axis = glm::normalize(glm::cross(old_direction, new_direction));
-        float angle = acos(glm::clamp(dot_product, -1.0f, 1.0f));
+        float angle = std::acos(glm::clamp(dot_product, -1.0f, 1.0f));
         
         return glm::angleAxis(angle, axis);
     }

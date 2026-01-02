@@ -1,15 +1,15 @@
-﻿/**
+/**
  * Random.cpp - 随机数生成工具实现
  * 
  * PCG 算法和随机采样函数的实现。
  */
 
 #include <hgl/math/Random.h>
-#include <hgl/math/MathConstants.h>
 #include <hgl/math/geometry/AABB.h>
 #include <hgl/math/geometry/AABB2D.h>
 #include <chrono>
 #include <cmath>
+#include <numbers>
 
 namespace hgl::math
 {
@@ -119,26 +119,26 @@ namespace hgl::math
     
     Vector2f RandomGenerator::NextVector2InCircle()
     {
-        float angle = NextFloat(0.0f, 2.0f * float(hgl::math::pi));
-        float radius = sqrtf(NextFloat(0.0f, 1.0f));
-        return Vector2f(cosf(angle) * radius, sinf(angle) * radius);
+        float angle = NextFloat(0.0f, 2.0f * std::numbers::pi_v<float>);
+        float radius = std::sqrt(NextFloat(0.0f, 1.0f));
+        return Vector2f(std::cos(angle) * radius, std::sin(angle) * radius);
     }
 
     Vector3f RandomGenerator::NextVector3OnSphere()
     {
-        float phi = NextFloat(0.0f, 2.0f * float(hgl::math::pi));
+        float phi = NextFloat(0.0f, 2.0f * std::numbers::pi_v<float>);
         float cos_theta = NextFloat(-1.0f, 1.0f);
-        float sin_theta = sqrtf(1.0f - cos_theta * cos_theta);
-        return Vector3f(sin_theta * cosf(phi), sin_theta * sinf(phi), cos_theta);
+        float sin_theta = std::sqrt(1.0f - cos_theta * cos_theta);
+        return Vector3f(sin_theta * std::cos(phi), sin_theta * std::sin(phi), cos_theta);
     }
 
     Vector2f RandomGenerator::NextVector2Gaussian()
     {
         float u1 = NextFloat(0.0f, 1.0f);
         float u2 = NextFloat(0.0f, 1.0f);
-        float theta = 2.0f * float(hgl::math::pi) * u2;
-        float r = sqrtf(-2.0f * logf(u1));
-        return Vector2f(r * cosf(theta), r * sinf(theta));
+        float theta = 2.0f * std::numbers::pi_v<float> * u2;
+        float r = std::sqrt(-2.0f * std::log(u1));
+        return Vector2f(r * std::cos(theta), r * std::sin(theta));
     }
     
     // ==================== 全局默认生成器 ====================
@@ -175,7 +175,7 @@ namespace hgl::math
     Vector2f RandomOnUnitCircle()
     {
         RandomGenerator& rng = GetDefaultRNG();
-        float angle = rng.NextFloat(0.0f, 2.0f * pi);
+        float angle = rng.NextFloat(0.0f, 2.0f * std::numbers::pi_v<float>);
         return Vector2f(std::cos(angle), std::sin(angle));
     }
     
@@ -212,7 +212,7 @@ namespace hgl::math
         // Marsaglia 方法生成均匀分布的单位球面点
         RandomGenerator& rng = GetDefaultRNG();
         float z = rng.NextFloat(-1.0f, 1.0f);
-        float phi = rng.NextFloat(0.0f, 2.0f * pi);
+        float phi = rng.NextFloat(0.0f, 2.0f * std::numbers::pi_v<float>);
         float r = std::sqrt(1.0f - z * z);
         
         return Vector3f(r * std::cos(phi), r * std::sin(phi), z);
@@ -256,7 +256,7 @@ namespace hgl::math
         } while (u1 <= 1e-7f);  // 避免 log(0)
         
         float radius = std::sqrt(-2.0f * std::log(u1));
-        float theta = 2.0f * pi * u2;
+        float theta = 2.0f * std::numbers::pi_v<float> * u2;
         
         spare = radius * std::sin(theta);
         return mean + stddev * radius * std::cos(theta);

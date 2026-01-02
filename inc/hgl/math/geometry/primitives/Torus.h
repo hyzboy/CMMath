@@ -8,7 +8,8 @@
 
 #include<hgl/math/Vector.h>
 #include<hgl/math/geometry/AABB.h>
-#include<hgl/math/MathConstants.h>
+#include<numbers>
+#include<cmath>
 
 namespace hgl::math
 {
@@ -99,7 +100,8 @@ namespace hgl::math
          */
         float GetVolume() const
         {
-            return 2.0f * hgl::math::pi * hgl::math::pi * major_radius * minor_radius * minor_radius;
+            constexpr float pi_squared = std::numbers::pi_v<float> * std::numbers::pi_v<float>;
+            return 2.0f * pi_squared * major_radius * minor_radius * minor_radius;
         }
 
         /**
@@ -109,7 +111,8 @@ namespace hgl::math
          */
         float GetSurfaceArea() const
         {
-            return 4.0f * hgl::math::pi * hgl::math::pi * major_radius * minor_radius;
+            constexpr float pi_squared = std::numbers::pi_v<float> * std::numbers::pi_v<float>;
+            return 4.0f * pi_squared * major_radius * minor_radius;
         }
 
         /**
@@ -137,7 +140,7 @@ namespace hgl::math
             float plane_distance = Length(plane_projection);
             
             // Distance to tube centerline
-            float distance_to_tube_center = sqrt(
+            float distance_to_tube_center = std::sqrt(
                 (plane_distance - major_radius) * (plane_distance - major_radius) + 
                 axis_component * axis_component
             );
@@ -168,7 +171,7 @@ namespace hgl::math
             else
             {
                 // Point on axis - choose arbitrary direction
-                if (abs(axis.x) < 0.9f)
+                if (std::abs(axis.x) < 0.9f)
                     tube_center_direction = Cross(axis, Vector3f(1, 0, 0));
                 else
                     tube_center_direction = Cross(axis, Vector3f(0, 1, 0));
@@ -205,7 +208,7 @@ namespace hgl::math
             Vector3f plane_projection = to_point - axis * axis_component;
             float plane_distance = Length(plane_projection);
             
-            float distance_to_tube_center = sqrt(
+            float distance_to_tube_center = std::sqrt(
                 (plane_distance - major_radius) * (plane_distance - major_radius) + 
                 axis_component * axis_component
             );

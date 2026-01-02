@@ -9,6 +9,8 @@
 
 #include<hgl/math/Vector.h>
 #include<hgl/math/geometry/AABB.h>
+#include<numbers>
+#include<cmath>
 
 namespace hgl::math
 {
@@ -110,7 +112,7 @@ namespace hgl::math
          */
         float GetVolume() const
         {
-            return pi * radius * radius * height;
+            return std::numbers::pi_v<float> * radius * radius * height;
         }
 
         /**
@@ -120,7 +122,7 @@ namespace hgl::math
          */
         float GetSurfaceArea() const
         {
-            return 2.0f * pi * radius * (radius + height);
+            return 2.0f * std::numbers::pi_v<float> * radius * (radius + height);
         }
 
         /**
@@ -140,7 +142,7 @@ namespace hgl::math
             
             // Check height bounds
             float half_height = height * 0.5f;
-            if (abs(axis_projection) > half_height)
+            if (std::abs(axis_projection) > half_height)
                 return false;
             
             // Check radial distance

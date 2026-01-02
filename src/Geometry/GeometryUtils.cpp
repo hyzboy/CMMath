@@ -1,9 +1,9 @@
 ﻿#include<hgl/math/geometry/GeometryUtils.h>
 #include<hgl/math/FloatPrecision.h>
-#include<hgl/math/MathConstants.h>
 #include<glm/glm.hpp>
 #include<cmath>
 #include<algorithm>
+#include<numbers>
 
 namespace hgl::math
 {
@@ -58,7 +58,6 @@ namespace hgl::math
         dot = std::clamp(dot, -1.0f, 1.0f);
         
         // 计算夹角并转换为度数
-        // 使用 hgl::math::pi_f 常量
-        return std::acos(dot) * 180.0f / pi_f;
+        return std::acos(dot) * 180.0f / std::numbers::pi_v<float>;
     }
 }//namespace hgl::math

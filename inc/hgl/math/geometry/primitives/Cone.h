@@ -8,6 +8,8 @@
 
 #include<hgl/math/Vector.h>
 #include<hgl/math/geometry/AABB.h>
+#include<numbers>
+#include<cmath>
 
 namespace hgl::math
 {
@@ -112,7 +114,7 @@ namespace hgl::math
          */
         float GetVolume() const
         {
-            return (1.0f / 3.0f) * pi * base_radius * base_radius * height;
+            return (1.0f / 3.0f) * std::numbers::pi_v<float> * base_radius * base_radius * height;
         }
 
         /**
@@ -122,8 +124,8 @@ namespace hgl::math
          */
         float GetSurfaceArea() const
         {
-            float slant_height = sqrt(height * height + base_radius * base_radius);
-            return pi * base_radius * (base_radius + slant_height);
+            float slant_height = std::sqrt(height * height + base_radius * base_radius);
+            return std::numbers::pi_v<float> * base_radius * (base_radius + slant_height);
         }
 
         /**
@@ -132,8 +134,8 @@ namespace hgl::math
          */
         float GetLateralArea() const
         {
-            float slant_height = sqrt(height * height + base_radius * base_radius);
-            return pi * base_radius * slant_height;
+            float slant_height = std::sqrt(height * height + base_radius * base_radius);
+            return std::numbers::pi_v<float> * base_radius * slant_height;
         }
 
         /**
@@ -224,7 +226,7 @@ namespace hgl::math
                 {
                     // Point on axis - choose arbitrary direction
                     Vector3f perpendicular;
-                    if (abs(axis.x) < 0.9f)
+                    if (std::abs(axis.x) < 0.9f)
                         perpendicular = Cross(axis, Vector3f(1, 0, 0));
                     else
                         perpendicular = Cross(axis, Vector3f(0, 1, 0));

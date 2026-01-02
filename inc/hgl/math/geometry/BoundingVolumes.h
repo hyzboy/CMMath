@@ -1,10 +1,9 @@
 ﻿#pragma once
-#include<hgl/math/MathConstants.h>
-#include<hgl/math/Vector.h>
-#include<hgl/math/MatrixTypes.h>
+#include<numbers>
 #include<hgl/math/geometry/AABB.h>
 #include<hgl/math/geometry/OBB.h>
 #include<hgl/math/geometry/BoundingSphere.h>
+#include<hgl/math/geometry/primitives/Sphere.h>
 
 namespace hgl::math
 {

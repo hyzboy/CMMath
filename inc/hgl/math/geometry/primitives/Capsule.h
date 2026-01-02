@@ -13,9 +13,9 @@
  */
 #pragma once
 
-#include<hgl/math/MathConstants.h>
 #include<hgl/math/Vector.h>
 #include<hgl/math/geometry/AABB.h>
+#include<numbers>
 
 namespace hgl::math
 {
@@ -138,8 +138,8 @@ namespace hgl::math
         float GetVolume() const
         {
             float h = GetCylinderHeight();
-            return pi * radius * radius * h + 
-                   (4.0f / 3.0f) * pi * radius * radius * radius;
+            return std::numbers::pi_v<float> * radius * radius * h + 
+                   (4.0f / 3.0f) * std::numbers::pi_v<float> * radius * radius * radius;
         }
         
         /**
@@ -150,8 +150,8 @@ namespace hgl::math
         float GetSurfaceArea() const
         {
             float h = GetCylinderHeight();
-            return 2.0f * pi * radius * h + 
-                   4.0f * pi * radius * radius;
+            return 2.0f * std::numbers::pi_v<float> * radius * h + 
+                   4.0f * std::numbers::pi_v<float> * radius * radius;
         }
 
         /**

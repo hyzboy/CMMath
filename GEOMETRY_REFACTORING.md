@@ -159,16 +159,19 @@ Available primitives:
 - `Contains(container, point)` - Point containment
 - `Contains(container, geometry)` - Geometry containment
 
-## Backward Compatibility
+## Class Consolidation
 
-The original geometry classes remain at their original locations:
-- `inc/hgl/math/geometry/Sphere.h` (original, with EllipseSphere)
-- `inc/hgl/math/geometry/Capsule.h` (original)
-- `inc/hgl/math/geometry/Cylinder.h` (original)
-- `inc/hgl/math/geometry/Cone.h` (original)
-- `inc/hgl/math/geometry/Torus.h` (original)
+**Note**: As of January 2026, duplicate geometry classes have been merged.
 
-New lightweight versions are in `inc/hgl/math/geometry/primitives/`.
+All geometry primitive classes now reside in `inc/hgl/math/geometry/primitives/`:
+- `Sphere` (includes both standard Sphere and EllipseSphere)
+- `Capsule`
+- `Cylinder`
+- `Cone`
+- `Torus`
+
+The original files in `inc/hgl/math/geometry/` have been removed to eliminate duplication.
+All implementations are now inline in the header files for better performance.
 
 ## Performance Considerations
 

@@ -27,4 +27,7 @@ Makefile
 
 # OS files
 .DS_Store
-Thumbs.dbtest_standalone
+Thumbs.db
+
+# Test executables
+test_standalone

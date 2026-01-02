@@ -15,6 +15,7 @@
 #pragma once
 
 #include<hgl/math/Vector.h>
+#include<hgl/math/MathConstants.h>
 #include<hgl/math/geometry/AABB.h>
 
 namespace hgl::math

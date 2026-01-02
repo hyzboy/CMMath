@@ -63,6 +63,84 @@ Tests containment and inclusion checks:
 **Test Count**: ~30 tests  
 **Coverage**: All ContainmentQuery methods
 
+### 6. test_obb.cpp
+Comprehensive tests for OBB (Oriented Bounding Box):
+- **Construction**: Default, from center, with rotation, 45-degree rotation
+- **Ray-OBB Intersection**: Aligned hits/misses, rotated OBB, from inside, edge hits, corner near-miss
+- **OBB-OBB Collision**: Aligned (no collision, touching, overlapping), one inside other, rotated collision, perpendicular collision
+- **OBB-Sphere Collision**: No collision, center, edge, corner, sphere inside
+- **Containment**: Point at center, inside, on surface, outside, with rotated OBB
+- **Edge Cases**: Zero size, very large, very small
+
+**Test Count**: ~40 tests  
+**Coverage**: OBB construction, ray intersection, collision detection, containment
+
+### 7. test_triangle.cpp
+Comprehensive tests for Triangle geometry:
+- **2D Point-in-Triangle**: Center, outside, on edge, on vertex, near edge, equilateral, degenerate, large, very small, negative coords
+- **2D Triangle Area**: Simple, unit, equilateral, degenerate
+- **3D Triangle**: Area in XY plane, arbitrary plane, normal calculation, reversed winding
+- **Ray-Triangle Intersection**: Perpendicular, miss, edge, vertex, parallel miss, behind ray, oblique angle, grazing
+- **Barycentric Coordinates**: Center, vertex, edge midpoint
+- **Triangle-Triangle Intersection**: Coplanar overlapping/separated, different planes, edge touching
+- **Edge Cases**: Zero area, very large, very small
+
+**Test Count**: ~45 tests  
+**Coverage**: Point-in-triangle, area calculation, ray intersection, barycentric coordinates, triangle-triangle intersection
+
+### 8. test_frustum.cpp
+Comprehensive tests for Frustum (View Frustum):
+- **Plane Extraction**: Identity matrix, perspective, orthographic, MVP matrix
+- **Frustum-Sphere Intersection**: Inside, outside (left, right, top, bottom, near, far), on edge, large radius
+- **Frustum-AABB Intersection**: Inside, outside, partially inside, behind camera
+- **Point Containment**: Origin, outside
+- **Orthographic Frustum**: Sphere inside, AABB outside
+- **Frustum Updates**: Different matrices
+- **Edge Cases**: Very narrow FOV, very wide FOV, extreme aspect ratio
+
+**Test Count**: ~30 tests  
+**Coverage**: Frustum plane extraction, intersection tests, point containment
+
+### 9. test_collision_2d.cpp
+Comprehensive tests for 2D collision detection:
+- **Circle-Circle**: Separated, touching, overlapping, one inside other, coincident, diagonal, barely touching, different sizes
+- **Circle-Point**: Inside, outside, on edge, at center, negative coords, zero radius
+- **Rectangle-Rectangle**: Separated, touching, overlapping, one inside other, coincident, corner overlap, horizontal/vertical overlap only
+- **Rectangle-Point**: Inside, outside, on edge, on corner, at min
+- **Circle-Rectangle**: Separated, circle inside, overlapping edge/corner, encompasses, touching edge, near miss corner
+- **Line Segment Intersection**: Cross, parallel, collinear (overlapping/separated), touching endpoint, would cross if extended, perpendicular
+- **2D Ray Tests**: Circle hit/miss, from inside, rect hit/miss
+- **Edge Cases**: Zero radius circle, zero size rectangle, very large/small circles
+
+**Test Count**: ~50 tests  
+**Coverage**: All 2D collision detection functions
+
+### 10. test_line_segment.cpp
+Comprehensive tests for LineSegment class:
+- **Construction**: Default, parameterized, set endpoints, set start/end
+- **Properties**: Center, direction, reverse direction, vector, distance, distance squared, 3D distance
+- **Parameterization**: Get point at start, end, midpoint, quarter, three-quarters
+- **Closest Point**: Perpendicular, beyond start/end, on segment, diagonal segment, 3D segment, zero-length segment
+- **LineSegment-LineSegment**: Parallel, perpendicular, skew segments
+- **LineSegment-Sphere**: Through center, tangent, no intersection, endpoint inside
+- **Edge Cases**: Very long/short, negative coordinates, vertical segment
+
+**Test Count**: ~40 tests  
+**Coverage**: LineSegment construction, properties, parameterization, closest points, intersections
+
+### 11. test_hollow_cylinder.cpp
+Comprehensive tests for HollowCylinder class:
+- **Construction**: Default, parameterized, set, axis normalization
+- **Properties**: Top/bottom center, volume, surface area
+- **Point Containment**: In wall, in hole, outside, beyond height, on outer/inner surface, at top/bottom edge, rotated axis, center of hole
+- **Ray-HollowCylinder**: Through wall, through hole, miss, along axis
+- **Distance and Closest Point**: Inside wall, outside, in hole
+- **HollowCylinder-Sphere**: In wall, outside, in hole, bridging wall
+- **Edge Cases**: Very thin wall, very long/short, tilted 45 degrees
+
+**Test Count**: ~35 tests  
+**Coverage**: HollowCylinder construction, properties, containment, ray intersection, collision
+
 ## Building and Running Tests
 
 ### Prerequisites
@@ -88,6 +166,12 @@ make
 ./test_raycast_query
 ./test_distance_query
 ./test_containment_query
+./test_obb
+./test_triangle
+./test_frustum
+./test_collision_2d
+./test_line_segment
+./test_hollow_cylinder
 ```
 
 ### Run All Tests
@@ -127,7 +211,13 @@ void test_feature_name() {
 | Ray Casting | test_raycast_query.cpp | ~25 | 90% |
 | Distance Queries | test_distance_query.cpp | ~25 | 95% |
 | Containment | test_containment_query.cpp | ~30 | 100% |
-| **Total** | | **~140** | **96%** |
+| OBB | test_obb.cpp | ~40 | 95% |
+| Triangle | test_triangle.cpp | ~45 | 95% |
+| Frustum | test_frustum.cpp | ~30 | 90% |
+| 2D Collision | test_collision_2d.cpp | ~50 | 95% |
+| LineSegment | test_line_segment.cpp | ~40 | 95% |
+| HollowCylinder | test_hollow_cylinder.cpp | ~35 | 90% |
+| **Total** | | **~380** | **95%** |
 
 ## Test Categories
 
@@ -215,6 +305,9 @@ test:
 - [ ] Visual debugging tools
 - [ ] Memory leak detection
 - [ ] Multi-threaded safety tests
+- [ ] Batch query optimization tests
+- [ ] More complex geometry types (ellipsoid, polyhedron, mesh)
+- [ ] Advanced collision response and manifold generation tests
 
 ## Reporting Issues
 

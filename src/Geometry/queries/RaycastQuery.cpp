@@ -236,7 +236,7 @@ namespace hgl::math
             // Determine which face was hit
             Vector3f localPoint = hit.point - box.GetCenter();
             Vector3f absLocal = glm::abs(localPoint);
-            Vector3f halfSize = box.GetSize() * 0.5f;
+            Vector3f halfSize = box.GetLength() * 0.5f;
             
             if (absLocal.x > absLocal.y && absLocal.x > absLocal.z)
                 hit.normal = Vector3f(localPoint.x > 0 ? 1 : -1, 0, 0);

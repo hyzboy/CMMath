@@ -47,6 +47,11 @@ namespace hgl::math
             SetCornerLength(Vector3f(0,0,0),Vector3f(1,1,1));
         }
 
+        AABB(const Vector3f &c,const Vector3f &l)
+        {
+            SetCornerLength(c,l);
+        }
+
         void SetCornerLength(const Vector3f &c,const Vector3f &l)               ///<按顶角和长度设置盒子范围
         {
             minPoint=c;
@@ -110,7 +115,14 @@ namespace hgl::math
 
         /**
          * 计算点到AABB的最近点
+         * 将点"钳制"到AABB边界内。如果点在AABB内部，返回该点本身；
+         * 如果在外部，返回AABB表面上距离该点最近的点
          */
+        Vector3f ClampPoint(const Vector3f &point) const
+        {
+            return glm::clamp(point, minPoint, maxPoint);
+        }
+        
         Vector3f ClosestPoint(const Vector3f &point) const;
 
         /**
@@ -197,6 +209,25 @@ namespace hgl::math
          * 扩展AABB以包含指定点
          */
         void ExpandToInclude(const Vector3f &point);
+
+        /**
+         * 获取AABB的8个顶点坐标
+         * @param corners 输出数组，必须至少有8个元素
+         * 顶点顺序：
+         * 0-3: 底面（z=minPoint.z），逆时针
+         * 4-7: 顶面（z=maxPoint.z），逆时针
+         */
+        void GetCorners(Vector3f corners[8]) const
+        {
+            corners[0] = Vector3f(minPoint.x, minPoint.y, minPoint.z);
+            corners[1] = Vector3f(maxPoint.x, minPoint.y, minPoint.z);
+            corners[2] = Vector3f(maxPoint.x, maxPoint.y, minPoint.z);
+            corners[3] = Vector3f(minPoint.x, maxPoint.y, minPoint.z);
+            corners[4] = Vector3f(minPoint.x, minPoint.y, maxPoint.z);
+            corners[5] = Vector3f(maxPoint.x, minPoint.y, maxPoint.z);
+            corners[6] = Vector3f(maxPoint.x, maxPoint.y, maxPoint.z);
+            corners[7] = Vector3f(minPoint.x, maxPoint.y, maxPoint.z);
+        }
 
         /**
          * 获取表面积

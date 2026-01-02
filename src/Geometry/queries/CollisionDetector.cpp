@@ -406,7 +406,8 @@ namespace hgl::math
     {
         // Use SAT (Separating Axis Theorem)
         // For now, delegate to OBB's existing intersection method if available
-        return obb.Intersects(aabb);
+        //return obb.Intersects(aabb);
+        return aabb.IntersectsOBB(obb);
     }
 
 }//namespace hgl::math

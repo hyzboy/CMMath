@@ -378,21 +378,6 @@ add_library(CMMath STATIC
 ## Dependencies and Include Paths
 ##==================================================================================================
 
-# Find GLM library (required dependency)
-find_package(glm CONFIG)
-if(NOT glm_FOUND)
-    find_package(PkgConfig)
-    if(PkgConfig_FOUND)
-        pkg_check_modules(GLM glm)
-    endif()
-endif()
-
 # Set include directories
 target_include_directories(CMMath PUBLIC ${CMMATH_ROOT_INCLUDE_PATH})
 
-# Link GLM library
-if(glm_FOUND)
-    target_link_libraries(CMMath PUBLIC glm::glm)
-elseif(GLM_FOUND)
-    target_include_directories(CMMath PUBLIC ${GLM_INCLUDE_DIRS})
-endif()

@@ -8,6 +8,7 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
+#include <numbers>
 #include <hgl/math/geometry/Polygon2D.h>
 #include <hgl/math/VectorTypes.h>
 
@@ -72,7 +73,7 @@ void test_polygon_area_pentagon() {
     const int sides = 5;
     
     for (int i = 0; i < sides; ++i) {
-        float angle = 2.0f * M_PI * i / sides;
+        float angle = 2.0f * std::numbers::pi_v<float> * i / sides;
         vertices.push_back(Vector2f(radius * cos(angle), radius * sin(angle)));
     }
     

@@ -221,7 +221,9 @@ namespace hgl::math
         // 耳切法主循环
         size_t remaining = n;
         size_t iterations = 0;
-        const size_t max_iterations = n * n;  // 防止无限循环
+        // 最坏情况下需要 O(n²) 次迭代才能找到所有耳朵
+        // 设置上限防止无限循环（通常因为输入多边形无效）
+        const size_t max_iterations = n * n;
 
         while (remaining > 3 && iterations < max_iterations)
         {

@@ -445,6 +445,145 @@ void test_triangulate_two_vertices() {
 }
 
 // ============================================================================
+// Edge Length Constraint Tests
+// ============================================================================
+
+void test_triangulate_with_min_edge_constraint() {
+    // Square with min edge length constraint
+    std::vector<Vector2f> vertices = {
+        Vector2f(0, 0),
+        Vector2f(2, 0),
+        Vector2f(2, 2),
+        Vector2f(0, 2)
+    };
+    
+    std::vector<size_t> triangles;
+    // All edges are length 2 or sqrt(8), should pass with min_edge=1.0
+    bool success = TriangulatePolygon2D(vertices, triangles, 1.0f, std::numeric_limits<float>::max());
+    
+    ASSERT_TRUE(success);
+    ASSERT_EQ(triangles.size(), 6);  // Two triangles
+}
+
+void test_triangulate_with_max_edge_constraint() {
+    // Large square with max edge length constraint
+    std::vector<Vector2f> vertices = {
+        Vector2f(0, 0),
+        Vector2f(10, 0),
+        Vector2f(10, 10),
+        Vector2f(0, 10)
+    };
+    
+    std::vector<size_t> triangles;
+    // Diagonal is ~14.14, should fail with max_edge=12.0
+    bool success = TriangulatePolygon2D(vertices, triangles, 0.1f, 12.0f);
+    
+    ASSERT_FALSE(success);  // Should fail due to diagonal being too long
+}
+
+void test_triangulate_with_both_constraints() {
+    // Medium square with both constraints
+    std::vector<Vector2f> vertices = {
+        Vector2f(0, 0),
+        Vector2f(3, 0),
+        Vector2f(3, 3),
+        Vector2f(0, 3)
+    };
+    
+    std::vector<size_t> triangles;
+    // Edges are length 3, diagonal is ~4.24
+    // Should pass with min=1.0, max=5.0
+    bool success = TriangulatePolygon2D(vertices, triangles, 1.0f, 5.0f);
+    
+    ASSERT_TRUE(success);
+    ASSERT_EQ(triangles.size(), 6);  // Two triangles
+}
+
+void test_triangulate_with_strict_min_constraint() {
+    // Small triangle with strict min edge constraint
+    std::vector<Vector2f> vertices = {
+        Vector2f(0, 0),
+        Vector2f(0.5f, 0),
+        Vector2f(0, 0.5f)
+    };
+    
+    std::vector<size_t> triangles;
+    // All edges are ~0.5 or ~0.707, should fail with min_edge=1.0
+    bool success = TriangulatePolygon2D(vertices, triangles, 1.0f, std::numeric_limits<float>::max());
+    
+    ASSERT_FALSE(success);  // Should fail due to edges being too short
+}
+
+void test_triangulate_pentagon_with_constraints() {
+    // Pentagon with edge constraints
+    std::vector<Vector2f> vertices = {
+        Vector2f(0, 0),
+        Vector2f(2, 0),
+        Vector2f(3, 1.5f),
+        Vector2f(1, 3),
+        Vector2f(-1, 1.5f)
+    };
+    
+    std::vector<size_t> triangles;
+    // Should work with reasonable constraints
+    bool success = TriangulatePolygon2D(vertices, triangles, 0.5f, 10.0f);
+    
+    ASSERT_TRUE(success);
+    ASSERT_EQ(triangles.size(), 9);  // Three triangles
+}
+
+void test_polygon2d_class_triangulate_with_constraints() {
+    Polygon2Df polygon({
+        Vector2f(0, 0),
+        Vector2f(2, 0),
+        Vector2f(2, 2),
+        Vector2f(0, 2)
+    });
+    
+    std::vector<size_t> triangles;
+    bool success = polygon.Triangulate(triangles, 1.0f, 5.0f);
+    
+    ASSERT_TRUE(success);
+    ASSERT_EQ(triangles.size(), 6);
+}
+
+void test_polygon2d_class_triangulate_objects_with_constraints() {
+    Polygon2Df polygon({
+        Vector2f(0, 0),
+        Vector2f(3, 0),
+        Vector2f(3, 3),
+        Vector2f(0, 3)
+    });
+    
+    std::vector<Triangle2f> triangles;
+    bool success = polygon.Triangulate(triangles, 1.0f, 5.0f);
+    
+    ASSERT_TRUE(success);
+    ASSERT_EQ(triangles.size(), 2);
+    
+    // Verify triangle areas sum to polygon area
+    float total_area = triangles[0].Area() + triangles[1].Area();
+    ASSERT_NEAR(total_area, 9.0f, 0.001f);
+}
+
+void test_triangulate_default_min_edge() {
+    // Test default min_edge_length = 1.0
+    std::vector<Vector2f> vertices = {
+        Vector2f(0, 0),
+        Vector2f(2, 0),
+        Vector2f(2, 2),
+        Vector2f(0, 2)
+    };
+    
+    std::vector<size_t> triangles;
+    // Using default min_edge_length (1.0) and max (unlimited)
+    bool success = TriangulatePolygon2D(vertices, triangles, 1.0f);
+    
+    ASSERT_TRUE(success);
+    ASSERT_EQ(triangles.size(), 6);
+}
+
+// ============================================================================
 // Main Test Runner
 // ============================================================================
 
@@ -500,6 +639,17 @@ int main()
     std::cout << "--- Edge Case Tests ---" << std::endl;
     TEST(triangulate_empty_polygon);
     TEST(triangulate_two_vertices);
+    std::cout << std::endl;
+
+    std::cout << "--- Edge Length Constraint Tests ---" << std::endl;
+    TEST(triangulate_with_min_edge_constraint);
+    TEST(triangulate_with_max_edge_constraint);
+    TEST(triangulate_with_both_constraints);
+    TEST(triangulate_with_strict_min_constraint);
+    TEST(triangulate_pentagon_with_constraints);
+    TEST(polygon2d_class_triangulate_with_constraints);
+    TEST(polygon2d_class_triangulate_objects_with_constraints);
+    TEST(triangulate_default_min_edge);
     std::cout << std::endl;
 
     std::cout << "===========================================" << std::endl;

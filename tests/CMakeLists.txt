@@ -34,6 +34,7 @@ set(TEST_EXECUTABLES
     test_line_segment
     test_hollow_cylinder
     test_polygon_2d
+    test_heightmap_contour
 )
 
 # Create test executables

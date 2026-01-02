@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Capsule.h - Simplified capsule geometry primitive
  * 
  * A capsule is formed by sweeping a sphere along a line segment.
@@ -13,6 +13,7 @@
  */
 #pragma once
 
+#include<hgl/math/MathConstants.h>
 #include<hgl/math/Vector.h>
 #include<hgl/math/geometry/AABB.h>
 

@@ -1,6 +1,7 @@
 ﻿#include<hgl/math/MatrixOperations.h>
 #include<hgl/math/Projection.h>
 #include<hgl/math/TrigConstants.h>
+#include<hgl/math/MathConstants.h>
 
 // Vulkan Cookbook
 // ISBN: 9781786468154
@@ -373,7 +374,7 @@ namespace hgl::math
                 : glm::cross(old_direction, math::Vector3f(1.0f, 0.0f, 0.0f));
             
             axis = glm::normalize(axis);
-            return glm::rotate(Matrix4f(1.0f), float(pi), axis);
+            return glm::rotate(Matrix4f(1.0f), pi_f, axis);
         }
         
         // 一般情况：计算旋转轴和角度

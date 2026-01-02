@@ -1,5 +1,5 @@
-#pragma once
-
+﻿#pragma once
+#include<hgl/math/MathConstants.h>
 #include<hgl/math/Vector.h>
 #include<hgl/math/MatrixTypes.h>
 #include<hgl/math/geometry/AABB.h>

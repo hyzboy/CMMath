@@ -8,6 +8,7 @@
 
 #include<hgl/math/Vector.h>
 #include<hgl/math/geometry/AABB.h>
+#include<hgl/math/MathConstants.h>
 
 namespace hgl::math
 {
@@ -98,7 +99,7 @@ namespace hgl::math
          */
         float GetVolume() const
         {
-            return 2.0f * pi * pi * major_radius * minor_radius * minor_radius;
+            return 2.0f * hgl::math::pi * hgl::math::pi * major_radius * minor_radius * minor_radius;
         }
 
         /**
@@ -108,7 +109,7 @@ namespace hgl::math
          */
         float GetSurfaceArea() const
         {
-            return 4.0f * pi * pi * major_radius * minor_radius;
+            return 4.0f * hgl::math::pi * hgl::math::pi * major_radius * minor_radius;
         }
 
         /**

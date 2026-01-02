@@ -1,10 +1,11 @@
-/**
+﻿/**
  * Random.cpp - 随机数生成工具实现
  * 
  * PCG 算法和随机采样函数的实现。
  */
 
 #include <hgl/math/Random.h>
+#include <hgl/math/MathConstants.h>
 #include <hgl/math/geometry/AABB.h>
 #include <hgl/math/geometry/AABB2D.h>
 #include <chrono>
@@ -114,6 +115,30 @@ namespace hgl::math
     bool RandomGenerator::NextBool(float probability)
     {
         return NextFloat() < probability;
+    }
+    
+    Vector2f RandomGenerator::NextVector2InCircle()
+    {
+        float angle = NextFloat(0.0f, 2.0f * float(hgl::math::pi));
+        float radius = sqrtf(NextFloat(0.0f, 1.0f));
+        return Vector2f(cosf(angle) * radius, sinf(angle) * radius);
+    }
+
+    Vector3f RandomGenerator::NextVector3OnSphere()
+    {
+        float phi = NextFloat(0.0f, 2.0f * float(hgl::math::pi));
+        float cos_theta = NextFloat(-1.0f, 1.0f);
+        float sin_theta = sqrtf(1.0f - cos_theta * cos_theta);
+        return Vector3f(sin_theta * cosf(phi), sin_theta * sinf(phi), cos_theta);
+    }
+
+    Vector2f RandomGenerator::NextVector2Gaussian()
+    {
+        float u1 = NextFloat(0.0f, 1.0f);
+        float u2 = NextFloat(0.0f, 1.0f);
+        float theta = 2.0f * float(hgl::math::pi) * u2;
+        float r = sqrtf(-2.0f * logf(u1));
+        return Vector2f(r * cosf(theta), r * sinf(theta));
     }
     
     // ==================== 全局默认生成器 ====================
@@ -250,5 +275,4 @@ namespace hgl::math
         
         return -std::log(u) / lambda;
     }
-    
 }//namespace hgl::math

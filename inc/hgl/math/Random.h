@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Random.h - 随机数生成工具
  * 
  * 实现快速、高质量的随机数生成工具，用于游戏开发。
@@ -111,6 +111,10 @@ namespace hgl::math
          * @return 随机布尔值
          */
         bool NextBool(float probability = 0.5f);
+        
+        Vector2f NextVector2InCircle();
+        Vector3f NextVector3OnSphere();
+        Vector2f NextVector2Gaussian();
     };
     
     // ==================== 全局默认生成器 ====================

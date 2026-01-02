@@ -1,5 +1,6 @@
-#include<hgl/math/geometry/GeometryUtils.h>
+﻿#include<hgl/math/geometry/GeometryUtils.h>
 #include<hgl/math/FloatPrecision.h>
+#include<hgl/math/MathConstants.h>
 #include<glm/glm.hpp>
 #include<cmath>
 #include<algorithm>

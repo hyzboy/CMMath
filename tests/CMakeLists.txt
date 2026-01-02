@@ -33,6 +33,7 @@ set(TEST_EXECUTABLES
     test_collision_2d
     test_line_segment
     test_hollow_cylinder
+    test_polygon_2d
 )
 
 # Create test executables
@@ -85,6 +86,9 @@ add_custom_target(run_all_tests
     COMMAND echo ""
     COMMAND echo "Running HollowCylinder Tests..."
     COMMAND test_hollow_cylinder
+    COMMAND echo ""
+    COMMAND echo "Running 2D Polygon Tests..."
+    COMMAND test_polygon_2d
     DEPENDS ${TEST_EXECUTABLES}
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )

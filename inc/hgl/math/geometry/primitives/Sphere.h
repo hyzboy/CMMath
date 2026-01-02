@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include<cmath>
 #include<hgl/math/MathConstants.h>
 #include<hgl/math/Vector.h>
 #include<hgl/math/geometry/AABB.h>

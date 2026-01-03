@@ -361,18 +361,7 @@ namespace hgl::math
             BoundingVolumes result;
             result.aabb = aabb.Transformed(transform);
             result.obb = obb.Transformed(transform);
-            
-            // Transform sphere center
-            Vector3f new_center = Vector3f(transform * Vector4f(bsphere.center, 1.0f));
-            
-            // Calculate max scale to adjust radius
-            const float s0 = glm::length(glm::vec3(transform[0]));
-            const float s1 = glm::length(glm::vec3(transform[1]));
-            const float s2 = glm::length(glm::vec3(transform[2]));
-            const float max_scale = glm::max(glm::max(s0, s1), s2);
-            
-            result.bsphere.center = new_center;
-            result.bsphere.radius = bsphere.radius * max_scale;
+            result.bsphere = bsphere.Transformed(transform);
             
             return result;
         }

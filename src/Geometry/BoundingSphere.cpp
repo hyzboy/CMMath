@@ -1,4 +1,6 @@
 #include <hgl/math/geometry/BoundingSphere.h>
+#include <hgl/math/geometry/AABB.h>
+#include <hgl/math/geometry/OBB.h>
 #include <hgl/math/geometry/Ray.h>
 #include <hgl/math/geometry/Plane.h>
 
@@ -42,6 +44,30 @@ namespace hgl::math
     }
 
     // ============================================================================
+    // 工厂方法实现
+    // ============================================================================
+
+    BoundingSphere BoundingSphere::FromAABB(const AABB &aabb)
+    {
+        if (!aabb.IsValid() || aabb.IsEmpty())
+            return BoundingSphere::Empty();
+
+        Vector3f center = aabb.GetCenter();
+        float radius = glm::length(aabb.GetExtent());
+        return BoundingSphere(center, radius);
+    }
+
+    BoundingSphere BoundingSphere::FromOBB(const OBB &obb)
+    {
+        if (!obb.IsValid() || obb.IsEmpty())
+            return BoundingSphere::Empty();
+
+        Vector3f center = obb.GetCenter();
+        float radius = glm::length(obb.GetHalfExtend());
+        return BoundingSphere(center, radius);
+    }
+
+    // ============================================================================
     // 碰撞检测实现
     // ============================================================================
 
@@ -71,9 +97,40 @@ namespace hgl::math
 
         // 计算新的球
         float new_radius = (dist + radius + other.radius) * 0.5f;
-        float t = (new_radius - radius) / dist;
-        center = center + d * t;
+        
+        if (dist > 1e-6f)  // 避免除零
+        {
+            float t = (new_radius - radius) / dist;
+            center = center + d * t;
+        }
+        
         radius = new_radius;
+    }
+
+    bool BoundingSphere::IntersectsAABB(const AABB &aabb) const
+    {
+        if (!IsValid() || !aabb.IsValid())
+            return false;
+
+        // 计算 AABB 上距离球心最近的点
+        Vector3f closest = aabb.ClampPoint(center);
+        
+        // 检查最近点是否在球内
+        Vector3f diff = closest - center;
+        return glm::dot(diff, diff) <= radius * radius;
+    }
+
+    bool BoundingSphere::IntersectsOBB(const OBB &obb) const
+    {
+        if (!IsValid() || !obb.IsValid())
+            return false;
+
+        // 计算 OBB 上距离球心最近的点
+        Vector3f closest = obb.ClosestPoint(center);
+        
+        // 检查最近点是否在球内
+        Vector3f diff = closest - center;
+        return glm::dot(diff, diff) <= radius * radius;
     }
 
     bool BoundingSphere::IntersectsRay(const Ray &ray, float &distance) const
@@ -137,6 +194,23 @@ namespace hgl::math
         float dist = glm::length(point - center);
         if (dist > radius)
             radius = dist;
+    }
+
+    BoundingSphere BoundingSphere::Transformed(const Matrix4f &transform) const
+    {
+        if (IsEmpty())
+            return *this;
+
+        // 变换中心点
+        Vector3f new_center = Vector3f(transform * Vector4f(center, 1.0f));
+        
+        // 计算最大缩放因子来缩放半径
+        const float s0 = glm::length(Vector3f(transform[0]));
+        const float s1 = glm::length(Vector3f(transform[1]));
+        const float s2 = glm::length(Vector3f(transform[2]));
+        const float max_scale = glm::max(glm::max(s0, s1), s2);
+        
+        return BoundingSphere(new_center, radius * max_scale);
     }
 
 }//namespace hgl::math

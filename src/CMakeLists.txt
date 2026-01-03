@@ -142,6 +142,7 @@ set(CMMATH_GEOMETRY_BOUNDING_HEADERS
     ${CMMATH_GEOMETRY_INCLUDE_PATH}/OBB.h
     ${CMMATH_GEOMETRY_INCLUDE_PATH}/BoundingSphere.h
     ${CMMATH_GEOMETRY_INCLUDE_PATH}/BoundingVolumes.h
+    ${CMMATH_GEOMETRY_INCLUDE_PATH}/BoundingVolumesDataStorage.h
 )
 
 # Query: Intersection and query shapes

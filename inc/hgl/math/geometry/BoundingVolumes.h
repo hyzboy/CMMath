@@ -11,34 +11,37 @@ namespace hgl::math
     struct Plane;
 
     BoundingSphere ToBoundingSphere(const AABB &a);
-
-    /**
-     * Convert OBB to AABB
-     * @param obb The oriented bounding box to convert
-     * @return An axis-aligned bounding box that fully contains the OBB
-     * @note This calculates the minimal AABB by using the OBB's axes and half extents
-     */
     AABB ToAABB(const OBB &obb);
-
-    /**
-     * Convert AABB to axis-aligned OBB
-     * @param aabb The axis-aligned bounding box to convert
-     * @return An OBB with identity rotation that matches the AABB
-     */
     OBB ToOBB(const AABB &aabb);
+    OBB ToOBB(const AABB &aabb, const Matrix4f &transform);
 
     /**
-     * Convert AABB to transformed OBB
-     * @param aabb The axis-aligned bounding box to convert
-     * @param transform The transformation matrix to apply
-     * @return An OBB transformed by the given matrix
-     * @note The OBB's axes are extracted from the rotation part of the transform,
-     *       and scaling is applied to the half extents
+     * Convert OBB to BoundingSphere
+     * @param obb The oriented bounding box to convert
+     * @return A bounding sphere that fully contains the OBB
      */
-    OBB ToOBB(const AABB &aabb, const Matrix4f &transform);
+    BoundingSphere ToBoundingSphere(const OBB &obb);
+
+    /**
+     * Convert BoundingSphere to AABB
+     * @param sphere The bounding sphere to convert
+     * @return An axis-aligned bounding box that fully contains the sphere
+     */
+    AABB ToAABB(const BoundingSphere &sphere);
+
+    /**
+     * Convert BoundingSphere to OBB
+     * @param sphere The bounding sphere to convert
+     * @return An oriented bounding box (axis-aligned) that fully contains the sphere
+     */
+    OBB ToOBB(const BoundingSphere &sphere);
 
     struct BoundingVolumesData;
 
+    /**
+     * 综合包围体 - 包含 AABB, OBB, 和 BoundingSphere
+     * 提供多层次的碰撞检测：从快速但不精确(球体)到精确但较慢(OBB)
+     */
     struct BoundingVolumes
     {
         AABB aabb;
@@ -59,19 +62,27 @@ namespace hgl::math
             mem_zero(bsphere);
         }
 
+        /**
+         * 检查包围体是否为空
+         * @note 只要任意一个包围体为空，就认为整个包围体为空
+         */
         bool IsEmpty()const
         {
-            return aabb.IsEmpty() && obb.GetHalfExtend().x <= 0 && bsphere.radius <= 0;
+            return aabb.IsEmpty() || obb.IsEmpty() || bsphere.IsEmpty();
         }
 
-    public:
+    public: // 初始化方法
 
+        /**
+         * 从 AABB 初始化所有包围体
+         * @note 会计算最优的包围球(半径为半对角线长度)
+         */
         void SetFromAABB(const AABB &box)
         {
             aabb = box;
             obb = ToOBB(box);
             bsphere.center = aabb.GetCenter();
-            bsphere.radius = glm::length(aabb.GetMax() - bsphere.center);
+            bsphere.radius = glm::length((aabb.GetMax() - aabb.GetMin()) * 0.5f);
         }
 
         void SetFromAABB(const Vector3f &min_v,const Vector3f &max_v)
@@ -81,6 +92,30 @@ namespace hgl::math
             SetFromAABB(box);
         }
 
+        /**
+         * 从 OBB 初始化所有包围体
+         */
+        void SetFromOBB(const OBB &box)
+        {
+            obb = box;
+            aabb = ToAABB(box);
+            bsphere = ToBoundingSphere(box);
+        }
+
+        /**
+         * 从 BoundingSphere 初始化所有包围体
+         */
+        void SetFromSphere(const BoundingSphere &sphere)
+        {
+            bsphere = sphere;
+            aabb = ToAABB(sphere);
+            obb = ToOBB(sphere);
+        }
+
+        /**
+         * 从点集初始化所有包围体
+         * @note 三个包围体独立计算，可能中心不一致
+         */
         bool SetFromPoints(const float *pts,const uint32_t count,const uint32_t component_count)
         {
             if(!pts||count<=0)
@@ -100,6 +135,8 @@ namespace hgl::math
 
         /**
          * 检查点是否在任一包围体内
+         * @note 使用 OR 逻辑，只要在任一包围体内即返回 true
+         * @note 如需严格检测，请使用 ContainsPointAll
          */
         bool ContainsPoint(const Vector3f &point) const
         {
@@ -107,15 +144,31 @@ namespace hgl::math
         }
 
         /**
-         * 计算点到包围体的最近点(使用球体)
+         * 检查点是否在所有包围体内(严格检测)
+         */
+        bool ContainsPointAll(const Vector3f &point) const
+        {
+            return aabb.ContainsPoint(point) && obb.ContainsPoint(point) && bsphere.ContainsPoint(point);
+        }
+
+        /**
+         * 计算点到包围体的最近点(使用 AABB，保证最快速度)
          */
         Vector3f ClosestPoint(const Vector3f &point) const
+        {
+            return aabb.ClosestPoint(point);
+        }
+
+        /**
+         * 计算点到包围体的最近点(使用球体)
+         */
+        Vector3f ClosestPointSphere(const Vector3f &point) const
         {
             return bsphere.ClosestPoint(point);
         }
 
         /**
-         * 计算点到包围体的距离(使用最保守的AABB)
+         * 计算点到包围体的距离(使用 AABB)
          */
         float DistanceToPoint(const Vector3f &point) const
         {
@@ -161,6 +214,22 @@ namespace hgl::math
         }
 
         /**
+         * 检查与球体是否相交(使用 AABB 和球体进行测试)
+         */
+        bool IntersectsSphere(const Vector3f &sphere_center, float sphere_radius) const
+        {
+            return aabb.IntersectsSphere(sphere_center, sphere_radius);
+        }
+
+        /**
+         * 检查与球体是否相交
+         */
+        bool IntersectsSphere(const BoundingSphere &sphere) const
+        {
+            return IntersectsSphere(sphere.center, sphere.radius);
+        }
+
+        /**
          * 检查是否完全包含另一个BoundingVolumes
          */
         bool Contains(const BoundingVolumes &other) const
@@ -170,6 +239,7 @@ namespace hgl::math
 
         /**
          * 合并另一个BoundingVolumes
+         * @note 独立合并三个包围体，可能导致它们不完全一致
          */
         void Merge(const BoundingVolumes &other)
         {
@@ -241,11 +311,70 @@ namespace hgl::math
         }
 
         /**
-         * 获取中心点(使用AABB中心)
+         * 获取中心点(使用AABB中心，最常用且稳定)
+         * @note 如需其他包围体的中心，请直接访问对应成员: obb.GetCenter() 或 bsphere.GetCenter()
          */
         const Vector3f &GetCenter() const
         {
             return aabb.GetCenter();
+        }
+
+        /**
+         * 获取球体中心
+         */
+        const Vector3f &GetSphereCenter() const
+        {
+            return bsphere.GetCenter();
+        }
+
+        /**
+         * 获取 OBB 中心
+         */
+        const Vector3f &GetOBBCenter() const
+        {
+            return obb.GetCenter();
+        }
+
+        /**
+         * 获取表面积(使用 AABB)
+         */
+        float GetSurfaceArea() const
+        {
+            return aabb.GetSurfaceArea();
+        }
+
+        /**
+         * 获取体积(使用 AABB)
+         */
+        float GetVolume() const
+        {
+            return aabb.GetVolume();
+        }
+
+        /**
+         * 对包围体进行变换
+         * @param transform 变换矩阵
+         * @return 变换后的包围体
+         */
+        BoundingVolumes Transformed(const Matrix4f &transform) const
+        {
+            BoundingVolumes result;
+            result.aabb = aabb.Transformed(transform);
+            result.obb = obb.Transformed(transform);
+            
+            // Transform sphere center
+            Vector3f new_center = Vector3f(transform * Vector4f(bsphere.center, 1.0f));
+            
+            // Calculate max scale to adjust radius
+            const float s0 = glm::length(glm::vec3(transform[0]));
+            const float s1 = glm::length(glm::vec3(transform[1]));
+            const float s2 = glm::length(glm::vec3(transform[2]));
+            const float max_scale = glm::max(glm::max(s0, s1), s2);
+            
+            result.bsphere.center = new_center;
+            result.bsphere.radius = bsphere.radius * max_scale;
+            
+            return result;
         }
 
     public:

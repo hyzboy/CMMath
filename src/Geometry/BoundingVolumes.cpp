@@ -12,10 +12,57 @@ namespace hgl::math
         if(!a.IsEmpty())
         {
             s.center=(a.GetMin()+a.GetMax())*0.5f;
-            s.radius=glm::length(a.GetMax()-s.center);
+            s.radius=glm::length((a.GetMax()-a.GetMin())*0.5f);
         }
 
         return s;
+    }
+
+    BoundingSphere ToBoundingSphere(const OBB &obb)
+    {
+        BoundingSphere s;
+        
+        if(obb.IsEmpty())
+        {
+            s.Clear();
+            return s;
+        }
+
+        s.center = obb.GetCenter();
+        s.radius = glm::length(obb.GetHalfExtend());
+        
+        return s;
+    }
+
+    AABB ToAABB(const BoundingSphere &sphere)
+    {
+        AABB aabb;
+        
+        if(sphere.IsEmpty())
+        {
+            aabb.Clear();
+            return aabb;
+        }
+
+        const Vector3f extent = Vector3f(sphere.radius);
+        aabb.SetMinMax(sphere.center - extent, sphere.center + extent);
+        
+        return aabb;
+    }
+
+    OBB ToOBB(const BoundingSphere &sphere)
+    {
+        OBB obb;
+        
+        if(sphere.IsEmpty())
+        {
+            obb.Clear();
+            return obb;
+        }
+
+        obb.Set(sphere.center, Vector3f(sphere.radius));
+        
+        return obb;
     }
 
     AABB ToAABB(const OBB &obb)

@@ -4,6 +4,7 @@
 #include<hgl/math/MatrixTypes.h>
 #include<hgl/math/geometry/Plane.h>
 #include<hgl/math/geometry/Triangle.h>
+#include<cfloat>
 
 namespace hgl::math
 {
@@ -52,7 +53,12 @@ namespace hgl::math
             SetCornerLength(c,l);
         }
 
-        void SetCornerLength(const Vector3f &c,const Vector3f &l)               ///<按顶角和长度设置盒子范围
+        /**
+         * 按最小点和尺寸设置盒子范围
+         * @param min_point 最小点（盒子的左下后角）
+         * @param size 盒子尺寸（长宽高）
+         */
+        void SetCornerLength(const Vector3f &c,const Vector3f &l)
         {
             minPoint=c;
             length=l;
@@ -72,12 +78,16 @@ namespace hgl::math
 
         void SetFromPoints(const float *pts,const uint32_t count,const uint32_t component_count);
 
+        /**
+         * 清空 AABB，设置为无效状态
+         * @note 清空后 IsValid() 返回 false，IsEmpty() 返回 true
+         */
         void Clear()
         {
-            mem_zero(minPoint);
-            mem_zero(maxPoint);
-            mem_zero(center);
-            mem_zero(length);
+            minPoint = Vector3f(FLT_MAX, FLT_MAX, FLT_MAX);
+            maxPoint = Vector3f(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+            center = Vector3f(0, 0, 0);
+            length = Vector3f(0, 0, 0);
             mem_zero(planes);
             mem_zero(face_center_point);
         }
@@ -87,6 +97,21 @@ namespace hgl::math
 
         const   Vector3f &  GetCenter   ()const{return center;}
         const   Vector3f &  GetLength   ()const{return length;}
+
+        /**
+         * 获取尺寸（等同于 GetLength()，但更直观）
+         */
+        const   Vector3f &  GetSize     ()const{return length;}
+        
+        /**
+         * 获取半尺寸（extent）
+         */
+        Vector3f GetExtent() const { return length * 0.5f; }
+
+        /**
+         * 获取对角线长度
+         */
+        float GetDiagonal() const { return glm::length(length); }
 
                 Vector3f    GetVertexP  (const Vector3f &)const;
                 Vector3f    GetVertexN  (const Vector3f &)const;
@@ -99,7 +124,54 @@ namespace hgl::math
 
         const Plane &GetFacePlanes(int i)const{return planes[i];}
 
+        /**
+         * 检查 AABB 是否为空（尺寸接近零）
+         */
         bool IsEmpty()const{return IsNearlyZero(length);}
+
+        /**
+         * 检查 AABB 是否有效（min <= max）
+         * @note 刚 Clear() 后的 AABB 是无效的
+         */
+        bool IsValid()const
+        {
+            return minPoint.x <= maxPoint.x && 
+                   minPoint.y <= maxPoint.y && 
+                   minPoint.z <= maxPoint.z;
+        }
+
+    public: // 静态工厂方法
+
+        /**
+         * 从两个点创建 AABB（自动计算 min/max）
+         */
+        static AABB FromTwoPoints(const Vector3f &p1, const Vector3f &p2)
+        {
+            AABB result;
+            result.SetMinMax(MinVector(p1, p2), MaxVector(p1, p2));
+            return result;
+        }
+
+        /**
+         * 从中心和尺寸创建 AABB
+         */
+        static AABB FromCenterAndSize(const Vector3f &center, const Vector3f &size)
+        {
+            Vector3f half_size = size * 0.5f;
+            AABB result;
+            result.SetMinMax(center - half_size, center + half_size);
+            return result;
+        }
+
+        /**
+         * 创建空的无效 AABB
+         */
+        static AABB Empty()
+        {
+            AABB result;
+            result.Clear();
+            return result;
+        }
 
     public: // 碰撞检测 - 点相关
 
@@ -200,6 +272,9 @@ namespace hgl::math
 
         /**
          * 检查与三角形是否相交
+         * @warning 当前实现不完整，可能产生假阴性（漏掉某些相交情况）
+         * @note 只检查三角形顶点是否在 AABB 内，不检查边和面相交
+         * TODO: 实现完整的 SAT (Separating Axis Theorem) 测试
          */
         bool IntersectsTriangle(const Triangle3f &triangle) const;
 
@@ -209,6 +284,70 @@ namespace hgl::math
          * 扩展AABB以包含指定点
          */
         void ExpandToInclude(const Vector3f &point);
+
+        /**
+         * 返回缩放后的 AABB（从中心缩放）
+         */
+        AABB Scaled(float factor) const
+        {
+            Vector3f half_size = length * 0.5f * factor;
+            AABB result;
+            result.SetMinMax(center - half_size, center + half_size);
+            return result;
+        }
+
+        /**
+         * 返回缩放后的 AABB（非均匀缩放）
+         */
+        AABB Scaled(const Vector3f &scale) const
+        {
+            Vector3f half_size = length * 0.5f;
+            Vector3f new_half_size(
+                half_size.x * scale.x,
+                half_size.y * scale.y,
+                half_size.z * scale.z
+            );
+            AABB result;
+            result.SetMinMax(center - new_half_size, center + new_half_size);
+            return result;
+        }
+
+        /**
+         * 返回偏移后的 AABB
+         */
+        AABB Offset(const Vector3f &offset) const
+        {
+            AABB result;
+            result.SetMinMax(minPoint + offset, maxPoint + offset);
+            return result;
+        }
+
+        /**
+         * 返回扩展/收缩后的 AABB（每个方向扩展相同距离）
+         */
+        AABB Expanded(float amount) const
+        {
+            Vector3f expansion(amount, amount, amount);
+            AABB result;
+            result.SetMinMax(minPoint - expansion, maxPoint + expansion);
+            return result;
+        }
+
+        /**
+         * 原地缩放
+         */
+        void Scale(float factor)
+        {
+            *this = Scaled(factor);
+        }
+
+        /**
+         * 原地偏移（平移）
+         */
+        void Translate(const Vector3f &offset)
+        {
+            SetMinMax(minPoint + offset, maxPoint + offset);
+        }
 
         /**
          * 获取AABB的8个顶点坐标

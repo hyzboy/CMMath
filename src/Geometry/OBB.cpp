@@ -4,6 +4,7 @@
 #include<hgl/math/geometry/Triangle.h>
 #include<algorithm>
 #include<limits>
+#include<cfloat>
 
 namespace hgl::math
 {
@@ -94,6 +95,15 @@ namespace hgl::math
         out.half_length=glm::vec3(half_length.x*l0,half_length.y*l1,half_length.z*l2);
         out.ComputePlanes();
         return out;
+    }
+
+    // ============================================================================
+    // 工厂方法
+    // ============================================================================
+
+    OBB OBB::FromAABB(const AABB &aabb)
+    {
+        return OBB(aabb.GetCenter(), aabb.GetLength() * 0.5f);
     }
 
     // ============================================================================
@@ -214,12 +224,22 @@ namespace hgl::math
         if (Intersects(other))
             return 0.0f;
 
-        // 简化实现：计算两个OBB中心之间的距离，减去它们的最大半长度
-        float dist = glm::length(center - other.center);
-        float max_extent1 = std::max({half_length.x, half_length.y, half_length.z});
-        float max_extent2 = std::max({other.half_length.x, other.half_length.y, other.half_length.z});
+        // 改进的实现：采样角点计算最近距离
+        Vector3f corners1[8], corners2[8];
+        GetCorners(corners1);
+        other.GetCorners(corners2);
+
+        float min_dist = FLT_MAX;
         
-        return std::max(0.0f, dist - max_extent1 - max_extent2);
+        // 计算每个角点到另一个 OBB 的距离
+        for (int i = 0; i < 8; i++)
+        {
+            float d1 = DistanceToPoint(corners2[i]);
+            float d2 = other.DistanceToPoint(corners1[i]);
+            min_dist = std::min(min_dist, std::min(d1, d2));
+        }
+
+        return min_dist;
     }
 
     bool OBB::IntersectsAABB(const AABB &aabb) const
@@ -256,8 +276,36 @@ namespace hgl::math
                 return false;
         }
 
-        // 测试9个叉积轴（简化版，只测试关键轴）
-        // 完整实现需要测试所有9个轴
+        // 测试9个叉积轴
+        Vector3f aabb_axes[3] = {
+            Vector3f(1, 0, 0),
+            Vector3f(0, 1, 0),
+            Vector3f(0, 0, 1)
+        };
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Vector3f cross_axis = glm::cross(axis[i], aabb_axes[j]);
+                float len = glm::length(cross_axis);
+                if (len < 1e-6f) continue;  // 平行轴
+                
+                cross_axis /= len;
+
+                // 计算投影半径
+                float ra = 0.0f;
+                for (int k = 0; k < 3; k++)
+                    ra += half_length[k] * std::abs(glm::dot(axis[k], cross_axis));
+
+                float rb = 0.0f;
+                for (int k = 0; k < 3; k++)
+                    rb += aabb_extent[k] * std::abs(cross_axis[k]);
+
+                if (std::abs(glm::dot(t, cross_axis)) > ra + rb)
+                    return false;
+            }
+        }
 
         return true;
     }
@@ -347,13 +395,16 @@ namespace hgl::math
 
     bool OBB::IntersectsTriangle(const Triangle3f &triangle) const
     {
-        // 简化实现：检查三角形顶点是否在OBB内
+        // TODO: 未实现完整的 SAT 测试
+        // 目前只做基本检查，可能漏掉某些相交情况
+        
+        // 检查三角形顶点是否在OBB内
         if (ContainsPoint(triangle[0]) || 
             ContainsPoint(triangle[1]) || 
             ContainsPoint(triangle[2]))
             return true;
 
-        // TODO: 实现完整的SAT测试
+        // 注意：这不是完整实现！可能产生假阴性
         return false;
     }
 
@@ -378,7 +429,7 @@ namespace hgl::math
     void OBB::Merge(const OBB &other)
     {
         // 简化实现：转换为AABB合并，再转回OBB
-        // 这不是最优解，但可以工作
+        // 注意：这会丢失原始的旋转信息
         Vector3f corners1[8], corners2[8];
         GetCorners(corners1);
         other.GetCorners(corners2);
@@ -400,6 +451,9 @@ namespace hgl::math
 
         center = (min_pt + max_pt) * 0.5f;
         half_length = (max_pt - min_pt) * 0.5f;
+        
+        // 重置为轴对齐
+        axis = Matrix3f(1.0f);
 
         ComputePlanes();
     }

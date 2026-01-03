@@ -69,6 +69,8 @@ set(CMMATH_MATH_NOISE_HEADERS
 # Curves: Curve and easing systems
 set(CMMATH_MATH_CURVES_HEADERS
     ${CMMATH_MATH_INCLUDE_PATH}/Curve.h
+    ${CMMATH_MATH_INCLUDE_PATH}/CatmullRomSpline2D.h
+    ${CMMATH_MATH_INCLUDE_PATH}/CatmullRomSpline3D.h
 )
 
 # SIMD: SIMD optimizations
@@ -106,6 +108,8 @@ set(CMMATH_MATH_NOISE_SOURCES
 # Curves sources
 set(CMMATH_MATH_CURVES_SOURCES
     Math/Curve.cpp
+    Math/CatmullRomSpline2D.cpp
+    Math/CatmullRomSpline3D.cpp
 )
 
 # Game sources

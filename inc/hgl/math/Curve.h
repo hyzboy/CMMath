@@ -64,9 +64,6 @@ namespace hgl::math
      */
     Vector3f CubicBezierNormal(const Vector3f &p0, const Vector3f &p1, const Vector3f &p2, const Vector3f &p3, float t, const Vector3f &up);
     
-    // ==================== Catmull-Rom Spline ====================
-    // 注意：CatmullRomSpline3D 和 CatmullRomSpline2D 类已移至独立头文件
-    
     // ==================== B-Spline ====================
     
     /**

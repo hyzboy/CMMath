@@ -173,7 +173,7 @@ namespace hgl::math
     template<typename T>
     inline float Length(const T &v)
     {
-        return sqrt(LengthSquared(v));
+        return glm::length(v);
     }
 
     inline float Length2D(const Vector3f &v)
@@ -184,7 +184,7 @@ namespace hgl::math
     template<typename T1, typename T2>
     inline float Length(const T1 &v1, const T2 &v2)
     {
-        return sqrt(LengthSquared(v1-v2));
+        return glm::length(v1-v2);
     }
 
     template<typename T1, typename T2>

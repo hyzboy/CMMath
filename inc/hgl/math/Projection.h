@@ -11,6 +11,7 @@
 #pragma once
 
 #include<hgl/math/VectorTypes.h>
+#include<hgl/math/MatrixTypes.h>
 
 namespace hgl::math
 {

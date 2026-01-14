@@ -1,6 +1,6 @@
 /**
  * Projection.h - 投影与视图变换
- * 
+ *
  * 包含：
  * - 正交投影矩阵 (OrthoMatrix)
  * - 透视投影矩阵 (PerspectiveMatrix)
@@ -15,7 +15,7 @@
 namespace hgl::math
 {
     // ==================== 正交投影矩阵 ====================
-    
+
     /**
      * 生成一个正交投影矩阵（6参数版本）
      * @param left 左边界
@@ -49,7 +49,7 @@ namespace hgl::math
     Matrix4f OrthoMatrix(float width,float height);
 
     // ==================== 透视投影矩阵 ====================
-    
+
     /**
      * 生成一个透视投影矩阵
      * @param field_of_view 视野角度（FOV，度数）
@@ -58,11 +58,11 @@ namespace hgl::math
      * @param zfar 远截面
      */
     Matrix4f PerspectiveMatrix( float field_of_view,
-                                float aspect_ratio,                                
+                                float aspect_ratio,
                                 float znear,
                                 float zfar);
 
-    
+
     /**
      * @brief 构造一个在 z==0 时与正交投影一致，但随 z 引入透视效果的投影矩阵
      *
@@ -79,7 +79,7 @@ namespace hgl::math
         float alpha /* 透视强度，默认可设为 -(2/(zfar-znear)) 或者 -(1/focus) */);
 
     // ==================== 视图矩阵 ====================
-    
+
     /**
      * 产生一个LookAt变换矩阵
      * @param eye 相机位置
@@ -89,7 +89,7 @@ namespace hgl::math
     Matrix4f LookAtMatrix(const Vector3f &eye,const Vector3f &target,const Vector3f &up=AxisVector::Z);
 
     // ==================== 坐标投影 ====================
-    
+
     /**
      * 将世界坐标投影到屏幕坐标
      * @param world_pos 世界坐标
@@ -120,9 +120,9 @@ namespace hgl::math
 
     /**
      * 生成等距视角投影矩阵（Isometric Projection）
-     * 
+     *
      * 实现经典2D游戏风格的2:1等距视角（如《模拟城市》《红色警戒》等）
-     * 
+     *
      * @param width 视口宽度（世界单位）
      * @param height 视口高度（世界单位）
      * @param znear 近裁剪面
@@ -148,10 +148,10 @@ namespace hgl::math
 
     /**
      * 将等距投影参数转换为透视投影矩阵
-     * 
+     *
      * 该函数用于从等距视角平滑过渡到标准3D透视视角。
      * 它会自动计算合适的FOV和相机位置，使得透视投影能够显示相似的场景范围。
-     * 
+     *
      * @param iso_width 等距投影的宽度（世界单位）
      * @param iso_height 等距投影的高度（世界单位）
      * @param znear 近裁剪面
@@ -160,24 +160,24 @@ namespace hgl::math
      * @return Matrix4f 透视投影矩阵
      */
     Matrix4f IsometricToPerspectiveMatrix(
-        float iso_width, 
-        float iso_height, 
-        float znear, 
+        float iso_width,
+        float iso_height,
+        float znear,
         float zfar,
         float fov_override = 0.0f);
 
     /**
      * 计算从等距视角到透视视角的相机位置偏移
-     * 
+     *
      * 等距投影通常使用正交相机，转换为透视投影后需要调整相机位置以保持相似的视野范围。
-     * 
+     *
      * @param iso_width 等距投影宽度
      * @param iso_height 等距投影高度
      * @param target_fov 目标透视FOV（度）
      * @return float 推荐的相机后退距离
      */
     float CalculatePerspectiveCameraDistance(
-        float iso_width, 
-        float iso_height, 
+        float iso_width,
+        float iso_height,
         float target_fov);
 }//namespace hgl::math

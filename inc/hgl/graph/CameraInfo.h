@@ -6,7 +6,7 @@
 #include<hgl/math/MatrixOperations.h>
 
 namespace hgl::graph
-{    
+{
     using namespace hgl::math;
 
     /**
@@ -21,7 +21,7 @@ namespace hgl::graph
         Matrix4f inverse_view;
 
         Matrix4f vp;                    ///< projection * view
-        Matrix4f inverse_vp;            ///< inverse_projection * inverse_view  
+        Matrix4f inverse_vp;            ///< inverse_projection * inverse_view
 
         Vector4f frustum_planes[6];     ///<视锥体平面
 
@@ -90,7 +90,7 @@ namespace hgl::graph
 
         return UnProjectToWorld(sp,ci->view,ci->projection,vp_size);
     }
-        
+
     /**
      * 计算一个旋转矩阵，使原本面向X轴的模型改成面向屏幕
      */

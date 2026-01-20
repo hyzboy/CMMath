@@ -1,18 +1,15 @@
 #pragma once
 
 #include<hgl/math/Vector.h>
-#include<hgl/color/AlphaBlend.h>
+#include<hgl/math/AlphaBlendMode.h>
 #include<cmath>
 #include<algorithm>
 #include<type_traits>
 
 namespace hgl
 {
-    namespace graph
+    namespace math
     {
-        // Import AlphaBlendMode enum from CMCoreType for easy access
-        using hgl::AlphaBlendMode;
-
         // ==================== 基础混合函数模板 ====================
 
         /**
@@ -28,6 +25,17 @@ namespace hgl
         inline T AlphaBlendNormal(const T &base, const T &blend, float alpha)
         {
             return base * (1.0f - alpha) + blend * alpha;
+        }
+
+        /**
+         * @brief 无混合，直接使用源值
+         */
+        template<typename T>
+        inline T AlphaBlendNone(const T &base, const T &blend, float alpha)
+        {
+            (void)base;
+            (void)alpha;
+            return blend;
         }
 
         /**
@@ -387,6 +395,174 @@ namespace hgl
         }
 
         /**
+         * @brief 分裂混合（除法）
+         * Result = A / (B*alpha)
+         */
+        template<typename T>
+        inline T AlphaBlendDivide(const T &base, const T &blend, float alpha)
+        {
+            T blended = blend * alpha;
+            const float epsilon = 1e-6f;
+
+            if constexpr (std::is_arithmetic_v<T>)
+            {
+                if (std::abs(blended) < epsilon)
+                    return T(1.0f);
+                return base / blended;
+            }
+            else
+            {
+                return base / (blended + T(epsilon));
+            }
+        }
+
+        /**
+         * @brief 亮光混合（VividLight）
+         * 基于ColorBurn/ColorDodge的组合
+         */
+        template<typename T>
+        inline T AlphaBlendVividLight(const T &base, const T &blend, float alpha)
+        {
+            T blended = blend * alpha;
+
+            if constexpr (std::is_arithmetic_v<T>)
+            {
+                if (blended < 0.5f)
+                    return AlphaBlendColorBurn(base, blended * 2.0f, 1.0f);
+                else
+                    return AlphaBlendColorDodge(base, (blended - T(0.5f)) * 2.0f, 1.0f);
+            }
+            else
+            {
+                return AlphaBlendHardLight(base, blend, alpha);
+            }
+        }
+
+        /**
+         * @brief 线性光混合（LinearLight）
+         * 基于LinearBurn/LinearDodge
+         */
+        template<typename T>
+        inline T AlphaBlendLinearLight(const T &base, const T &blend, float alpha)
+        {
+            T blended = blend * alpha;
+
+            if constexpr (std::is_arithmetic_v<T>)
+            {
+                return base + blended * 2.0f - T(1.0f);
+            }
+            else
+            {
+                return base + blended * 2.0f - T(1.0f);
+            }
+        }
+
+        /**
+         * @brief 点光混合（PinLight）
+         * 在变暗和变亮之间切换
+         */
+        template<typename T>
+        inline T AlphaBlendPinLight(const T &base, const T &blend, float alpha)
+        {
+            T blended = blend * alpha;
+
+            if constexpr (std::is_arithmetic_v<T>)
+            {
+                if (blended < 0.5f)
+                    return AlphaBlendDarken(base, blended * 2.0f, 1.0f);
+                else
+                    return AlphaBlendLighten(base, (blended - T(0.5f)) * 2.0f, 1.0f);
+            }
+            else
+            {
+                return base * (1.0f - alpha) + blended;
+            }
+        }
+
+        /**
+         * @brief 实色混合（HardMix）
+         * 基于VividLight的阈值化
+         */
+        template<typename T>
+        inline T AlphaBlendHardMix(const T &base, const T &blend, float alpha)
+        {
+            T vivid = AlphaBlendVividLight(base, blend, alpha);
+
+            if constexpr (std::is_arithmetic_v<T>)
+            {
+                return (vivid < 0.5f) ? T(0.0f) : T(1.0f);
+            }
+            else
+            {
+                return vivid;
+            }
+        }
+
+        /**
+         * @brief 更暗的颜色混合
+         */
+        template<typename T>
+        inline T AlphaBlendDarkerColor(const T &base, const T &blend, float alpha)
+        {
+            T blended = blend * alpha;
+
+            if constexpr (std::is_arithmetic_v<T>)
+            {
+                return (base < blended) ? base : blended;
+            }
+            else
+            {
+                return AlphaBlendDarken(base, blend, alpha);
+            }
+        }
+
+        /**
+         * @brief 更亮的颜色混合
+         */
+        template<typename T>
+        inline T AlphaBlendLighterColor(const T &base, const T &blend, float alpha)
+        {
+            T blended = blend * alpha;
+
+            if constexpr (std::is_arithmetic_v<T>)
+            {
+                return (base > blended) ? base : blended;
+            }
+            else
+            {
+                return AlphaBlendLighten(base, blend, alpha);
+            }
+        }
+
+        /**
+         * @brief 色相、饱和度、颜色、明度混合
+         * 这里使用标准插值作为通用占位实现
+         */
+        template<typename T>
+        inline T AlphaBlendHue(const T &base, const T &blend, float alpha)
+        {
+            return AlphaBlendNormal(base, blend, alpha);
+        }
+
+        template<typename T>
+        inline T AlphaBlendSaturation(const T &base, const T &blend, float alpha)
+        {
+            return AlphaBlendNormal(base, blend, alpha);
+        }
+
+        template<typename T>
+        inline T AlphaBlendColor(const T &base, const T &blend, float alpha)
+        {
+            return AlphaBlendNormal(base, blend, alpha);
+        }
+
+        template<typename T>
+        inline T AlphaBlendLuminosity(const T &base, const T &blend, float alpha)
+        {
+            return AlphaBlendNormal(base, blend, alpha);
+        }
+
+        /**
          * @brief 预乘Alpha混合
          * Result = A * (1 - alpha) + B
          * 假设B已经预乘了alpha值（B = color * alpha）
@@ -428,6 +604,7 @@ namespace hgl
         {
             switch (mode)
             {
+                case AlphaBlendMode::None:             return AlphaBlendNone<float>;
                 case AlphaBlendMode::Normal:            return AlphaBlendNormal<float>;
                 case AlphaBlendMode::Add:               return AlphaBlendAdd<float>;
                 case AlphaBlendMode::Subtract:          return AlphaBlendSubtract<float>;
@@ -444,6 +621,17 @@ namespace hgl
                 case AlphaBlendMode::Lighten:           return AlphaBlendLighten<float>;
                 case AlphaBlendMode::Difference:        return AlphaBlendDifference<float>;
                 case AlphaBlendMode::Exclusion:         return AlphaBlendExclusion<float>;
+                case AlphaBlendMode::VividLight:        return AlphaBlendVividLight<float>;
+                case AlphaBlendMode::LinearLight:       return AlphaBlendLinearLight<float>;
+                case AlphaBlendMode::PinLight:          return AlphaBlendPinLight<float>;
+                case AlphaBlendMode::HardMix:           return AlphaBlendHardMix<float>;
+                case AlphaBlendMode::DarkerColor:       return AlphaBlendDarkerColor<float>;
+                case AlphaBlendMode::LighterColor:      return AlphaBlendLighterColor<float>;
+                case AlphaBlendMode::Hue:               return AlphaBlendHue<float>;
+                case AlphaBlendMode::Saturation:        return AlphaBlendSaturation<float>;
+                case AlphaBlendMode::Color:             return AlphaBlendColor<float>;
+                case AlphaBlendMode::Luminosity:        return AlphaBlendLuminosity<float>;
+                case AlphaBlendMode::Divide:            return AlphaBlendDivide<float>;
                 case AlphaBlendMode::PremultipliedAlpha:return AlphaBlendPremultiplied<float>;
                 default:                                return nullptr;
             }
@@ -458,6 +646,7 @@ namespace hgl
         {
             switch (mode)
             {
+                case AlphaBlendMode::None:             return AlphaBlendNone<math::Vector3f>;
                 case AlphaBlendMode::Normal:            return AlphaBlendNormal<math::Vector3f>;
                 case AlphaBlendMode::Add:               return AlphaBlendAdd<math::Vector3f>;
                 case AlphaBlendMode::Subtract:          return AlphaBlendSubtract<math::Vector3f>;
@@ -474,6 +663,17 @@ namespace hgl
                 case AlphaBlendMode::Lighten:           return AlphaBlendLighten<math::Vector3f>;
                 case AlphaBlendMode::Difference:        return AlphaBlendDifference<math::Vector3f>;
                 case AlphaBlendMode::Exclusion:         return AlphaBlendExclusion<math::Vector3f>;
+                case AlphaBlendMode::VividLight:        return AlphaBlendVividLight<math::Vector3f>;
+                case AlphaBlendMode::LinearLight:       return AlphaBlendLinearLight<math::Vector3f>;
+                case AlphaBlendMode::PinLight:          return AlphaBlendPinLight<math::Vector3f>;
+                case AlphaBlendMode::HardMix:           return AlphaBlendHardMix<math::Vector3f>;
+                case AlphaBlendMode::DarkerColor:       return AlphaBlendDarkerColor<math::Vector3f>;
+                case AlphaBlendMode::LighterColor:      return AlphaBlendLighterColor<math::Vector3f>;
+                case AlphaBlendMode::Hue:               return AlphaBlendHue<math::Vector3f>;
+                case AlphaBlendMode::Saturation:        return AlphaBlendSaturation<math::Vector3f>;
+                case AlphaBlendMode::Color:             return AlphaBlendColor<math::Vector3f>;
+                case AlphaBlendMode::Luminosity:        return AlphaBlendLuminosity<math::Vector3f>;
+                case AlphaBlendMode::Divide:            return AlphaBlendDivide<math::Vector3f>;
                 case AlphaBlendMode::PremultipliedAlpha:return AlphaBlendPremultiplied<math::Vector3f>;
                 default:                                return nullptr;
             }
@@ -488,6 +688,7 @@ namespace hgl
         {
             switch (mode)
             {
+                case AlphaBlendMode::None:             return AlphaBlendNone<math::Vector4f>;
                 case AlphaBlendMode::Normal:            return AlphaBlendNormal<math::Vector4f>;
                 case AlphaBlendMode::Add:               return AlphaBlendAdd<math::Vector4f>;
                 case AlphaBlendMode::Subtract:          return AlphaBlendSubtract<math::Vector4f>;
@@ -504,6 +705,17 @@ namespace hgl
                 case AlphaBlendMode::Lighten:           return AlphaBlendLighten<math::Vector4f>;
                 case AlphaBlendMode::Difference:        return AlphaBlendDifference<math::Vector4f>;
                 case AlphaBlendMode::Exclusion:         return AlphaBlendExclusion<math::Vector4f>;
+                case AlphaBlendMode::VividLight:        return AlphaBlendVividLight<math::Vector4f>;
+                case AlphaBlendMode::LinearLight:       return AlphaBlendLinearLight<math::Vector4f>;
+                case AlphaBlendMode::PinLight:          return AlphaBlendPinLight<math::Vector4f>;
+                case AlphaBlendMode::HardMix:           return AlphaBlendHardMix<math::Vector4f>;
+                case AlphaBlendMode::DarkerColor:       return AlphaBlendDarkerColor<math::Vector4f>;
+                case AlphaBlendMode::LighterColor:      return AlphaBlendLighterColor<math::Vector4f>;
+                case AlphaBlendMode::Hue:               return AlphaBlendHue<math::Vector4f>;
+                case AlphaBlendMode::Saturation:        return AlphaBlendSaturation<math::Vector4f>;
+                case AlphaBlendMode::Color:             return AlphaBlendColor<math::Vector4f>;
+                case AlphaBlendMode::Luminosity:        return AlphaBlendLuminosity<math::Vector4f>;
+                case AlphaBlendMode::Divide:            return AlphaBlendDivide<math::Vector4f>;
                 case AlphaBlendMode::PremultipliedAlpha:return AlphaBlendPremultiplied<math::Vector4f>;
                 default:                                return nullptr;
             }
@@ -525,6 +737,7 @@ namespace hgl
         {
             switch (mode)
             {
+                case AlphaBlendMode::None:             return AlphaBlendNone(base, blend, alpha);
                 case AlphaBlendMode::Normal:            return AlphaBlendNormal(base, blend, alpha);
                 case AlphaBlendMode::Add:               return AlphaBlendAdd(base, blend, alpha);
                 case AlphaBlendMode::Subtract:          return AlphaBlendSubtract(base, blend, alpha);
@@ -541,10 +754,20 @@ namespace hgl
                 case AlphaBlendMode::Lighten:           return AlphaBlendLighten(base, blend, alpha);
                 case AlphaBlendMode::Difference:        return AlphaBlendDifference(base, blend, alpha);
                 case AlphaBlendMode::Exclusion:         return AlphaBlendExclusion(base, blend, alpha);
+                case AlphaBlendMode::VividLight:        return AlphaBlendVividLight(base, blend, alpha);
+                case AlphaBlendMode::LinearLight:       return AlphaBlendLinearLight(base, blend, alpha);
+                case AlphaBlendMode::PinLight:          return AlphaBlendPinLight(base, blend, alpha);
+                case AlphaBlendMode::HardMix:           return AlphaBlendHardMix(base, blend, alpha);
+                case AlphaBlendMode::DarkerColor:       return AlphaBlendDarkerColor(base, blend, alpha);
+                case AlphaBlendMode::LighterColor:      return AlphaBlendLighterColor(base, blend, alpha);
+                case AlphaBlendMode::Hue:               return AlphaBlendHue(base, blend, alpha);
+                case AlphaBlendMode::Saturation:        return AlphaBlendSaturation(base, blend, alpha);
+                case AlphaBlendMode::Color:             return AlphaBlendColor(base, blend, alpha);
+                case AlphaBlendMode::Luminosity:        return AlphaBlendLuminosity(base, blend, alpha);
+                case AlphaBlendMode::Divide:            return AlphaBlendDivide(base, blend, alpha);
                 case AlphaBlendMode::PremultipliedAlpha:return AlphaBlendPremultiplied(base, blend, alpha);
                 default:                                return base;
             }
         }
-
-    }//namespace graph
+    }//namespace math
 }//namespace hgl

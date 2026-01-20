@@ -14,6 +14,9 @@ endmacro()
 
 ####################################################################################################
 
+cm_example_project("" HalfFloatTest         HalfFloatTest.cpp)
+cm_example_project("" AlphaBlendTest        AlphaBlendTest.cpp)
+
 cm_example_project("" OutputEpsilon         OutputEpsilon.cpp)
 cm_example_project("" TransformBenchmark    TransformBenchmark.cpp)
 cm_example_project("" TransformTest         TransformTest.cpp)
@@ -30,9 +33,7 @@ cm_example_project("" RayTest               RayTest.cpp)
 cm_example_project("" LineSegmentTest       LineSegmentTest.cpp)
 cm_example_project("" PlaneTest             PlaneTest.cpp)
 cm_example_project("" TriangleTest          TriangleTest.cpp)
-cm_example_project("" CoordinateSystemTest  CoordinateSystemTest.cpp)
 #cm_example_project("" NormalCompressTest    NormalCompressTest.cpp)
 cm_example_project("" AngleTest             AngleTest.cpp)
-cm_example_project("" DirectMatrix          DirectMatrix.cpp)
 cm_example_project("" QuaternionTest        QuaternionTest.cpp)
 cm_example_project("" GeometryTest          GeometryTest.cpp)

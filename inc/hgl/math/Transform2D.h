@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <hgl/math/MatrixTypes.h>
+#include <hgl/math/Matrix.h>
 #include <hgl/math/VectorTypes.h>
 #include <hgl/math/Angle.h>
 #include <hgl/math/TrigConstants.h>
@@ -24,7 +24,7 @@ namespace hgl::math
     // ==================== 类型定义 ====================
     
     /**
-     * Identity 3x3 单位矩阵（已在 MatrixTypes.h 中定义为 Identity3f）
+     * Identity 3x3 单位矩阵（已在 Matrix.h 中定义为 Identity3f）
      */
     
     // ==================== 2D 变换矩阵构造 ====================

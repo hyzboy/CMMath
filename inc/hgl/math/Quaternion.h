@@ -3,15 +3,14 @@
  * 
  * 包含：
  * - 四元数类型定义
- * - 四元数与矩阵的转换
  * - 四元数插值 (Lerp, SLerp)
  * - 四元数提取轴角
+ * - 矩阵转换由 Matrix.h::ToMatrix 提供
  */
 
 #pragma once
 
 #include<hgl/math/VectorTypes.h>
-#include<hgl/math/MatrixTypes.h>
 #include<hgl/math/FloatPrecision.h>
 #include<glm/gtc/quaternion.hpp>
 #include<glm/gtx/quaternion.hpp>
@@ -41,16 +40,6 @@ namespace hgl::math
     inline Quatf RotationQuat(const float angle,const Vector3f &axis)
     {
         return glm::angleAxis(glm::radians(angle),axis);
-    }
-
-    // ==================== 四元数与矩阵转换 ====================
-    
-    /**
-     * 四元数转换为4x4矩阵
-     */
-    inline Matrix4f ToMatrix(const Quatf &quat)
-    {
-        return glm::toMat4(quat);
     }
 
     // ==================== 四元数分解 ====================

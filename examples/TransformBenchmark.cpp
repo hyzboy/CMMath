@@ -13,8 +13,8 @@ int main()
     
     int iterations = 100000;
     for (int i = 0; i < iterations; ++i) {
-        Matrix4f T = Matrix4f::Translation(1.0f + i*0.001f, 2.0f, 3.0f);
-        Matrix4f R = Matrix4f::RotationZ(Angle::FromDegrees(i * 0.1f));
+        Matrix4f T = TranslateMatrix(1.0f + i*0.001f, 2.0f, 3.0f);
+        Matrix4f R = AxisZRotate(glm::radians(i * 0.1f));
         Matrix4f result = T * R;
         (void)result;
     }

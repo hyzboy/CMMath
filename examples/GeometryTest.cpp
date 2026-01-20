@@ -10,7 +10,7 @@ int main()
     Vector3f a{0.0f,0.0f,0.0f};
     Vector3f b{1.0f,1.0f,0.0f};
 
-    float d = Distance(a, b);
+    float d = Length(a, b);
     std::cout << "两点距离:" << d << std::endl;
 
     return 0;

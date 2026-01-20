@@ -1,4 +1,4 @@
-#include<hgl/math/geometry/Sphere.h>
+#include<hgl/math/geometry/primitives/Sphere.h>
 #include<iostream>
 
 using namespace hgl::math;
@@ -11,7 +11,7 @@ int main()
     std::cout << "球体创建: 中心(0,0,0), 半径5" << std::endl;
 
     Vector3f test_point{3, 0, 0};
-    if (sphere.Contains(test_point)) {
+    if (sphere.ContainsPoint(test_point)) {
         std::cout << "点(3,0,0)在球内" << std::endl;
     }
 

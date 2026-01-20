@@ -39,8 +39,7 @@ set(CMMATH_MATH_VECTORS_HEADERS
 
 # Linear Algebra: Matrices and quaternions
 set(CMMATH_MATH_LINALG_HEADERS
-    ${CMMATH_MATH_INCLUDE_PATH}/MatrixTypes.h
-    ${CMMATH_MATH_INCLUDE_PATH}/MatrixOperations.h
+    ${CMMATH_MATH_INCLUDE_PATH}/Matrix.h
     ${CMMATH_MATH_INCLUDE_PATH}/Quaternion.h
 )
 

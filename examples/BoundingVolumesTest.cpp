@@ -1,6 +1,6 @@
-#include<hgl/math/AABB.h>
-#include<hgl/math/OBB.h>
-#include<hgl/math/Sphere.h>
+#include<hgl/math/geometry/AABB.h>
+#include<hgl/math/geometry/OBB.h>
+#include<hgl/math/geometry/primitives/Sphere.h>
 #include<iostream>
 
 using namespace hgl::math;
@@ -13,14 +13,23 @@ int main()
     OBB obb(Vector3f{0.0f,0.0f,0.0f}, Vector3f{1.0f,2.0f,3.0f});
     Sphere sphere(Vector3f{0.0f,0.0f,0.0f}, 2.0f);
 
-    std::cout << "AABB min:" << aabb.min.x << "," << aabb.min.y << "," << aabb.min.z << std::endl;
-    std::cout << "AABB max:" << aabb.max.x << "," << aabb.max.y << "," << aabb.max.z << std::endl;
+    const Vector3f &aabb_min = aabb.GetMin();
+    const Vector3f &aabb_max = aabb.GetMax();
 
-    std::cout << "OBB center:" << obb.center.x << "," << obb.center.y << "," << obb.center.z << std::endl;
-    std::cout << "OBB half extents:" << obb.halfExtents.x << "," << obb.halfExtents.y << "," << obb.halfExtents.z << std::endl;
+    std::cout << "AABB min:" << aabb_min.x << "," << aabb_min.y << "," << aabb_min.z << std::endl;
+    std::cout << "AABB max:" << aabb_max.x << "," << aabb_max.y << "," << aabb_max.z << std::endl;
 
-    std::cout << "Sphere center:" << sphere.center.x << "," << sphere.center.y << "," << sphere.center.z << std::endl;
-    std::cout << "Sphere radius:" << sphere.radius << std::endl;
+    const Vector3f &obb_center = obb.GetCenter();
+    const Vector3f &obb_half_extents = obb.GetHalfExtend();
+
+    std::cout << "OBB center:" << obb_center.x << "," << obb_center.y << "," << obb_center.z << std::endl;
+    std::cout << "OBB half extents:" << obb_half_extents.x << "," << obb_half_extents.y << "," << obb_half_extents.z << std::endl;
+
+    const Vector3f &sphere_center = sphere.GetCenter();
+    float sphere_radius = sphere.GetRadius();
+
+    std::cout << "Sphere center:" << sphere_center.x << "," << sphere_center.y << "," << sphere_center.z << std::endl;
+    std::cout << "Sphere radius:" << sphere_radius << std::endl;
 
     return 0;
 }

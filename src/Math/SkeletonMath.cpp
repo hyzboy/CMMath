@@ -4,7 +4,7 @@
 
 #include<hgl/math/animation/SkeletonMath.h>
 #include<hgl/math/VectorOperations.h>
-#include<hgl/math/MatrixOperations.h>
+#include<hgl/math/Matrix.h>
 #include<cmath>
 #include<algorithm>
 

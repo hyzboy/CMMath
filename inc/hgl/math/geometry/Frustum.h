@@ -1,7 +1,7 @@
 #pragma once
 
 #include<hgl/math/Vector.h>
-#include<hgl/math/MatrixTypes.h>
+#include<hgl/math/Matrix.h>
 #include<hgl/math/geometry/AABB.h>
 #include<hgl/math/geometry/Plane.h>
 
@@ -89,6 +89,9 @@ namespace hgl::math
         };
 
     public:
+
+        Frustum()=default;
+        Frustum(const Matrix4f &mvp) { SetMatrix(mvp); }
 
         /**
         * 从MVP矩阵设置视锥体

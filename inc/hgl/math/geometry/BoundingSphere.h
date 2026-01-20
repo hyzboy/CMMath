@@ -2,7 +2,7 @@
 #include<numbers>
 
 #include<hgl/math/Vector.h>
-#include<hgl/math/MatrixTypes.h>
+#include<hgl/math/Matrix.h>
 
 namespace hgl::math
 {

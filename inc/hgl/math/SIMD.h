@@ -13,7 +13,7 @@
 #pragma once
 
 #include<hgl/math/Vector.h>
-#include<hgl/math/MatrixTypes.h>
+#include<hgl/math/Matrix.h>
 #include<hgl/math/geometry/AABB.h>
 #include<cstddef>
 

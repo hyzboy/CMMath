@@ -10,7 +10,7 @@
  * This keeps the class clean and focused on its core responsibility.
  * 
  * For backward compatibility, the original Sphere class remains at
- * inc/hgl/math/geometry/Sphere.h and is still available.
+ * inc/hgl/math/geometry/primitives/Sphere.h and is still available.
  */
 #pragma once
 
@@ -116,7 +116,9 @@ namespace hgl::math
          */
         Vector3f GetPoint(const Vector3f& direction) const
         {
-            return center + Normalized(direction) * radius;
+            const float len = std::hypot(direction.x, std::hypot(direction.y, direction.z));
+            const float inv_len = (len > 0.0f) ? (1.0f / len) : 0.0f;
+            return center + direction * (inv_len * radius);
         }
 
         /**
@@ -126,7 +128,9 @@ namespace hgl::math
          */
         bool ContainsPoint(const Vector3f& point) const
         {
-            return LengthSquared(point - center) <= radius * radius;
+            const Vector3f diff = point - center;
+            const float dist2 = std::fma(diff.z, diff.z, std::fma(diff.y, diff.y, diff.x * diff.x));
+            return dist2 <= radius * radius;
         }
 
         /**
@@ -136,13 +140,14 @@ namespace hgl::math
          */
         Vector3f ClosestPoint(const Vector3f& point) const
         {
-            Vector3f dir = point - center;
-            float dist = Length(dir);
-            
+            const Vector3f dir = point - center;
+            const float dist = std::hypot(dir.x, std::hypot(dir.y, dir.z));
+
             if (dist <= radius)
                 return point;  // Point is inside, it is its own closest point
-            
-            return center + dir * (radius / dist);
+
+            const float scale = (dist > 0.0f) ? (radius / dist) : 0.0f;
+            return center + dir * scale;
         }
 
         /**
@@ -152,7 +157,8 @@ namespace hgl::math
          */
         float DistanceToPoint(const Vector3f& point) const
         {
-            float dist = Length(point - center) - radius;
+            const Vector3f diff = point - center;
+            const float dist = std::hypot(diff.x, std::hypot(diff.y, diff.z)) - radius;
             return dist > 0.0f ? dist : 0.0f;
         }
 

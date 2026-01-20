@@ -134,7 +134,7 @@ namespace hgl::math
             is_identity=false;
 
             rotation_quat=q;
-            ExtractedQuat(q,rotation_axis,rotate_angle);
+            ExtractQuat(q,rotation_axis,rotate_angle);
             is_zero_rotate=IsNearlyEqual(q, IdentityQuatf);
             matrix_dirty=true;
             UpdateVersion();

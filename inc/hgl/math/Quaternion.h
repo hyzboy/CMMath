@@ -1,6 +1,6 @@
 /**
  * Quaternion.h - 四元数操作
- * 
+ *
  * 包含：
  * - 四元数类型定义
  * - 四元数插值 (Lerp, SLerp)
@@ -18,7 +18,7 @@
 namespace hgl::math
 {
     // ==================== 四元数类型定义 ====================
-    
+
     using Quatf=glm::quat;
     const Quatf IdentityQuatf(1,0,0,0);     //w,x,y,z
 
@@ -31,26 +31,26 @@ namespace hgl::math
     }
 
     // ==================== 四元数创建 ====================
-    
+
     /**
      * 从轴角创建旋转四元数
      * @param angle 旋转角度（度数）
      * @param axis 旋转轴
      */
-    inline Quatf RotationQuat(const float angle,const Vector3f &axis)
+    inline Quatf QuatFromAxisAngle(const float angle,const Vector3f &axis)
     {
         return glm::angleAxis(glm::radians(angle),axis);
     }
 
     // ==================== 四元数分解 ====================
-    
+
     /**
      * 从四元数提取旋转轴和角度
      * @param quat 四元数
      * @param axis 输出：旋转轴
      * @param angle 输出：旋转角度（度数）
      */
-    inline void ExtractedQuat(const Quatf &quat,Vector3f &axis,float &angle)
+    inline void ExtractQuat(const Quatf &quat,Vector3f &axis,float &angle)
     {
         angle=glm::degrees(glm::angle(quat));
         axis=glm::axis(quat);
@@ -73,7 +73,7 @@ namespace hgl::math
     }
 
     // ==================== 四元数插值 ====================
-    
+
     /**
      * 四元数线性插值
      */
@@ -91,7 +91,7 @@ namespace hgl::math
     }
 
     // ==================== 高级四元数操作 ====================
-    
+
     /**
      * 获取从旧方向到新方向的旋转四元数
      * @param world_position 世界坐标位置

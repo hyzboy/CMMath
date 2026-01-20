@@ -171,24 +171,24 @@ namespace hgl::math
      * @param rad 旋转弧度
      * @param axis 旋转轴向量
      */
-    inline Matrix3f AxisRotate3(float rad,const Vector3f &axis)
+    inline Matrix3f AxisRotate3f(float rad,const Vector3f &axis)
     {
         return glm::mat3(glm::rotate(Matrix4f(1.0f), rad, axis));
     }
 
-    inline Matrix3f AxisRotate3(float rad,float x,float y,float z)
+    inline Matrix3f AxisRotate3f(float rad,float x,float y,float z)
     {
-        return AxisRotate3(rad, Vector3f(x,y,z));
+        return AxisRotate3f(rad, Vector3f(x,y,z));
     }
 
-    inline Matrix3f AxisRotate3(float rad,float x,float y)
+    inline Matrix3f AxisRotate3f(float rad,float x,float y)
     {
-        return AxisRotate3(rad, Vector3f(x,y,1.0f));
+        return AxisRotate3f(rad, Vector3f(x,y,1.0f));
     }
 
-    inline Matrix3f AxisRotate3(float rad,const Vector4f &axis)
+    inline Matrix3f AxisRotate3f(float rad,const Vector4f &axis)
     {
-        return AxisRotate3(rad, Vector3f(axis.x, axis.y, axis.z));
+        return AxisRotate3f(rad, Vector3f(axis.x, axis.y, axis.z));
     }
 
     // ==================== 度数旋转矩阵 (3x3) ====================
@@ -198,19 +198,19 @@ namespace hgl::math
      * @param deg 旋转度数
      * @param axis 旋转轴向量
      */
-    inline Matrix3f AxisRotate3Deg(float deg,const Vector3f &axis)
+    inline Matrix3f AxisRotate3fDeg(float deg,const Vector3f &axis)
     {
-        return AxisRotate3(glm::radians(deg), axis);
+        return AxisRotate3f(glm::radians(deg), axis);
     }
 
-    inline Matrix3f AxisRotate3Deg(float deg,float x,float y,float z)
+    inline Matrix3f AxisRotate3fDeg(float deg,float x,float y,float z)
     {
-        return AxisRotate3Deg(deg, Vector3f(x,y,z));
+        return AxisRotate3fDeg(deg, Vector3f(x,y,z));
     }
 
-    inline Matrix3f AxisRotate3Deg(float deg,const Vector4f &axis)
+    inline Matrix3f AxisRotate3fDeg(float deg,const Vector4f &axis)
     {
-        return AxisRotate3Deg(deg, Vector3f(axis.x, axis.y, axis.z));
+        return AxisRotate3fDeg(deg, Vector3f(axis.x, axis.y, axis.z));
     }
 
     // ==================== 向量旋转 ====================
@@ -221,7 +221,7 @@ namespace hgl::math
      * @param rad 旋转弧度
      * @param axis 旋转轴
      */
-    inline Vector3f AxisRotate(const Vector3f &v3f,float rad,const Vector3f &axis)
+    inline Vector3f RotateVector(const Vector3f &v3f,float rad,const Vector3f &axis)
     {
         Vector4f result = AxisRotate(rad, axis)*Vector4f(v3f, 1.0f);
         return Vector3f(result.x,result.y,result.z);

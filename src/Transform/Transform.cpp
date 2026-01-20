@@ -30,7 +30,7 @@ namespace hgl::math
         else
         {
             is_zero_rotate=false;
-            rotation_quat=RotationQuat(rotate_angle,rotation_axis);
+            rotation_quat=QuatFromAxisAngle(rotate_angle,rotation_axis);
         }
 
         matrix_dirty=true;
@@ -133,7 +133,7 @@ namespace hgl::math
 
         DecomposeTransform(m,translation_vector,rotation_quat,scale_vector);
 
-        ExtractedQuat(rotation_quat,rotation_axis,rotate_angle);
+        ExtractQuat(rotation_quat,rotation_axis,rotate_angle);
         
         UpdateVersion();
     }

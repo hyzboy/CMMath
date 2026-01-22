@@ -58,10 +58,40 @@ bool test_AABB_DefaultConstruction() {
     std::cout << "  测试默认构造函数..." << std::endl;
     
     AABB box;
-    TEST_ASSERT(IsNearlyEqual(box.GetMin(), Vector3f(0,0,0)), "默认AABB最小点应为(0,0,0)");
-    TEST_ASSERT(IsNearlyEqual(box.GetMax(), Vector3f(1,1,1)), "默认AABB最大点应为(1,1,1)");
-    TEST_ASSERT(IsNearlyEqual(box.GetCenter(), Vector3f(0.5f,0.5f,0.5f)), "默认AABB中心应为(0.5,0.5,0.5)");
-    TEST_ASSERT(IsNearlyEqual(box.GetLength(), Vector3f(1,1,1)), "默认AABB长度应为(1,1,1)");
+    
+    std::cout << "  默认构造的AABB:" << std::endl;
+    printVector3f("    Min", box.GetMin());
+    printVector3f("    Max", box.GetMax());
+    printVector3f("    Center", box.GetCenter());
+    printVector3f("    Length", box.GetLength());
+    
+    if (!IsNearlyEqual(box.GetMin(), Vector3f(0,0,0))) {
+        std::cerr << "  FAILED: 默认AABB最小点应为(0,0,0) at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (0, 0, 0)" << std::endl;
+        std::cerr << "    实际: (" << box.GetMin().x << ", " << box.GetMin().y << ", " << box.GetMin().z << ")" << std::endl;
+        return false;
+    }
+    
+    if (!IsNearlyEqual(box.GetMax(), Vector3f(1,1,1))) {
+        std::cerr << "  FAILED: 默认AABB最大点应为(1,1,1) at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (1, 1, 1)" << std::endl;
+        std::cerr << "    实际: (" << box.GetMax().x << ", " << box.GetMax().y << ", " << box.GetMax().z << ")" << std::endl;
+        return false;
+    }
+    
+    if (!IsNearlyEqual(box.GetCenter(), Vector3f(0.5f,0.5f,0.5f))) {
+        std::cerr << "  FAILED: 默认AABB中心应为(0.5,0.5,0.5) at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (0.5, 0.5, 0.5)" << std::endl;
+        std::cerr << "    实际: (" << box.GetCenter().x << ", " << box.GetCenter().y << ", " << box.GetCenter().z << ")" << std::endl;
+        return false;
+    }
+    
+    if (!IsNearlyEqual(box.GetLength(), Vector3f(1,1,1))) {
+        std::cerr << "  FAILED: 默认AABB长度应为(1,1,1) at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (1, 1, 1)" << std::endl;
+        std::cerr << "    实际: (" << box.GetLength().x << ", " << box.GetLength().y << ", " << box.GetLength().z << ")" << std::endl;
+        return false;
+    }
     
     return true;
 }
@@ -74,10 +104,41 @@ bool test_AABB_SetMinMax() {
     Vector3f max(4, 5, 6);
     box.SetMinMax(min, max);
     
-    TEST_ASSERT(IsNearlyEqual(box.GetMin(), min), "AABB最小点设置错误");
-    TEST_ASSERT(IsNearlyEqual(box.GetMax(), max), "AABB最大点设置错误");
-    TEST_ASSERT(IsNearlyEqual(box.GetCenter(), Vector3f(1.5f, 1.5f, 1.5f)), "AABB中心计算错误");
-    TEST_ASSERT(IsNearlyEqual(box.GetLength(), Vector3f(5, 7, 9)), "AABB长度计算错误");
+    std::cout << "  设置后的AABB:" << std::endl;
+    printVector3f("    Min", box.GetMin());
+    printVector3f("    Max", box.GetMax());
+    printVector3f("    Center", box.GetCenter());
+    printVector3f("    Length", box.GetLength());
+    
+    if (!IsNearlyEqual(box.GetMin(), min)) {
+        std::cerr << "  FAILED: AABB最小点设置错误 at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (" << min.x << ", " << min.y << ", " << min.z << ")" << std::endl;
+        std::cerr << "    实际: (" << box.GetMin().x << ", " << box.GetMin().y << ", " << box.GetMin().z << ")" << std::endl;
+        return false;
+    }
+    
+    if (!IsNearlyEqual(box.GetMax(), max)) {
+        std::cerr << "  FAILED: AABB最大点设置错误 at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (" << max.x << ", " << max.y << ", " << max.z << ")" << std::endl;
+        std::cerr << "    实际: (" << box.GetMax().x << ", " << box.GetMax().y << ", " << box.GetMax().z << ")" << std::endl;
+        return false;
+    }
+    
+    Vector3f expectedCenter(1.5f, 1.5f, 1.5f);
+    if (!IsNearlyEqual(box.GetCenter(), expectedCenter)) {
+        std::cerr << "  FAILED: AABB中心计算错误 at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (" << expectedCenter.x << ", " << expectedCenter.y << ", " << expectedCenter.z << ")" << std::endl;
+        std::cerr << "    实际: (" << box.GetCenter().x << ", " << box.GetCenter().y << ", " << box.GetCenter().z << ")" << std::endl;
+        return false;
+    }
+    
+    Vector3f expectedLength(5, 7, 9);
+    if (!IsNearlyEqual(box.GetLength(), expectedLength)) {
+        std::cerr << "  FAILED: AABB长度计算错误 at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (" << expectedLength.x << ", " << expectedLength.y << ", " << expectedLength.z << ")" << std::endl;
+        std::cerr << "    实际: (" << box.GetLength().x << ", " << box.GetLength().y << ", " << box.GetLength().z << ")" << std::endl;
+        return false;
+    }
     
     return true;
 }
@@ -90,9 +151,33 @@ bool test_AABB_SetCornerLength() {
     Vector3f length(4, 5, 6);
     box.SetCornerLength(corner, length);
     
-    TEST_ASSERT(IsNearlyEqual(box.GetMin(), corner), "AABB顶角设置错误");
-    TEST_ASSERT(IsNearlyEqual(box.GetMax(), Vector3f(5, 7, 9)), "AABB从顶角+长度计算最大点错误");
-    TEST_ASSERT(IsNearlyEqual(box.GetLength(), length), "AABB长度设置错误");
+    std::cout << "  设置后的AABB:" << std::endl;
+    printVector3f("    Corner", corner);
+    printVector3f("    Length", length);
+    printVector3f("    Min", box.GetMin());
+    printVector3f("    Max", box.GetMax());
+    
+    if (!IsNearlyEqual(box.GetMin(), corner)) {
+        std::cerr << "  FAILED: AABB顶角设置错误 at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (" << corner.x << ", " << corner.y << ", " << corner.z << ")" << std::endl;
+        std::cerr << "    实际: (" << box.GetMin().x << ", " << box.GetMin().y << ", " << box.GetMin().z << ")" << std::endl;
+        return false;
+    }
+    
+    Vector3f expectedMax(5, 7, 9);
+    if (!IsNearlyEqual(box.GetMax(), expectedMax)) {
+        std::cerr << "  FAILED: AABB从顶角+长度计算最大点错误 at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (" << expectedMax.x << ", " << expectedMax.y << ", " << expectedMax.z << ")" << std::endl;
+        std::cerr << "    实际: (" << box.GetMax().x << ", " << box.GetMax().y << ", " << box.GetMax().z << ")" << std::endl;
+        return false;
+    }
+    
+    if (!IsNearlyEqual(box.GetLength(), length)) {
+        std::cerr << "  FAILED: AABB长度设置错误 at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (" << length.x << ", " << length.y << ", " << length.z << ")" << std::endl;
+        std::cerr << "    实际: (" << box.GetLength().x << ", " << box.GetLength().y << ", " << box.GetLength().z << ")" << std::endl;
+        return false;
+    }
     
     return true;
 }
@@ -107,11 +192,33 @@ bool test_AABB_SetFromPoints() {
         -2.0f, 3.0f, 4.0f
     };
     
+    std::cout << "  输入点集:" << std::endl;
+    for (int i = 0; i < 4; ++i) {
+        std::cout << "    点" << i << ": (" << points[i*3] << ", " << points[i*3+1] << ", " << points[i*3+2] << ")" << std::endl;
+    }
+    
     AABB box;
     box.SetFromPoints(points, 4, 3);
     
-    TEST_ASSERT(IsNearlyEqual(box.GetMin(), Vector3f(-2, -2, -3)), "从点集计算的最小点错误");
-    TEST_ASSERT(IsNearlyEqual(box.GetMax(), Vector3f(4, 5, 6)), "从点集计算的最大点错误");
+    std::cout << "  计算得到的AABB:" << std::endl;
+    printVector3f("    Min", box.GetMin());
+    printVector3f("    Max", box.GetMax());
+    
+    Vector3f expectedMin(-2, -2, -3);
+    if (!IsNearlyEqual(box.GetMin(), expectedMin)) {
+        std::cerr << "  FAILED: 从点集计算的最小点错误 at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (" << expectedMin.x << ", " << expectedMin.y << ", " << expectedMin.z << ")" << std::endl;
+        std::cerr << "    实际: (" << box.GetMin().x << ", " << box.GetMin().y << ", " << box.GetMin().z << ")" << std::endl;
+        return false;
+    }
+    
+    Vector3f expectedMax(4, 5, 6);
+    if (!IsNearlyEqual(box.GetMax(), expectedMax)) {
+        std::cerr << "  FAILED: 从点集计算的最大点错误 at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (" << expectedMax.x << ", " << expectedMax.y << ", " << expectedMax.z << ")" << std::endl;
+        std::cerr << "    实际: (" << box.GetMax().x << ", " << box.GetMax().y << ", " << box.GetMax().z << ")" << std::endl;
+        return false;
+    }
     
     return true;
 }
@@ -121,11 +228,63 @@ bool test_AABB_Clear() {
     
     AABB box;
     box.SetMinMax(Vector3f(-10, -10, -10), Vector3f(10, 10, 10));
+    
+    std::cout << "  Clear前:" << std::endl;
+    printVector3f("    Min", box.GetMin());
+    printVector3f("    Max", box.GetMax());
+    std::cout << "    IsValid(): " << (box.IsValid() ? "true" : "false") << std::endl;
+    std::cout << "    IsEmpty(): " << (box.IsEmpty() ? "true" : "false") << std::endl;
+    
     box.Clear();
     
-    TEST_ASSERT(IsNearlyEqual(box.GetMin(), Vector3f(0,0,0)), "Clear后最小点应为零向量");
-    TEST_ASSERT(IsNearlyEqual(box.GetMax(), Vector3f(0,0,0)), "Clear后最大点应为零向量");
-    TEST_ASSERT(box.IsEmpty(), "Clear后AABB应为空");
+    std::cout << "  Clear后:" << std::endl;
+    printVector3f("    Min", box.GetMin());
+    printVector3f("    Max", box.GetMax());
+    printVector3f("    Center", box.GetCenter());
+    printVector3f("    Length", box.GetLength());
+    std::cout << "    IsValid(): " << (box.IsValid() ? "true" : "false") << std::endl;
+    std::cout << "    IsEmpty(): " << (box.IsEmpty() ? "true" : "false") << std::endl;
+    
+    // Clear后应该是无效状态（这是inverse bounding box的标准做法）
+    if (box.IsValid()) {
+        std::cerr << "  FAILED: Clear后AABB应为无效状态 at line " << __LINE__ << std::endl;
+        std::cerr << "    IsValid() 返回: true (期望为 false)" << std::endl;
+        return false;
+    }
+    
+    // Clear后应该是空的
+    if (!box.IsEmpty()) {
+        std::cerr << "  FAILED: Clear后AABB应为空 at line " << __LINE__ << std::endl;
+        std::cerr << "    IsEmpty() 返回: false (期望为 true)" << std::endl;
+        return false;
+    }
+    
+    // Center和Length应该是零向量
+    Vector3f expectedZero(0, 0, 0);
+    if (!IsNearlyEqual(box.GetCenter(), expectedZero)) {
+        std::cerr << "  FAILED: Clear后中心应为零向量 at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (0, 0, 0)" << std::endl;
+        std::cerr << "    实际: (" << box.GetCenter().x << ", " << box.GetCenter().y << ", " << box.GetCenter().z << ")" << std::endl;
+        return false;
+    }
+    
+    if (!IsNearlyEqual(box.GetLength(), expectedZero)) {
+        std::cerr << "  FAILED: Clear后长度应为零向量 at line " << __LINE__ << std::endl;
+        std::cerr << "    期望: (0, 0, 0)" << std::endl;
+        std::cerr << "    实际: (" << box.GetLength().x << ", " << box.GetLength().y << ", " << box.GetLength().z << ")" << std::endl;
+        return false;
+    }
+    
+    // 验证Clear后的AABB可以正确用于ExpandToInclude
+    box.ExpandToInclude(Vector3f(5, 5, 5));
+    if (!box.IsValid()) {
+        std::cerr << "  FAILED: ExpandToInclude后AABB应变为有效 at line " << __LINE__ << std::endl;
+        return false;
+    }
+    
+    std::cout << "  ExpandToInclude(5,5,5)后:" << std::endl;
+    printVector3f("    Min", box.GetMin());
+    printVector3f("    Max", box.GetMax());
     
     return true;
 }
@@ -135,11 +294,47 @@ bool test_AABB_IsEmpty() {
     
     AABB empty_box;
     empty_box.Clear();
-    TEST_ASSERT(empty_box.IsEmpty(), "空AABB应返回true");
+    
+    std::cout << "  清空后的AABB:" << std::endl;
+    printVector3f("    Min", empty_box.GetMin());
+    printVector3f("    Max", empty_box.GetMax());
+    std::cout << "    IsEmpty(): " << (empty_box.IsEmpty() ? "true" : "false") << std::endl;
+    
+    if (!empty_box.IsEmpty()) {
+        std::cerr << "  FAILED: 空AABB应返回true at line " << __LINE__ << std::endl;
+        std::cerr << "    IsEmpty() 返回: false (期望为 true)" << std::endl;
+        return false;
+    }
     
     AABB non_empty_box;
     non_empty_box.SetMinMax(Vector3f(0, 0, 0), Vector3f(1, 1, 1));
-    TEST_ASSERT(!non_empty_box.IsEmpty(), "非空AABB应返回false");
+    
+    std::cout << "  非空AABB:" << std::endl;
+    printVector3f("    Min", non_empty_box.GetMin());
+    printVector3f("    Max", non_empty_box.GetMax());
+    std::cout << "    IsEmpty(): " << (non_empty_box.IsEmpty() ? "true" : "false") << std::endl;
+    
+    if (non_empty_box.IsEmpty()) {
+        std::cerr << "  FAILED: 非空AABB应返回false at line " << __LINE__ << std::endl;
+        std::cerr << "    IsEmpty() 返回: true (期望为 false)" << std::endl;
+        return false;
+    }
+    
+    // 测试静态工厂方法 Empty()
+    AABB factory_empty = AABB::Empty();
+    std::cout << "  AABB::Empty()创建的AABB:" << std::endl;
+    std::cout << "    IsEmpty(): " << (factory_empty.IsEmpty() ? "true" : "false") << std::endl;
+    std::cout << "    IsValid(): " << (factory_empty.IsValid() ? "true" : "false") << std::endl;
+    
+    if (!factory_empty.IsEmpty()) {
+        std::cerr << "  FAILED: AABB::Empty()创建的AABB应为空 at line " << __LINE__ << std::endl;
+        return false;
+    }
+    
+    if (factory_empty.IsValid()) {
+        std::cerr << "  FAILED: AABB::Empty()创建的AABB应为无效 at line " << __LINE__ << std::endl;
+        return false;
+    }
     
     return true;
 }

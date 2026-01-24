@@ -3,7 +3,7 @@
  * 
  * 注意：本文件依赖 CMCore 库的以下组件：
  * - hgl::type::VersionData - 版本数据管理
- * - hgl::type::ObjectList - 对象列表容器  
+ * - hgl::type::ManagedArray - 对象列表容器  
  * - hgl::GetTypeHash - 类型哈希函数
  * 
  * 如果只需要基础的Transform功能，请使用 Transform.h
@@ -17,7 +17,7 @@
 #include<hgl/math/Matrix.h>
 #include<hgl/math/Quaternion.h>
 #include<hgl/math/Projection.h>
-#include<hgl/type/ObjectList.h>
+#include<hgl/type/ManagedArray.h>
 #include<hgl/type/VersionData.h>
 
 namespace hgl::math
@@ -506,7 +506,7 @@ namespace hgl::math
 
     class TransActionManager: public TransformAction
     {
-        ObjectList<TransformAction> transform_list;
+        ManagedArray<TransformAction> transform_list;
 
     protected:
 

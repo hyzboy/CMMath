@@ -1,12 +1,12 @@
 /**
- * ContainmentQuery.h - Geometry containment and inclusion tests
+ * ContainmentQuery.h - 几何体包含与内含性测试
  *
- * Provides tests for checking if one geometry fully contains another.
- * Useful for:
- * - Hierarchical spatial queries
- * - Frustum culling
- * - Region testing
- * - Bounding volume optimization
+ * 提供判断一个几何体是否完全包含另一个的测试。
+ * 适用场景：
+ * - 分层空间查询
+ * - 视锥体裁剪
+ * - 区域测试
+ * - 包围体优化
  */
 #pragma once
 
@@ -19,36 +19,35 @@
 namespace hgl::math
 {
     /**
-     * ContainmentQuery - Static containment test methods
+     * ContainmentQuery - 静态包含性测试方法
      *
-     * Provides two types of queries:
-     * 1. Point containment: Is point inside geometry?
-     *    (Delegates to geometry.ContainsPoint() for consistency)
-     * 2. Geometry containment: Does geometry A fully contain geometry B?
+     * 提供两类查询：
+     * 1. 点包含：点是否在几何体内？（委托几何体的ContainsPoint方法）
+     * 2. 几何体包含：A几何体是否完全包含B几何体？
      *
-     * Usage:
+     * 用法示例：
      *     Sphere s(...);
      *     AABB box(...);
      *
-     *     // Point containment
+     *     // 点包含
      *     if (ContainmentQuery::Contains(s, point))
-     *         // Point is inside sphere
+     *         // 点在球体内
      *
-     *     // Geometry containment
+     *     // 几何体包含
      *     if (ContainmentQuery::Contains(box, s))
-     *         // Sphere is fully inside box
+     *         // 球体完全在盒子内
      */
     class ContainmentQuery
     {
     public:
 
         //=============================================================================
-        // Point containment (delegates to geometry classes for consistency)
+        // 点包含（委托几何体类，保持一致性）
         //=============================================================================
 
         /**
-         * Test if point is inside sphere
-         * Delegates to Sphere::ContainsPoint() for consistency
+         * 测试点是否在球体内
+         * 委托Sphere::ContainsPoint实现
          */
         static bool Contains(const Sphere& container, const Vector3f& point)
         {
@@ -56,7 +55,7 @@ namespace hgl::math
         }
 
         /**
-         * Test if point is inside capsule
+         * 测试点是否在胶囊体内
          */
         static bool Contains(const Capsule& container, const Vector3f& point)
         {
@@ -64,7 +63,7 @@ namespace hgl::math
         }
 
         /**
-         * Test if point is inside AABB
+         * 测试点是否在AABB内
          */
         static bool Contains(const AABB& container, const Vector3f& point)
         {
@@ -72,7 +71,7 @@ namespace hgl::math
         }
 
         /**
-         * Test if point is inside OBB
+         * 测试点是否在OBB内
          */
         static bool Contains(const OBB& container, const Vector3f& point)
         {
@@ -80,59 +79,59 @@ namespace hgl::math
         }
 
         //=============================================================================
-        // Sphere containment
+        // 球体包含
         //=============================================================================
 
         /**
-         * Test if one sphere fully contains another
+         * 测试一个球体是否完全包含另一个球体
          *
-         * Sphere A contains sphere B if:
+         * 若A球体包含B球体：
          * distance(centerA, centerB) + radiusB <= radiusA
          *
-         * @return true if container fully contains sphere
+         * @return 若完全包含返回true
          */
         static bool Contains(const Sphere& container, const Sphere& sphere);
 
         /**
-         * Test if AABB fully contains a sphere
+         * 测试AABB是否完全包含球体
          *
-         * AABB contains sphere if:
-         * - Sphere center is inside AABB with margin >= radius
+         * 若AABB包含球体：
+         * - 球心在AABB内，且边界距离>=半径
          *
-         * @return true if AABB fully contains sphere
+         * @return 若完全包含返回true
          */
         static bool Contains(const AABB& container, const Sphere& sphere);
 
         //=============================================================================
-        // AABB containment
+        // AABB包含
         //=============================================================================
 
         /**
-         * Test if one AABB fully contains another
+         * 测试一个AABB是否完全包含另一个AABB
          *
-         * AABB A contains AABB B if:
-         * - B.min >= A.min (in all dimensions)
-         * - B.max <= A.max (in all dimensions)
+         * 若A包含B：
+         * - B.min >= A.min（各维度）
+         * - B.max <= A.max（各维度）
          *
-         * @return true if container fully contains box
+         * @return 若完全包含返回true
          */
         static bool Contains(const AABB& container, const AABB& box);
 
         /**
-         * Test if OBB fully contains an AABB
+         * 测试OBB是否完全包含AABB
          */
         static bool Contains(const OBB& container, const AABB& box);
 
         //=============================================================================
-        // OBB containment
+        // OBB包含
         //=============================================================================
 
         /**
-         * Test if one OBB fully contains another
+         * 测试一个OBB是否完全包含另一个OBB
          *
-         * More expensive test requiring projection and separation tests.
+         * 该测试较耗时，需要投影和分离轴测试。
          *
-         * @return true if container fully contains box
+         * @return 若完全包含返回true
          */
         static bool Contains(const OBB& container, const OBB& box);
     };

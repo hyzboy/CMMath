@@ -1,9 +1,8 @@
 /**
- * Cylinder.h - Simplified cylinder geometry primitive
+ * Cylinder.h - 简化的圆柱体几何图元
  *
- * A cylinder is a 3D shape with circular cross-sections perpendicular
- * to its axis. This lightweight class focuses on geometric properties
- * and simple queries.
+ * 圆柱体是具有垂直于轴线的圆形截面的三维形状。
+ * 该轻量级类专注于几何属性和简单查询。
  */
 #pragma once
 
@@ -15,18 +14,18 @@
 namespace hgl::math
 {
     /**
-     * Cylinder - Circular cylinder with axis, height, and radius
+     * Cylinder - 带有轴线、高度和半径的圆柱体
      *
-     * Defined by:
-     * - Center: Geometric center of the cylinder
-     * - Axis: Direction of cylinder axis (normalized)
-     * - Height: Length along axis
-     * - Radius: Radius of circular cross-section
+     * 定义：
+     * - Center：圆柱体的几何中心
+     * - Axis：圆柱体轴线方向（归一化）
+     * - Height：沿轴线的长度
+     * - Radius：圆形截面的半径
      *
-     * Common uses:
-     * - Columnar structures (pillars, trees)
-     * - Pipe modeling
-     * - Collision volumes
+     * 常见用途：
+     * - 柱状结构（柱子、树木）
+     * - 管道建模
+     * - 碰撞体积
      */
     class Cylinder
     {
@@ -38,8 +37,8 @@ namespace hgl::math
     public:
 
         /**
-         * Default constructor
-         * Creates a cylinder at origin, Y-axis aligned, height 1.0, radius 0.5
+         * 默认构造函数
+         * 在原点创建一个Y轴对齐的圆柱体，高度1.0，半径0.5
          */
         Cylinder()
             : center(0, 0, 0), axis(0, 1, 0), height(1.0f), radius(0.5f)
@@ -47,11 +46,11 @@ namespace hgl::math
         }
 
         /**
-         * Parameterized constructor
-         * @param c Center position
-         * @param a Axis direction (will be normalized)
-         * @param h Height
-         * @param r Radius
+         * 带参数构造函数
+         * @param c 中心位置
+         * @param a 轴线方向（会归一化）
+         * @param h 高度
+         * @param r 半径
          */
         Cylinder(const Vector3f& c, const Vector3f& a, float h, float r)
         {
@@ -59,11 +58,11 @@ namespace hgl::math
         }
 
         /**
-         * Set cylinder parameters
-         * @param c Center position
-         * @param a Axis direction (will be normalized)
-         * @param h Height
-         * @param r Radius
+         * 设置圆柱体参数
+         * @param c 中心位置
+         * @param a 轴线方向（会归一化）
+         * @param h 高度
+         * @param r 半径
          */
         void Set(const Vector3f& c, const Vector3f& a, float h, float r)
         {
@@ -73,22 +72,22 @@ namespace hgl::math
             radius = r;
         }
 
-        /** Get cylinder center */
+        /** 获取圆柱体中心 */
         const Vector3f& GetCenter() const { return center; }
 
-        /** Get cylinder axis (unit vector) */
+        /** 获取圆柱体轴线（单位向量） */
         const Vector3f& GetAxis() const { return axis; }
 
-        /** Get cylinder height */
+        /** 获取圆柱体高度 */
         float GetHeight() const { return height; }
 
-        /** Get cylinder radius */
+        /** 获取圆柱体半径 */
         float GetRadius() const { return radius; }
 
         /**
-         * Get top cap center
-         * Top is along positive axis direction
-         * @return Center of top circular cap
+         * 获取顶部圆盖中心
+         * 顶部沿轴线正方向
+         * @return 顶部圆盖的中心
          */
         Vector3f GetTopCenter() const
         {
@@ -96,9 +95,9 @@ namespace hgl::math
         }
 
         /**
-         * Get bottom cap center
-         * Bottom is along negative axis direction
-         * @return Center of bottom circular cap
+         * 获取底部圆盖中心
+         * 底部沿轴线负方向
+         * @return 底部圆盖的中心
          */
         Vector3f GetBottomCenter() const
         {
@@ -106,9 +105,9 @@ namespace hgl::math
         }
 
         /**
-         * Calculate cylinder volume
-         * Formula: V = πr²h
-         * @return Volume
+         * 计算圆柱体体积
+         * 公式：V = πr²h
+         * @return 体积
          */
         float GetVolume() const
         {
@@ -116,9 +115,9 @@ namespace hgl::math
         }
 
         /**
-         * Calculate cylinder surface area (including caps)
-         * Formula: S = 2πr(r + h) = lateral area + cap areas
-         * @return Total surface area
+         * 计算圆柱体表面积（含端盖）
+         * 公式：S = 2πr(r + h) = 侧面积 + 端盖面积
+         * @return 总表面积
          */
         float GetSurfaceArea() const
         {
@@ -126,12 +125,12 @@ namespace hgl::math
         }
 
         /**
-         * Test if point is inside cylinder
-         * Checks:
-         * 1. Point is within height range along axis
-         * 2. Radial distance from axis <= radius
-         * @param point Point to test
-         * @return true if inside or on surface
+         * 判断点是否在圆柱体内
+         * 检查：
+         * 1. 点在轴线方向的高度范围内
+         * 2. 到轴线的径向距离 <= 半径
+         * @param point 待测试点
+         * @return 若在内部或表面返回 true
          */
         bool ContainsPoint(const Vector3f& point) const
         {
@@ -153,9 +152,9 @@ namespace hgl::math
         }
 
         /**
-         * Find closest point on cylinder surface
-         * @param point Point in space
-         * @return Closest point on surface
+         * 求空间中某点到圆柱体表面最近的点
+         * @param point 空间中的点
+         * @return 表面上最近的点
          */
         Vector3f ClosestPoint(const Vector3f& point) const
         {
@@ -201,9 +200,9 @@ namespace hgl::math
         }
 
         /**
-         * Calculate distance from point to cylinder surface
-         * @param point Point in space
-         * @return Distance to surface (0 if inside)
+         * 计算空间中某点到圆柱体表面的距离
+         * @param point 空间中的点
+         * @return 到表面的距离（若在内部则为0）
          */
         float DistanceToPoint(const Vector3f& point) const
         {
@@ -212,8 +211,8 @@ namespace hgl::math
         }
 
         /**
-         * Get axis-aligned bounding box
-         * @return AABB containing this cylinder
+         * 获取轴对齐包围盒
+         * @return 包含该圆柱体的AABB
          */
         AABB GetBoundingBox() const
         {

@@ -1,8 +1,8 @@
 /**
- * Cone.h - Simplified cone geometry primitive
+ * Cone.h - 简化的圆锥体几何图元
  *
- * A cone is formed by connecting a circular base to an apex point.
- * This lightweight class focuses on geometric properties and simple queries.
+ * 圆锥体由一个圆形底面和一个顶点连接而成。
+ * 该轻量级类专注于几何属性和简单查询。
  */
 #pragma once
 
@@ -14,23 +14,23 @@
 namespace hgl::math
 {
     /**
-     * Cone - Circular cone with apex, axis, height, and base radius
+     * Cone - 带有顶点、轴线、高度和底面半径的圆锥体
      *
-     * Geometric definition:
-     * - Apex: The tip of the cone
-     * - Axis: Direction from apex to base center (normalized)
-     * - Height: Distance from apex to base
-     * - Base radius: Radius of circular base
+     * 几何定义：
+     * - Apex：圆锥顶点
+     * - Axis：从顶点指向底面中心的方向（归一化）
+     * - Height：顶点到底面的距离
+     * - Base radius：底面圆的半径
      *
-     * Properties:
-     * - Slant height = sqrt(h² + r²)
-     * - Radius at height h' = r * (1 - h'/h)
-     * - Cone angle = arctan(r/h)
+     * 属性：
+     * - 斜高 = sqrt(h² + r²)
+     * - 距顶点h'处的半径 = r * (1 - h'/h)
+     * - 圆锥角 = arctan(r/h)
      *
-     * Common uses:
-     * - Cone-shaped objects
-     * - Spotlight volumes
-     * - Vision cones
+     * 常见用途：
+     * - 圆锥形物体
+     * - 聚光体积
+     * - 视野锥体
      */
     class Cone
     {
@@ -42,8 +42,8 @@ namespace hgl::math
     public:
 
         /**
-         * Default constructor
-         * Creates a cone at (0,1,0) pointing down, height 1.0, radius 0.5
+         * 默认构造函数
+         * 在(0,1,0)创建一个朝下的圆锥体，高度1.0，半径0.5
          */
         Cone()
             : apex(0, 1, 0), axis(0, -1, 0), height(1.0f), base_radius(0.5f)
@@ -51,11 +51,11 @@ namespace hgl::math
         }
 
         /**
-         * Parameterized constructor
-         * @param a Apex position
-         * @param ax Axis direction (will be normalized)
-         * @param h Height
-         * @param r Base radius
+         * 带参数构造函数
+         * @param a 顶点位置
+         * @param ax 轴线方向（会归一化）
+         * @param h 高度
+         * @param r 底面半径
          */
         Cone(const Vector3f& a, const Vector3f& ax, float h, float r)
         {
@@ -63,11 +63,11 @@ namespace hgl::math
         }
 
         /**
-         * Set cone parameters
-         * @param a Apex position
-         * @param ax Axis direction (will be normalized)
-         * @param h Height
-         * @param r Base radius
+         * 设置圆锥体参数
+         * @param a 顶点位置
+         * @param ax 轴线方向（会归一化）
+         * @param h 高度
+         * @param r 底面半径
          */
         void Set(const Vector3f& a, const Vector3f& ax, float h, float r)
         {
@@ -77,21 +77,21 @@ namespace hgl::math
             base_radius = r;
         }
 
-        /** Get apex position */
+        /** 获取顶点位置 */
         const Vector3f& GetApex() const { return apex; }
 
-        /** Get axis direction */
+        /** 获取轴线方向 */
         const Vector3f& GetAxis() const { return axis; }
 
-        /** Get height */
+        /** 获取高度 */
         float GetHeight() const { return height; }
 
-        /** Get base radius */
+        /** 获取底面半径 */
         float GetBaseRadius() const { return base_radius; }
 
         /**
-         * Get geometric center (1/4 height from base)
-         * @return Center of mass position
+         * 获取几何中心（距底面1/4高度处）
+         * @return 质心位置
          */
         Vector3f GetCenter() const
         {
@@ -99,8 +99,8 @@ namespace hgl::math
         }
 
         /**
-         * Get base center
-         * @return Center of circular base
+         * 获取底面中心
+         * @return 圆形底面的中心
          */
         Vector3f GetBaseCenter() const
         {
@@ -108,9 +108,9 @@ namespace hgl::math
         }
 
         /**
-         * Calculate cone volume
-         * Formula: V = (1/3)πr²h
-         * @return Volume
+         * 计算圆锥体体积
+         * 公式：V = (1/3)πr²h
+         * @return 体积
          */
         float GetVolume() const
         {
@@ -118,9 +118,9 @@ namespace hgl::math
         }
 
         /**
-         * Calculate cone surface area (including base)
-         * Formula: S = πr(r + s) where s is slant height
-         * @return Total surface area
+         * 计算圆锥体表面积（含底面）
+         * 公式：S = πr(r + s)，s为斜高
+         * @return 总表面积
          */
         float GetSurfaceArea() const
         {
@@ -129,8 +129,8 @@ namespace hgl::math
         }
 
         /**
-         * Calculate lateral surface area (excluding base)
-         * @return Lateral surface area
+         * 计算侧面积（不含底面）
+         * @return 侧面积
          */
         float GetLateralArea() const
         {
@@ -139,9 +139,9 @@ namespace hgl::math
         }
 
         /**
-         * Get radius at specific height from apex
-         * @param h Height from apex (0 to height)
-         * @return Radius at that height
+         * 获取距顶点某高度处的半径
+         * @param h 距顶点高度（0到height）
+         * @return 该高度处的半径
          */
         float GetRadiusAtHeight(float h) const
         {
@@ -153,9 +153,9 @@ namespace hgl::math
         }
 
         /**
-         * Test if point is inside cone
-         * @param point Point to test
-         * @return true if inside or on surface
+         * 判断点是否在圆锥体内
+         * @param point 待测试点
+         * @return 若在内部或表面返回true
          */
         bool ContainsPoint(const Vector3f& point) const
         {
@@ -177,9 +177,9 @@ namespace hgl::math
         }
 
         /**
-         * Find closest point on cone surface
-         * @param point Point in space
-         * @return Closest point on surface
+         * 求空间中某点到圆锥体表面最近的点
+         * @param point 空间中的点
+         * @return 表面上最近的点
          */
         Vector3f ClosestPoint(const Vector3f& point) const
         {
@@ -246,9 +246,9 @@ namespace hgl::math
         }
 
         /**
-         * Calculate distance from point to cone surface
-         * @param point Point in space
-         * @return Distance to surface (0 if inside)
+         * 计算空间中某点到圆锥体表面的距离
+         * @param point 空间中的点
+         * @return 到表面的距离（若在内部则为0）
          */
         float DistanceToPoint(const Vector3f& point) const
         {
@@ -257,8 +257,8 @@ namespace hgl::math
         }
 
         /**
-         * Get axis-aligned bounding box
-         * @return AABB containing this cone
+         * 获取轴对齐包围盒
+         * @return 包含该圆锥体的AABB
          */
         AABB GetBoundingBox() const
         {

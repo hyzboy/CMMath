@@ -1,16 +1,16 @@
 /**
  * HeightMapContour.h - 高度图等高线提取
- * 
+ *
  * 使用 Marching Squares 算法从单通道高度图提取等高线
  * 用于游戏中的地形分析、海岸线检测等场景
- * 
+ *
  * 功能：
  * - 提取指定高度阈值的等高线
  * - 支持多种数据类型（uint8, uint16, uint32, float）
  * - 线性插值实现亚像素精度
  * - 支持多边形简化（Douglas-Peucker 算法）
  * - 支持轮廓平滑（Chaikin 算法）
- * 
+ *
  * 使用场景：
  * - 从高度图提取海岸线
  * - 地形等高线可视化
@@ -29,7 +29,7 @@ namespace hgl::math
 {
     /**
      * @brief 等高线多边形
-     * 
+     *
      * 表示一条等高线，由一系列顶点组成
      * 可以是闭合的（环形）或开放的（线段）
      */
@@ -43,7 +43,7 @@ namespace hgl::math
 
     /**
      * @brief 等高线提取结果
-     * 
+     *
      * 包含两个高度阈值对应的等高线集合：
      * - low_to_mid_contours: 深水区与浅水区的边界
      * - mid_to_high_contours: 浅水区与陆地的边界
@@ -56,22 +56,22 @@ namespace hgl::math
 
     /**
      * @brief Douglas-Peucker 多边形简化算法
-     * 
+     *
      * 使用垂直距离判断法简化多边形，减少顶点数量同时保持形状特征
-     * 
+     *
      * @param vertices 输入顶点列表
      * @param epsilon 简化容差（像素单位），越大简化越激进
      * @param out_vertices 输出简化后的顶点列表
      */
-    void SimplifyPolygonDP(const std::vector<Vector2f>& vertices, 
-                                   float epsilon, 
+    void SimplifyPolygonDP(const std::vector<Vector2f>& vertices,
+                                   float epsilon,
                                    std::vector<Vector2f>& out_vertices);
- 
+
     /**
      * @brief Chaikin 曲线平滑算法
-     * 
+     *
      * 通过迭代细分和平滑使多边形轮廓更加圆润
-     * 
+     *
      * @param vertices 输入顶点列表
      * @param iterations 迭代次数（1-3 通常足够）
      * @param is_closed 是否为闭合曲线
@@ -81,7 +81,7 @@ namespace hgl::math
                                       int iterations,
                                       bool is_closed,
                                       std::vector<Vector2f>& out_vertices);
- 
+
     /**
      * @brief 处理轮廓的简化和平滑（定义在 .cpp）
      *
@@ -93,10 +93,10 @@ namespace hgl::math
 
     /**
      * @brief 高度图等高线提取器
-     * 
+     *
      * 使用 Marching Squares 算法从高度图提取等高线
      * 支持多种数据类型，并提供亚像素精度的线性插值
-     * 
+     *
      * @tparam T 高度数据类型（uint8, uint16, uint32, float）
      */
     template<typename T>
@@ -111,7 +111,7 @@ namespace hgl::math
 
         /**
          * @brief 计算 Marching Squares 的格子配置索引
-         * 
+         *
          * @param x 格子左下角 x 坐标
          * @param y 格子左下角 y 坐标
          * @param threshold 高度阈值
@@ -123,7 +123,7 @@ namespace hgl::math
                 return 0;
 
             int config = 0;
-            
+
             // 按逆时针顺序检查四个角点：左下、右下、右上、左上
             if (data_[y * width_ + x] >= threshold)                    config |= 1;  // 左下
             if (data_[y * width_ + (x + 1)] >= threshold)              config |= 2;  // 右下
@@ -135,7 +135,7 @@ namespace hgl::math
 
         /**
          * @brief 使用线性插值计算等高线与格子边的交点
-         * 
+         *
          * @param x 格子左下角 x 坐标
          * @param y 格子左下角 y 坐标
          * @param edge 边索引（0=下边, 1=右边, 2=上边, 3=左边）
@@ -190,14 +190,14 @@ namespace hgl::math
     public:
         /**
          * @brief 构造函数
-         * 
+         *
          * @param data 高度图数据指针
          * @param width 图像宽度
          * @param height 图像高度
          * @param low_threshold 低阈值（深水区/浅水区边界）
          * @param high_threshold 高阈值（浅水区/陆地边界）
          */
-        HeightMapContourExtractor(const T* data, int width, int height, 
+        HeightMapContourExtractor(const T* data, int width, int height,
                                   T low_threshold, T high_threshold)
             : data_(data)
             , width_(width)
@@ -209,7 +209,7 @@ namespace hgl::math
 
         /**
          * @brief 提取单个阈值的等高线
-         * 
+         *
          * @param threshold 高度阈值
          * @param contours 输出等高线列表
          */
@@ -240,13 +240,13 @@ namespace hgl::math
 
             // 遍历所有格子，提取线段
             std::vector<std::pair<Vector2f, Vector2f>> segments;
-            
+
             for (int y = 0; y < height_ - 1; ++y)
             {
                 for (int x = 0; x < width_ - 1; ++x)
                 {
                     int config = GetCellConfig(x, y, threshold);
-                    
+
                     const int* edges = edgeTable[config];
                     for (int i = 0; edges[i] != -1; i += 2)
                     {
@@ -275,7 +275,7 @@ namespace hgl::math
 
         /**
          * @brief 提取两个阈值的等高线
-         * 
+         *
          * @param smooth 是否平滑轮廓
          * @param simplify_epsilon 简化容差（0 表示不简化）
          * @return 等高线提取结果

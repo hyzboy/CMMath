@@ -102,7 +102,7 @@ namespace hgl::math
          * 获取尺寸（等同于 GetLength()，但更直观）
          */
         const   Vector3f &  GetSize     ()const{return length;}
-        
+
         /**
          * 获取半尺寸（extent）
          */
@@ -135,8 +135,8 @@ namespace hgl::math
          */
         bool IsValid()const
         {
-            return minPoint.x <= maxPoint.x && 
-                   minPoint.y <= maxPoint.y && 
+            return minPoint.x <= maxPoint.x &&
+                   minPoint.y <= maxPoint.y &&
                    minPoint.z <= maxPoint.z;
         }
 
@@ -194,7 +194,7 @@ namespace hgl::math
         {
             return glm::clamp(point, minPoint, maxPoint);
         }
-        
+
         Vector3f ClosestPoint(const Vector3f &point) const;
 
         /**

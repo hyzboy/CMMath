@@ -1,12 +1,12 @@
 /**
- * RaycastQuery.h - Ray-geometry intersection testing
+ * RaycastQuery.h - 射线与几何体相交测试
  *
- * Provides ray casting and intersection tests for all geometry primitives.
- * Ray casting is essential for:
- * - Mouse picking / selection
- * - Line-of-sight tests
- * - Projectile collision
- * - AI vision systems
+ * 提供所有几何体的射线投射与相交测试。
+ * 射线投射常用于：
+ * - 鼠标拾取/选择
+ * - 视线检测
+ * - 抛射物碰撞
+ * - AI视觉系统
  */
 #pragma once
 
@@ -24,20 +24,20 @@
 namespace hgl::math
 {
     /**
-     * Raycast hit information
+     * 射线命中信息
      *
-     * Contains detailed information about a ray-geometry intersection:
-     * - hit: Whether ray intersected the geometry
-     * - distance: Distance along ray to hit point (t value)
-     * - point: Hit point in world space (ray.origin + ray.direction * distance)
-     * - normal: Surface normal at hit point
+     * 包含射线与几何体相交的详细信息：
+     * - hit：是否命中几何体
+     * - distance：射线到命中点的距离（t值）
+     * - point：命中点（世界空间，ray.origin + ray.direction * distance）
+     * - normal：命中点的表面法线
      */
     struct RaycastHit
     {
-        bool hit;                // True if ray hit geometry
-        float distance;          // Distance along ray (t parameter)
-        Vector3f point;          // Hit point (world space)
-        Vector3f normal;         // Surface normal at hit point
+        bool hit;                // 是否命中几何体
+        float distance;          // 沿射线的距离（t参数）
+        Vector3f point;          // 命中点（世界空间）
+        Vector3f normal;         // 命中点的表面法线
 
         RaycastHit()
             : hit(false), distance(FLT_MAX), point(0, 0, 0), normal(0, 1, 0)
@@ -46,136 +46,136 @@ namespace hgl::math
     };
 
     /**
-     * RaycastQuery - Static ray intersection methods
+     * RaycastQuery - 静态射线相交方法
      *
-     * Provides ray casting operations for all geometry types.
-     * Methods come in two flavors:
-     * - Intersects(..., float& t): Simple boolean test with distance
-     * - Test(...): Detailed hit information with point and normal
+     * 提供所有几何体类型的射线投射操作。
+     * 方法分为两类：
+     * - Intersects(..., float& t)：简单布尔测试并输出距离
+     * - Test(...)：详细命中信息（点和法线）
      *
-     * Usage:
+     * 用法示例：
      *     Ray ray(origin, direction);
      *     Sphere sphere(center, radius);
      *
-     *     // Simple test
+     *     // 简单测试
      *     float t;
      *     if (RaycastQuery::Intersects(ray, sphere, t))
      *         Vector3f hitPoint = ray.origin + ray.direction * t;
      *
-     *     // Detailed test
+     *     // 详细测试
      *     RaycastHit hit = RaycastQuery::Test(ray, sphere);
      *     if (hit.hit)
-     *         // Use hit.point, hit.normal, hit.distance
+     *         // 使用 hit.point, hit.normal, hit.distance
      */
     class RaycastQuery
     {
     public:
 
         //=============================================================================
-        // Ray-Sphere intersection
+        // 射线-球体相交
         //=============================================================================
 
         /**
-         * Test ray-sphere intersection
-         * @param ray Ray to test
-         * @param sphere Sphere to test against
-         * @param t Output: distance along ray to hit point
-         * @return true if ray intersects sphere
+         * 测试射线-球体相交
+         * @param ray 待测射线
+         * @param sphere 待测球体
+         * @param t 输出：射线到命中点的距离
+         * @return 若相交返回true
          */
         static bool Intersects(const Ray& ray, const Sphere& sphere, float& t);
 
         /**
-         * Simple ray-sphere intersection (no distance output)
+         * 简单射线-球体相交测试（无距离输出）
          */
         static bool Intersects(const Ray& ray, const Sphere& sphere);
 
         /**
-         * Detailed ray-sphere intersection test
-         * @return RaycastHit with full intersection information
+         * 详细射线-球体相交测试
+         * @return 包含完整命中信息的RaycastHit
          */
         static RaycastHit Test(const Ray& ray, const Sphere& sphere);
 
         //=============================================================================
-        // Ray-Capsule intersection
+        // 射线-胶囊体相交
         //=============================================================================
 
         /**
-         * Test ray-capsule intersection
+         * 测试射线-胶囊体相交
          */
         static bool Intersects(const Ray& ray, const Capsule& capsule, float& t);
         static bool Intersects(const Ray& ray, const Capsule& capsule);
         static RaycastHit Test(const Ray& ray, const Capsule& capsule);
 
         //=============================================================================
-        // Ray-Cylinder intersection
+        // 射线-圆柱体相交
         //=============================================================================
 
         /**
-         * Test ray-cylinder intersection
+         * 测试射线-圆柱体相交
          */
         static bool Intersects(const Ray& ray, const Cylinder& cylinder, float& t);
         static bool Intersects(const Ray& ray, const Cylinder& cylinder);
         static RaycastHit Test(const Ray& ray, const Cylinder& cylinder);
 
         //=============================================================================
-        // Ray-Cone intersection
+        // 射线-圆锥体相交
         //=============================================================================
 
         /**
-         * Test ray-cone intersection
+         * 测试射线-圆锥体相交
          */
         static bool Intersects(const Ray& ray, const Cone& cone, float& t);
         static bool Intersects(const Ray& ray, const Cone& cone);
         static RaycastHit Test(const Ray& ray, const Cone& cone);
 
         //=============================================================================
-        // Ray-Torus intersection
+        // 射线-环面相交
         //=============================================================================
 
         /**
-         * Test ray-torus intersection
+         * 测试射线-环面相交
          */
         static bool Intersects(const Ray& ray, const Torus& torus, float& t);
         static bool Intersects(const Ray& ray, const Torus& torus);
         static RaycastHit Test(const Ray& ray, const Torus& torus);
 
         //=============================================================================
-        // Ray-AABB/OBB/Plane (unified interface for existing functionality)
+        // 射线-AABB/OBB/平面（统一接口）
         //=============================================================================
 
         /**
-         * Test ray-AABB intersection
+         * 测试射线-AABB相交
          */
         static bool Intersects(const Ray& ray, const AABB& box, float& t);
         static bool Intersects(const Ray& ray, const AABB& box);
         static RaycastHit Test(const Ray& ray, const AABB& box);
 
         /**
-         * Test ray-OBB intersection
+         * 测试射线-OBB相交
          */
         static bool Intersects(const Ray& ray, const OBB& box, float& t);
         static bool Intersects(const Ray& ray, const OBB& box);
         static RaycastHit Test(const Ray& ray, const OBB& box);
 
         /**
-         * Test ray-plane intersection
+         * 测试射线-平面相交
          */
         static bool Intersects(const Ray& ray, const Plane& plane, float& t);
         static bool Intersects(const Ray& ray, const Plane& plane);
         static RaycastHit Test(const Ray& ray, const Plane& plane);
 
         //=============================================================================
-        // Ray-Triangle intersection (Möller-Trumbore algorithm)
+        // 射线-三角形相交（Möller-Trumbore算法）
         //=============================================================================
 
         /**
-         * Test ray-triangle intersection using Möller-Trumbore algorithm
+         * 使用Möller-Trumbore算法测试射线-三角形相交
          *
-         * @param ray Ray to test
-         * @param v0, v1, v2 Triangle vertices
-         * @param t Output: distance along ray
-         * @param u, v Output: barycentric coordinates within triangle
-         * @return true if ray intersects triangle
+         * @param ray 待测射线
+         * @param v0, v1, v2 三角形顶点
+         * @param t 输出：射线到交点距离
+         * @param u, v 输出：三角形重心坐标
+         * @return 若相交返回true
          */
         static bool IntersectsTriangle(const Ray& ray,
                                        const Vector3f& v0,
@@ -184,7 +184,7 @@ namespace hgl::math
                                        float& t, float& u, float& v);
 
         /**
-         * Simple ray-triangle intersection (no barycentric coordinates)
+         * 简单射线-三角形相交测试（无重心坐标输出）
          */
         static bool IntersectsTriangle(const Ray& ray,
                                        const Vector3f& v0,
@@ -192,5 +192,4 @@ namespace hgl::math
                                        const Vector3f& v2,
                                        float& t);
     };
-
 }//namespace hgl::math

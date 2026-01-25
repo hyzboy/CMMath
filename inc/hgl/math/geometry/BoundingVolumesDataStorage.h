@@ -1,20 +1,19 @@
 #pragma once
 
 #include<hgl/math/geometry/BoundingVolumes.h>
-#include<hgl/type/List.h>
 #include<vector>
 
 namespace hgl::math
 {
     /**
      * BoundingVolumesDataStorage - SOA (Structure of Arrays) 存储
-     * 
+     *
      * 用于 ECS 体系中高效存储和访问多个 BoundingVolumes 数据
      * 采用 SOA 模式将数据分解为多个连续数组，便于：
      * 1. SIMD 优化（数据对齐和连续访问）
      * 2. 缓存友好（相同类型数据连续存储）
      * 3. 批量操作（可以对同类数据进行向量化处理）
-     * 
+     *
      * 数据布局：
      * - AABB: minPoint[n], maxPoint[n]
      * - OBB: center[n], axis[n*3], halfLength[n]
@@ -372,28 +371,28 @@ namespace hgl::math
                 // Transform AABB (重建)
                 Vector3f aabb_center = (aabbMinPoints[i] + aabbMaxPoints[i]) * 0.5f;
                 Vector3f aabb_extent = (aabbMaxPoints[i] - aabbMinPoints[i]) * 0.5f;
-                
+
                 Vector3f new_center = Vector3f(transform * Vector4f(aabb_center, 1.0f));
-                
+
                 // 计算变换后的 extent
                 const Vector3f ax = glm::abs(a0);
                 const Vector3f ay = glm::abs(a1);
                 const Vector3f az = glm::abs(a2);
                 Vector3f scaled_extent = aabb_extent * Vector3f(s0, s1, s2);
                 Vector3f new_extent = ax * scaled_extent.x + ay * scaled_extent.y + az * scaled_extent.z;
-                
+
                 aabbMinPoints[i] = new_center - new_extent;
                 aabbMaxPoints[i] = new_center + new_extent;
 
                 // Transform OBB
                 obbCenters[i] = Vector3f(transform * Vector4f(obbCenters[i], 1.0f));
-                
+
                 // 旋转 OBB 的轴（注意：这里假设 OBB 的轴已经是正交的）
                 Matrix3f rotation(a0, a1, a2);
                 obbAxis0[i] = rotation * obbAxis0[i];
                 obbAxis1[i] = rotation * obbAxis1[i];
                 obbAxis2[i] = rotation * obbAxis2[i];
-                
+
                 // 缩放半长度
                 obbHalfLengths[i] = obbHalfLengths[i] * Vector3f(s0, s1, s2);
 
@@ -545,7 +544,7 @@ namespace hgl::math
         size_t GetMemoryUsage() const
         {
             size_t total = 0;
-            
+
             // AABB: 2 * Vector3f * count
             total += aabbMinPoints.capacity() * sizeof(Vector3f);
             total += aabbMaxPoints.capacity() * sizeof(Vector3f);

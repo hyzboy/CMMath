@@ -1,6 +1,6 @@
 /**
  * MemoryUtil.h - 内存工具函数
- * 
+ *
  * 提供内存比较、清零等工具函数。
  */
 
@@ -21,7 +21,7 @@ namespace hgl
     {
         return std::memcmp(&a, &b, sizeof(T));
     }
-    
+
     /**
      * @brief 将内存清零
      * @param data 待清零的数据
@@ -31,5 +31,5 @@ namespace hgl
     {
         std::memset(&data, 0, sizeof(T));
     }
-    
+
 }//namespace hgl

@@ -1,11 +1,11 @@
 /**
  * TransformAction.h - 变换动作系统
- * 
+ *
  * 注意：本文件依赖 CMCore 库的以下组件：
  * - hgl::type::VersionData - 版本数据管理
- * - hgl::type::ManagedArray - 对象列表容器  
+ * - hgl::type::ManagedArray - 对象列表容器
  * - hgl::GetTypeHash - 类型哈希函数
- * 
+ *
  * 如果只需要基础的Transform功能，请使用 Transform.h
  */
 
@@ -516,7 +516,7 @@ namespace hgl::math
 
             if (transform_list.IsEmpty())
                 return;
-            
+
             Matrix4f TempMatrix;
 
             for(TransformAction *tb:transform_list)
@@ -526,7 +526,7 @@ namespace hgl::math
                 mat*=TempMatrix;
             }
         }
-        
+
     public:
 
         virtual constexpr const size_t GetTypeHash()const override { return hgl::GetTypeHash<TransActionManager>(); }
@@ -649,7 +649,7 @@ namespace hgl::math
                 return;
 
             const int pos=transform_list.Find(tb);
-            
+
             if(pos<0)
                 return;
 

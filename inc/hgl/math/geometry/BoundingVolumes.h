@@ -16,23 +16,23 @@ namespace hgl::math
     OBB ToOBB(const AABB &aabb, const Matrix4f &transform);
 
     /**
-     * Convert OBB to BoundingSphere
-     * @param obb The oriented bounding box to convert
-     * @return A bounding sphere that fully contains the OBB
+     * OBB 转为 BoundingSphere
+     * @param obb 待转换的有向包围盒
+     * @return 完全包含该OBB的包围球
      */
     BoundingSphere ToBoundingSphere(const OBB &obb);
 
     /**
-     * Convert BoundingSphere to AABB
-     * @param sphere The bounding sphere to convert
-     * @return An axis-aligned bounding box that fully contains the sphere
+     * BoundingSphere 转为 AABB
+     * @param sphere 待转换的包围球
+     * @return 完全包含该球的轴对齐包围盒
      */
     AABB ToAABB(const BoundingSphere &sphere);
 
     /**
-     * Convert BoundingSphere to OBB
-     * @param sphere The bounding sphere to convert
-     * @return An oriented bounding box (axis-aligned) that fully contains the sphere
+     * BoundingSphere 转为 OBB
+     * @param sphere 待转换的包围球
+     * @return 完全包含该球的有向包围盒（轴对齐）
      */
     OBB ToOBB(const BoundingSphere &sphere);
 

@@ -1,16 +1,15 @@
 /**
- * Sphere.h - Simplified sphere geometry primitive
+ * Sphere.h - 简化的球体几何图元
  *
- * This is the new lightweight Sphere class that focuses only on:
- * - Property storage and access
- * - Simple, high-frequency geometric queries
- * - Bounding box calculation for broad-phase collision
+ * 这是一个轻量级的球体类，仅专注于：
+ * - 属性存储与访问
+ * - 简单且高频的几何查询
+ * - 用于粗略碰撞检测的包围盒计算
  *
- * Complex collision detection has been moved to CollisionDetector.
- * This keeps the class clean and focused on its core responsibility.
+ * 复杂的碰撞检测已移至 CollisionDetector，
+ * 保持该类简洁专注于核心职责。
  *
- * For backward compatibility, the original Sphere class remains at
- * inc/hgl/math/geometry/primitives/Sphere.h and is still available.
+ * 为了兼容，原有 Sphere 类仍保留在 inc/hgl/math/geometry/primitives/Sphere.h。
  */
 #pragma once
 
@@ -22,23 +21,23 @@
 namespace hgl::math
 {
     /**
-     * Sphere - Standard sphere with uniform radius
+     * Sphere - 标准球体，半径均匀
      *
-     * Mathematical definition:
-     * Surface equation: ||P - center|| = radius
-     * i.e., (x-cx)² + (y-cy)² + (z-cz)² = r²
+     * 数学定义：
+     * 表面方程：||P - center|| = radius
+     * 即 (x-cx)² + (y-cy)² + (z-cz)² = r²
      *
-     * Properties:
-     * - Perfect symmetry (isotropic)
-     * - Minimal surface area to volume ratio
-     * - Rotation invariant
-     * - Simplest collision detection
+     * 属性：
+     * - 完美对称（各向同性）
+     * - 表面积/体积比最小
+     * - 旋转不变性
+     * - 最简单的碰撞检测
      *
-     * Common uses:
-     * - Bounding spheres for broad-phase collision
-     * - Particle systems
-     * - Light attenuation ranges
-     * - Physics simulation
+     * 常见用途：
+     * - 用于粗略碰撞检测的包围球
+     * - 粒子系统
+     * - 光照衰减范围
+     * - 物理仿真
      */
     class Sphere
     {
@@ -47,17 +46,17 @@ namespace hgl::math
 
     public:
 
-        /** Get sphere center */
+        /** 获取球心 */
         const Vector3f& GetCenter() const { return center; }
 
-        /** Get sphere radius */
+        /** 获取球半径 */
         float GetRadius() const { return radius; }
 
     public:
 
         /**
-         * Default constructor
-         * Creates a unit sphere at origin with radius 1
+         * 默认构造函数
+         * 在原点创建一个半径为1的单位球
          */
         Sphere()
             : center(0, 0, 0), radius(1.0f)
@@ -65,9 +64,9 @@ namespace hgl::math
         }
 
         /**
-         * Parameterized constructor
-         * @param c Center position
-         * @param r Sphere radius
+         * 带参数构造函数
+         * @param c 球心位置
+         * @param r 球半径
          */
         Sphere(const Vector3f& c, float r)
             : center(c), radius(r)
@@ -75,9 +74,9 @@ namespace hgl::math
         }
 
         /**
-         * Set sphere parameters
-         * @param c New center position
-         * @param r New radius
+         * 设置球体参数
+         * @param c 新球心位置
+         * @param r 新半径
          */
         void Set(const Vector3f& c, float r)
         {
@@ -86,9 +85,9 @@ namespace hgl::math
         }
 
         /**
-         * Calculate sphere volume
-         * Formula: V = (4/3)πr³
-         * @return Volume of the sphere
+         * 计算球体体积
+         * 公式：V = (4/3)πr³
+         * @return 球体体积
          */
         float GetVolume() const
         {
@@ -96,9 +95,9 @@ namespace hgl::math
         }
 
         /**
-         * Calculate sphere surface area
-         * Formula: S = 4πr²
-         * @return Surface area of the sphere
+         * 计算球体表面积
+         * 公式：S = 4πr²
+         * @return 球体表面积
          */
         float GetSurfaceArea() const
         {
@@ -106,13 +105,12 @@ namespace hgl::math
         }
 
         /**
-         * Get point on sphere surface in a given direction
+         * 获取球面上某方向的点
          *
-         * Returns the point on the sphere surface along the given direction
-         * from the center. Direction does not need to be normalized.
+         * 返回球心沿给定方向的球面点，direction无需归一化。
          *
-         * @param direction Direction vector from center
-         * @return Point on sphere surface
+         * @param direction 从球心出发的方向向量
+         * @return 球面上的点
          */
         Vector3f GetPoint(const Vector3f& direction) const
         {
@@ -122,9 +120,9 @@ namespace hgl::math
         }
 
         /**
-         * Test if a point is inside or on the sphere
-         * @param point Point to test
-         * @return true if point is inside or on surface, false if outside
+         * 判断点是否在球体内或表面
+         * @param point 待测试点
+         * @return 若在内部或表面返回true，否则返回false
          */
         bool ContainsPoint(const Vector3f& point) const
         {
@@ -134,9 +132,9 @@ namespace hgl::math
         }
 
         /**
-         * Find the closest point on sphere surface to a given point
-         * @param point Point in space
-         * @return Closest point on sphere surface
+         * 求空间中某点到球面最近的点
+         * @param point 空间中的点
+         * @return 球面上最近的点
          */
         Vector3f ClosestPoint(const Vector3f& point) const
         {
@@ -151,9 +149,9 @@ namespace hgl::math
         }
 
         /**
-         * Calculate distance from a point to sphere surface
-         * @param point Point in space
-         * @return Distance to surface (0 if point is inside)
+         * 计算空间中某点到球面表面的距离
+         * @param point 空间中的点
+         * @return 到表面的距离（若在内部则为0）
          */
         float DistanceToPoint(const Vector3f& point) const
         {
@@ -163,8 +161,8 @@ namespace hgl::math
         }
 
         /**
-         * Get axis-aligned bounding box for broad-phase collision
-         * @return AABB that tightly contains this sphere
+         * 获取用于粗略碰撞检测的轴对齐包围盒
+         * @return 紧密包含该球体的AABB
          */
         AABB GetBoundingBox() const
         {
@@ -177,30 +175,29 @@ namespace hgl::math
     };//class Sphere
 
     /**
-     * EllipseSphere (Ellipsoid) - Non-uniform radii in xyz directions
+     * EllipseSphere（椭球体）- xyz方向半径不等
      *
-     * An ellipsoid is a generalization of a sphere with different radii
-     * along the three coordinate axes. Similar to a stretched or flattened sphere.
+     * 椭球体是球体在三个坐标轴方向半径不同的推广，类似拉伸或压扁的球体。
      *
-     * Mathematical definition:
-     * Ellipsoid equation: (x-cx)²/a² + (y-cy)²/b² + (z-cz)²/c² = 1
-     * where a, b, c are the radii along each axis
+     * 数学定义：
+     * 椭球方程：(x-cx)²/a² + (y-cy)²/b² + (z-cz)²/c² = 1
+     * 其中a、b、c分别为各轴半径
      *
-     * Differences from standard sphere:
-     * - Sphere: radius.x = radius.y = radius.z (perfect symmetry)
-     * - Ellipsoid: radius.x ≠ radius.y ≠ radius.z (anisotropic)
+     * 与标准球体的区别：
+     * - 球体：radius.x = radius.y = radius.z（完全对称）
+     * - 椭球体：radius.x ≠ radius.y ≠ radius.z（各向异性）
      *
-     * Special cases:
-     * - Spheroid: Two radii equal (e.g., Earth: equal equatorial radii, different polar)
-     * - Oblate: Polar radius < equatorial radius (Earth shape)
-     * - Prolate: Polar radius > equatorial radius (football shape)
+     * 特殊情况：
+     * - Spheroid：两个半径相等（如地球：赤道半径相等，极半径不同）
+     * - 扁球体：极半径 < 赤道半径（地球形状）
+     * - 长球体：极半径 > 赤道半径（橄榄球形状）
      *
-     * Common uses:
-     * - Celestial body modeling (Earth, planets)
-     * - Character animation (head, body approximations)
-     * - Particle effects (non-uniform diffusion)
-     * - Sound propagation in non-uniform media
-     * - Physics collision (ellipsoid rigid bodies)
+     * 常见用途：
+     * - 天体建模（地球、行星）
+     * - 角色动画（头部、身体近似）
+     * - 粒子特效（非均匀扩散）
+     * - 声音在非均匀介质中的传播
+     * - 物理碰撞（椭球刚体）
      */
     class EllipseSphere
     {
@@ -209,24 +206,24 @@ namespace hgl::math
 
     public:
 
-        /** Get ellipsoid center */
+        /** 获取椭球体中心 */
         const Vector3f& GetCenter() const { return center; }
 
-        /** Get three axis radii vector */
+        /** 获取三个方向的半径向量 */
         const Vector3f& GetRadius() const { return radius; }
 
     public:
 
         /**
-         * Default constructor
-         * Creates a unit ellipsoid at origin with all radii = 1 (degenerates to sphere)
+         * 默认构造函数
+         * 在原点创建一个单位椭球体，所有半径为1（退化为球体）
          */
         EllipseSphere() = default;
 
         /**
-         * Parameterized constructor
-         * @param c Ellipsoid center position
-         * @param r Three axis radii (rx, ry, rz)
+         * 带参数构造函数
+         * @param c 椭球体中心位置
+         * @param r 三个方向的半径（rx, ry, rz）
          */
         EllipseSphere(const Vector3f& c, const Vector3f& r)
         {
@@ -234,9 +231,9 @@ namespace hgl::math
         }
 
         /**
-         * Set ellipsoid parameters
-         * @param c New center position
-         * @param r New three axis radii
+         * 设置椭球体参数
+         * @param c 新中心位置
+         * @param r 新的三个方向半径
          */
         void Set(const Vector3f& c, const Vector3f& r)
         {
@@ -245,9 +242,9 @@ namespace hgl::math
         }
 
         /**
-         * Calculate ellipsoid volume
-         * Formula: V = (4/3)π * rx * ry * rz
-         * @return Ellipsoid volume
+         * 计算椭球体体积
+         * 公式：V = (4/3)π * rx * ry * rz
+         * @return 椭球体体积
          */
         float GetVolume() const
         {
@@ -255,10 +252,9 @@ namespace hgl::math
         }
 
         /**
-         * Calculate ellipsoid surface area (approximation)
-         * Uses Knud Thomsen's formula approximation
-         * Exact surface area requires elliptic integrals (computationally expensive)
-         * @return Approximate surface area
+         * 计算椭球体表面积（近似）
+         * 使用 Knud Thomsen 公式近似，精确表面积需椭圆积分（计算量大）
+         * @return 近似表面积
          */
         float GetSurfaceArea() const
         {
@@ -271,13 +267,12 @@ namespace hgl::math
         }
 
         /**
-         * Get point on ellipsoid surface in a given direction
+         * 获取椭球体表面某方向的点
          *
-         * Note: For ellipsoids, the direction vector is scaled by axis radii.
-         * This means the returned point may not be in the exact direction.
+         * 注意：椭球体会按各轴半径缩放方向向量，返回点可能不在精确方向上。
          *
-         * @param direction Direction vector
-         * @return Point on ellipsoid surface near that direction
+         * @param direction 方向向量
+         * @return 该方向附近的椭球体表面点
          */
         Vector3f GetPoint(const Vector3f& direction) const
         {
@@ -285,10 +280,10 @@ namespace hgl::math
         }
 
         /**
-         * Test if point is inside ellipsoid
-         * Uses standard ellipsoid equation
-         * @param point Point to test
-         * @return true if inside or on surface, false if outside
+         * 判断点是否在椭球体内
+         * 使用标准椭球方程
+         * @param point 待测试点
+         * @return 若在内部或表面返回true，否则返回false
          */
         bool ContainsPoint(const Vector3f& point) const
         {
@@ -300,8 +295,8 @@ namespace hgl::math
         }
 
         /**
-         * Get axis-aligned bounding box
-         * @return AABB containing this ellipsoid
+         * 获取轴对齐包围盒
+         * @return 包含该椭球体的AABB
          */
         AABB GetBoundingBox() const
         {

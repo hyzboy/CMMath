@@ -1,9 +1,9 @@
 /**
  * AABB2D.h - 2D 轴对齐包围盒
- * 
+ *
  * 实现 2D 轴对齐包围盒（Axis-Aligned Bounding Box），
  * 用于 2D 游戏中的碰撞检测、空间划分等。
- * 
+ *
  * 包含：
  * - 构造与设置
  * - 属性查询（中心、尺寸、面积等）
@@ -28,9 +28,9 @@ namespace hgl::math
     public:
         Vector2f min;   ///< 最小点（左下角）
         Vector2f max;   ///< 最大点（右上角）
-        
+
         // ==================== 构造函数 ====================
-        
+
         /**
          * @brief 默认构造函数，创建无效的 AABB
          */
@@ -39,7 +39,7 @@ namespace hgl::math
             , max(std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest())
         {
         }
-        
+
         /**
          * @brief 从两个点构造 AABB
          * @param p_min 最小点
@@ -50,7 +50,7 @@ namespace hgl::math
             , max(p_max)
         {
         }
-        
+
         /**
          * @brief 从中心和尺寸创建 AABB
          * @param center 中心点
@@ -62,7 +62,7 @@ namespace hgl::math
             Vector2f half_size = size * 0.5f;
             return AABB2D(center - half_size, center + half_size);
         }
-        
+
         /**
          * @brief 从中心和半尺寸创建 AABB
          * @param center 中心点
@@ -73,9 +73,9 @@ namespace hgl::math
         {
             return AABB2D(center - extent, center + extent);
         }
-        
+
         // ==================== 属性查询 ====================
-        
+
         /**
          * @brief 获取中心点
          */
@@ -83,7 +83,7 @@ namespace hgl::math
         {
             return (min + max) * 0.5f;
         }
-        
+
         /**
          * @brief 获取尺寸（宽度和高度）
          */
@@ -91,7 +91,7 @@ namespace hgl::math
         {
             return max - min;
         }
-        
+
         /**
          * @brief 获取半尺寸（extent）
          */
@@ -99,7 +99,7 @@ namespace hgl::math
         {
             return (max - min) * 0.5f;
         }
-        
+
         /**
          * @brief 获取面积
          */
@@ -108,7 +108,7 @@ namespace hgl::math
             Vector2f size = GetSize();
             return size.x * size.y;
         }
-        
+
         /**
          * @brief 获取周长
          */
@@ -117,7 +117,7 @@ namespace hgl::math
             Vector2f size = GetSize();
             return 2.0f * (size.x + size.y);
         }
-        
+
         /**
          * @brief 检查 AABB 是否为空（无效）
          */
@@ -125,7 +125,7 @@ namespace hgl::math
         {
             return min.x > max.x || min.y > max.y;
         }
-        
+
         /**
          * @brief 检查 AABB 是否有效
          */
@@ -133,7 +133,7 @@ namespace hgl::math
         {
             return !IsEmpty();
         }
-        
+
         /**
          * @brief 获取宽度
          */
@@ -141,7 +141,7 @@ namespace hgl::math
         {
             return max.x - min.x;
         }
-        
+
         /**
          * @brief 获取高度
          */
@@ -149,9 +149,9 @@ namespace hgl::math
         {
             return max.y - min.y;
         }
-        
+
         // ==================== 碰撞检测 ====================
-        
+
         /**
          * @brief 检查点是否在 AABB 内
          * @param point 待检测的点
@@ -162,7 +162,7 @@ namespace hgl::math
             return point.x >= min.x && point.x <= max.x &&
                    point.y >= min.y && point.y <= max.y;
         }
-        
+
         /**
          * @brief 检查是否完全包含另一个 AABB
          * @param other 另一个 AABB
@@ -173,7 +173,7 @@ namespace hgl::math
             return other.min.x >= min.x && other.max.x <= max.x &&
                    other.min.y >= min.y && other.max.y <= max.y;
         }
-        
+
         /**
          * @brief 检查与另一个 AABB 是否相交
          * @param other 另一个 AABB
@@ -184,7 +184,7 @@ namespace hgl::math
             return !(max.x < other.min.x || min.x > other.max.x ||
                      max.y < other.min.y || min.y > other.max.y);
         }
-        
+
         /**
          * @brief 检查与圆是否相交
          * @param center 圆心
@@ -195,16 +195,16 @@ namespace hgl::math
         {
             // 找到 AABB 上距离圆心最近的点
             Vector2f closest = glm::clamp(center, min, max);
-            
+
             // 计算距离平方
             Vector2f diff = center - closest;
             float dist_squared = glm::dot(diff, diff);
-            
+
             return dist_squared <= radius * radius;
         }
-        
+
         // ==================== 操作 ====================
-        
+
         /**
          * @brief 合并另一个 AABB
          * @param other 另一个 AABB
@@ -214,7 +214,7 @@ namespace hgl::math
             min = glm::min(min, other.min);
             max = glm::max(max, other.max);
         }
-        
+
         /**
          * @brief 扩展 AABB 以包含指定点
          * @param point 待包含的点
@@ -224,7 +224,7 @@ namespace hgl::math
             min = glm::min(min, point);
             max = glm::max(max, point);
         }
-        
+
         /**
          * @brief 返回合并后的新 AABB（不修改自身）
          */
@@ -232,7 +232,7 @@ namespace hgl::math
         {
             return AABB2D(glm::min(min, other.min), glm::max(max, other.max));
         }
-        
+
         /**
          * @brief 在所有方向上扩展 AABB
          * @param delta 扩展量（可以是负数表示收缩）
@@ -243,7 +243,7 @@ namespace hgl::math
             min -= expansion;
             max += expansion;
         }
-        
+
         /**
          * @brief 在各方向上扩展 AABB
          * @param delta 各方向的扩展量
@@ -253,7 +253,7 @@ namespace hgl::math
             min -= delta;
             max += delta;
         }
-        
+
         /**
          * @brief 平移 AABB
          * @param offset 平移向量
@@ -263,7 +263,7 @@ namespace hgl::math
             min += offset;
             max += offset;
         }
-        
+
         /**
          * @brief 返回平移后的新 AABB（不修改自身）
          */
@@ -271,7 +271,7 @@ namespace hgl::math
         {
             return AABB2D(min + offset, max + offset);
         }
-        
+
         /**
          * @brief 缩放 AABB（从中心缩放）
          * @param scale 缩放因子
@@ -283,7 +283,7 @@ namespace hgl::math
             min = center - extent;
             max = center + extent;
         }
-        
+
         /**
          * @brief 缩放 AABB（各轴独立缩放）
          */
@@ -294,9 +294,9 @@ namespace hgl::math
             min = center - extent;
             max = center + extent;
         }
-        
+
         // ==================== 辅助函数 ====================
-        
+
         /**
          * @brief 计算点到 AABB 的最近点
          * @param point 输入点
@@ -306,7 +306,7 @@ namespace hgl::math
         {
             return glm::clamp(point, min, max);
         }
-        
+
         /**
          * @brief 计算点到 AABB 的距离
          */
@@ -315,7 +315,7 @@ namespace hgl::math
             Vector2f closest = ClosestPoint(point);
             return glm::length(point - closest);
         }
-        
+
         /**
          * @brief 计算点到 AABB 的距离平方（避免开方运算）
          */
@@ -325,7 +325,7 @@ namespace hgl::math
             Vector2f diff = point - closest;
             return glm::dot(diff, diff);
         }
-        
+
         /**
          * @brief 重置为无效状态
          */
@@ -334,9 +334,9 @@ namespace hgl::math
             min = Vector2f(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
             max = Vector2f(std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest());
         }
-        
+
         // ==================== 运算符重载 ====================
-        
+
         /**
          * @brief 合并运算符
          */
@@ -345,7 +345,7 @@ namespace hgl::math
             Merge(other);
             return *this;
         }
-        
+
         /**
          * @brief 相等比较
          */
@@ -353,7 +353,7 @@ namespace hgl::math
         {
             return min == other.min && max == other.max;
         }
-        
+
         /**
          * @brief 不等比较
          */
@@ -362,5 +362,5 @@ namespace hgl::math
             return !(*this == other);
         }
     };
-    
+
 }//namespace hgl::math

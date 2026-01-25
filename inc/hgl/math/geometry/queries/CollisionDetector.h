@@ -1,17 +1,15 @@
 /**
- * CollisionDetector.h - Unified collision detection system
+ * CollisionDetector.h - 统一的碰撞检测系统
  *
- * Centralized collision detection tool that handles intersection tests
- * and collision information between various geometry primitives.
+ * 集中式碰撞检测工具，处理各种几何体之间的相交测试和碰撞信息。
  *
- * Design principles:
- * - Static methods (stateless, thread-safe)
- * - Template-based polymorphism (zero virtual function overhead)
- * - Two-phase detection: broad phase (AABB) + narrow phase (precise)
- * - Symmetric overloads for intuitive usage
+ * 设计原则：
+ * - 静态方法（无状态，线程安全）
+ * - 基于模板的多态（无虚函数开销）
+ * - 两阶段检测：粗略阶段（AABB）+ 精确阶段
+ * - 对称重载，使用直观
  *
- * This class removes complex collision logic from geometry classes,
- * keeping them lightweight and focused on data representation.
+ * 该类将复杂的碰撞逻辑从几何体类中剥离，使其保持轻量、专注于数据表达。
  */
 #pragma once
 
@@ -27,22 +25,22 @@
 namespace hgl::math
 {
     /**
-     * Collision information structure
+     * 碰撞信息结构体
      *
-     * Contains detailed information about collision/intersection:
-     * - intersects: Whether geometries are intersecting
-     * - point: Contact/collision point (world space)
-     * - normal: Collision normal (direction to separate)
-     * - penetration: Penetration depth (if intersecting)
-     * - distance: Distance between geometries (if not intersecting)
+     * 包含碰撞/相交的详细信息：
+     * - intersects：几何体是否相交
+     * - point：接触/碰撞点（世界空间）
+     * - normal：碰撞法线（分离方向）
+     * - penetration：穿透深度（相交时）
+     * - distance：几何体间距离（未相交时）
      */
     struct CollisionInfo
     {
-        bool intersects;         // True if geometries intersect
-        Vector3f point;          // Collision/contact point
-        Vector3f normal;         // Collision normal (normalized)
-        float penetration;       // Penetration depth (>0 if intersecting)
-        float distance;          // Distance (if not intersecting)
+        bool intersects;         // 是否相交
+        Vector3f point;          // 碰撞/接触点
+        Vector3f normal;         // 碰撞法线（已归一化）
+        float penetration;       // 穿透深度（相交时>0）
+        float distance;          // 间距（未相交时）
 
         CollisionInfo()
             : intersects(false), point(0, 0, 0), normal(0, 1, 0)
@@ -52,12 +50,11 @@ namespace hgl::math
     };
 
     /**
-     * CollisionDetector - Static collision detection methods
+     * CollisionDetector - 静态碰撞检测方法
      *
-     * Provides intersection tests and detailed collision information
-     * for all geometry primitive pairs.
+     * 提供所有几何体对的相交测试和详细碰撞信息。
      *
-     * Usage:
+     * 用法示例：
      *     Sphere s(...);
      *     Capsule c(...);
      *     bool hit = CollisionDetector::Intersects(s, c);
@@ -68,23 +65,23 @@ namespace hgl::math
     public:
 
         //=============================================================================
-        // Sphere collision methods
+        // 球体碰撞方法
         //=============================================================================
 
         /**
-         * Test sphere-sphere intersection
-         * @return true if spheres overlap
+         * 测试球体-球体是否相交
+         * @return 若重叠返回true
          */
         static bool Intersects(const Sphere& a, const Sphere& b);
 
         /**
-         * Get detailed sphere-sphere collision information
-         * @return Collision info with contact point, normal, and penetration
+         * 获取球体-球体详细碰撞信息
+         * @return 包含接触点、法线和穿透深度的碰撞信息
          */
         static CollisionInfo TestCollision(const Sphere& a, const Sphere& b);
 
         /**
-         * Test sphere-AABB intersection
+         * 测试球体-AABB是否相交
          */
         static bool Intersects(const Sphere& sphere, const AABB& box);
         static bool Intersects(const AABB& box, const Sphere& sphere)
@@ -93,7 +90,7 @@ namespace hgl::math
         }
 
         /**
-         * Test sphere-OBB intersection
+         * 测试球体-OBB是否相交
          */
         static bool Intersects(const Sphere& sphere, const OBB& box);
         static bool Intersects(const OBB& box, const Sphere& sphere)
@@ -102,7 +99,7 @@ namespace hgl::math
         }
 
         /**
-         * Test sphere-capsule intersection
+         * 测试球体-胶囊体是否相交
          */
         static bool Intersects(const Sphere& sphere, const Capsule& capsule);
         static bool Intersects(const Capsule& capsule, const Sphere& sphere)
@@ -111,21 +108,21 @@ namespace hgl::math
         }
 
         //=============================================================================
-        // Capsule collision methods
+        // 胶囊体碰撞方法
         //=============================================================================
 
         /**
-         * Test capsule-capsule intersection
+         * 测试胶囊体-胶囊体是否相交
          */
         static bool Intersects(const Capsule& a, const Capsule& b);
 
         /**
-         * Get detailed capsule-capsule collision information
+         * 获取胶囊体-胶囊体详细碰撞信息
          */
         static CollisionInfo TestCollision(const Capsule& a, const Capsule& b);
 
         /**
-         * Test capsule-AABB intersection
+         * 测试胶囊体-AABB是否相交
          */
         static bool Intersects(const Capsule& capsule, const AABB& box);
         static bool Intersects(const AABB& box, const Capsule& capsule)
@@ -134,7 +131,7 @@ namespace hgl::math
         }
 
         /**
-         * Test capsule-OBB intersection
+         * 测试胶囊体-OBB是否相交
          */
         static bool Intersects(const Capsule& capsule, const OBB& box);
         static bool Intersects(const OBB& box, const Capsule& capsule)
@@ -143,7 +140,7 @@ namespace hgl::math
         }
 
         /**
-         * Test capsule-cylinder intersection
+         * 测试胶囊体-圆柱体是否相交
          */
         static bool Intersects(const Capsule& capsule, const Cylinder& cylinder);
         static bool Intersects(const Cylinder& cylinder, const Capsule& capsule)
@@ -152,16 +149,16 @@ namespace hgl::math
         }
 
         //=============================================================================
-        // Cylinder collision methods
+        // 圆柱体碰撞方法
         //=============================================================================
 
         /**
-         * Test cylinder-cylinder intersection
+         * 测试圆柱体-圆柱体是否相交
          */
         static bool Intersects(const Cylinder& a, const Cylinder& b);
 
         /**
-         * Test cylinder-sphere intersection
+         * 测试圆柱体-球体是否相交
          */
         static bool Intersects(const Cylinder& cylinder, const Sphere& sphere);
         static bool Intersects(const Sphere& sphere, const Cylinder& cylinder)
@@ -170,7 +167,7 @@ namespace hgl::math
         }
 
         /**
-         * Test cylinder-AABB intersection
+         * 测试圆柱体-AABB是否相交
          */
         static bool Intersects(const Cylinder& cylinder, const AABB& box);
         static bool Intersects(const AABB& box, const Cylinder& cylinder)
@@ -179,11 +176,11 @@ namespace hgl::math
         }
 
         //=============================================================================
-        // Cone collision methods
+        // 圆锥体碰撞方法
         //=============================================================================
 
         /**
-         * Test cone-sphere intersection
+         * 测试圆锥体-球体是否相交
          */
         static bool Intersects(const Cone& cone, const Sphere& sphere);
         static bool Intersects(const Sphere& sphere, const Cone& cone)
@@ -192,7 +189,7 @@ namespace hgl::math
         }
 
         /**
-         * Test cone-AABB intersection
+         * 测试圆锥体-AABB是否相交
          */
         static bool Intersects(const Cone& cone, const AABB& box);
         static bool Intersects(const AABB& box, const Cone& cone)
@@ -201,11 +198,11 @@ namespace hgl::math
         }
 
         //=============================================================================
-        // Torus collision methods
+        // 环面碰撞方法
         //=============================================================================
 
         /**
-         * Test torus-sphere intersection
+         * 测试环面-球体是否相交
          */
         static bool Intersects(const Torus& torus, const Sphere& sphere);
         static bool Intersects(const Sphere& sphere, const Torus& torus)
@@ -214,11 +211,11 @@ namespace hgl::math
         }
 
         //=============================================================================
-        // AABB/OBB unified interface (delegates to existing methods)
+        // AABB/OBB统一接口（委托给已有方法）
         //=============================================================================
 
         /**
-         * Test AABB-AABB intersection (delegates to AABB class)
+         * 测试AABB-AABB是否相交（委托AABB类）
          */
         static bool Intersects(const AABB& a, const AABB& b)
         {
@@ -226,7 +223,7 @@ namespace hgl::math
         }
 
         /**
-         * Test AABB-OBB intersection
+         * 测试AABB-OBB是否相交
          */
         static bool Intersects(const AABB& aabb, const OBB& obb);
         static bool Intersects(const OBB& obb, const AABB& aabb)
@@ -235,7 +232,7 @@ namespace hgl::math
         }
 
         /**
-         * Test OBB-OBB intersection (delegates to OBB class)
+         * 测试OBB-OBB是否相交（委托OBB类）
          */
         static bool Intersects(const OBB& a, const OBB& b)
         {
@@ -243,18 +240,17 @@ namespace hgl::math
         }
 
         //=============================================================================
-        // Generic template with automatic broad phase
+        // 泛型模板，自动粗略阶段
         //=============================================================================
 
         /**
-         * Generic intersection test with automatic broad-phase optimization
+         * 泛型相交测试，自动进行粗略阶段优化
          *
-         * First tests bounding box overlap (cheap), then performs
-         * precise collision detection (expensive) only if needed.
+         * 先测试包围盒重叠（高效），如有必要再进行精确碰撞检测（耗时）。
          *
-         * @param a First geometry (must have GetBoundingBox() method)
-         * @param b Second geometry (must have GetBoundingBox() method)
-         * @return true if geometries intersect
+         * @param a 第一个几何体（需有GetBoundingBox方法）
+         * @param b 第二个几何体（需有GetBoundingBox方法）
+         * @return 若相交返回true
          */
         template<typename T1, typename T2>
         static bool IntersectsWithBroadPhase(const T1& a, const T2& b)

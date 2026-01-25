@@ -2,10 +2,10 @@
 
 /**
  * @file GeometryCalculations.h
- * @brief Geometric volume calculations
+ * @brief 各类几何体体积计算
  *
- * This file contains calculations for the volumes of various geometric shapes.
- * Previously part of MathUtils.h, now separated for better code organization.
+ * 本文件包含各种几何体体积的计算。
+ * 之前属于 MathUtils.h，为了更好的代码组织已独立。
  */
 
 #include<numbers>
@@ -13,12 +13,12 @@
 
 namespace hgl::math
 {
-    // ==================== Volume Calculations ====================
+    // ==================== 体积计算 ====================
 
     /**
-     * @brief Calculate the volume of a sphere
-     * @param radius The radius of the sphere
-     * @return The volume of the sphere = (4/3)πr³
+     * @brief 计算球体体积
+     * @param radius 球体半径
+     * @return 球体体积 = (4/3)πr³
      */
     constexpr double SphereVolume(const double radius)
     {
@@ -26,11 +26,11 @@ namespace hgl::math
     }
 
     /**
-     * @brief Calculate the volume of an ellipsoid
-     * @param x_radius The radius along the x-axis
-     * @param y_radius The radius along the y-axis
-     * @param z_radius The radius along the z-axis
-     * @return The volume of the ellipsoid = (4/3)π·x·y·z
+     * @brief 计算椭球体体积
+     * @param x_radius x轴半径
+     * @param y_radius y轴半径
+     * @param z_radius z轴半径
+     * @return 椭球体体积 = (4/3)π·x·y·z
      */
     constexpr double EllipsoidVolume(const double x_radius, const double y_radius, const double z_radius)
     {

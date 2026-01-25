@@ -1,12 +1,11 @@
 /**
- * DistanceQuery.h - Distance calculations between geometries
+ * DistanceQuery.h - 各类几何体间距离计算
  *
- * Provides distance measurement and closest point finding between
- * various geometry primitives. Essential for:
- * - Proximity queries
- * - Minimum distance calculations
- * - Collision prediction
- * - Separation vector computation
+ * 提供各种几何体间的距离测量和最近点查找。主要用于：
+ * - 邻近性查询
+ * - 最小距离计算
+ * - 碰撞预测
+ * - 分离向量计算
  */
 #pragma once
 
@@ -19,16 +18,15 @@
 namespace hgl::math
 {
     /**
-     * Closest points result
+     * 最近点结果结构体
      *
-     * Contains the pair of closest points between two geometries
-     * and their distance.
+     * 包含两个几何体间最近点对及其距离。
      */
     struct ClosestPointsResult
     {
-        Vector3f pointOnA;       // Closest point on first geometry
-        Vector3f pointOnB;       // Closest point on second geometry
-        float distance;          // Distance between the points
+        Vector3f pointOnA;       // 第一个几何体上的最近点
+        Vector3f pointOnB;       // 第二个几何体上的最近点
+        float distance;          // 两点间距离
 
         ClosestPointsResult()
             : pointOnA(0, 0, 0), pointOnB(0, 0, 0), distance(0.0f)
@@ -37,17 +35,16 @@ namespace hgl::math
     };
 
     /**
-     * DistanceQuery - Static distance calculation methods
+     * DistanceQuery - 静态距离计算方法
      *
-     * Provides distance measurements and closest point queries
-     * between geometry primitives.
+     * 提供几何体间距离测量和最近点查询。
      *
-     * Two types of queries:
-     * 1. Distance(point, geometry): Point-to-geometry distance
-     * 2. Distance(geom1, geom2): Geometry-to-geometry distance
-     * 3. ClosestPoints(geom1, geom2): Find closest point pairs
+     * 查询类型：
+     * 1. Distance(point, geometry)：点到几何体距离
+     * 2. Distance(geom1, geom2)：几何体间距离
+     * 3. ClosestPoints(geom1, geom2)：查找最近点对
      *
-     * Usage:
+     * 用法示例：
      *     Sphere s(...);
      *     Capsule c(...);
      *     float dist = DistanceQuery::Distance(s, c);
@@ -58,42 +55,42 @@ namespace hgl::math
     public:
 
         //=============================================================================
-        // Point-to-geometry distance
+        // 点到几何体距离
         //=============================================================================
 
         /**
-         * Distance from point to sphere surface
-         * @return Distance (0 if point is inside)
+         * 点到球体表面的距离
+         * @return 距离（若点在内部为0）
          */
         static float Distance(const Vector3f& point, const Sphere& sphere);
 
         /**
-         * Distance from point to capsule surface
+         * 点到胶囊体表面的距离
          */
         static float Distance(const Vector3f& point, const Capsule& capsule);
 
         /**
-         * Distance from point to AABB surface
+         * 点到AABB表面的距离
          */
         static float Distance(const Vector3f& point, const AABB& box);
 
         /**
-         * Distance from point to cylinder surface
+         * 点到圆柱体表面的距离
          */
         static float Distance(const Vector3f& point, const Cylinder& cylinder);
 
         //=============================================================================
-        // Geometry-to-geometry distance
+        // 几何体间距离
         //=============================================================================
 
         /**
-         * Distance between two spheres (surface to surface)
-         * @return Distance (0 if intersecting)
+         * 两球体表面间距离
+         * @return 距离（若相交为0）
          */
         static float Distance(const Sphere& a, const Sphere& b);
 
         /**
-         * Distance between sphere and capsule
+         * 球体与胶囊体间距离
          */
         static float Distance(const Sphere& sphere, const Capsule& capsule);
         static float Distance(const Capsule& capsule, const Sphere& sphere)
@@ -102,27 +99,27 @@ namespace hgl::math
         }
 
         /**
-         * Distance between two capsules
+         * 两胶囊体间距离
          */
         static float Distance(const Capsule& a, const Capsule& b);
 
         /**
-         * Distance between two cylinders
+         * 两圆柱体间距离
          */
         static float Distance(const Cylinder& a, const Cylinder& b);
 
         //=============================================================================
-        // Closest point pairs
+        // 最近点对
         //=============================================================================
 
         /**
-         * Find closest points between two capsules
-         * @return Result with points on both capsules and distance
+         * 查找两胶囊体间最近点对
+         * @return 包含两胶囊体上最近点及距离的结果
          */
         static ClosestPointsResult ClosestPoints(const Capsule& a, const Capsule& b);
 
         /**
-         * Find closest points between sphere and capsule
+         * 查找球体与胶囊体间最近点对
          */
         static ClosestPointsResult ClosestPoints(const Sphere& sphere, const Capsule& capsule);
         static ClosestPointsResult ClosestPoints(const Capsule& capsule, const Sphere& sphere)
@@ -133,32 +130,31 @@ namespace hgl::math
         }
 
         //=============================================================================
-        // Helper functions
+        // 辅助函数
         //=============================================================================
 
         /**
-         * Find closest point on a line segment to a given point
+         * 查找点到线段的最近点
          *
-         * @param point Query point
-         * @param segmentStart Line segment start
-         * @param segmentEnd Line segment end
-         * @return Closest point on segment [segmentStart, segmentEnd]
+         * @param point 查询点
+         * @param segmentStart 线段起点
+         * @param segmentEnd 线段终点
+         * @return 线段上的最近点
          */
         static Vector3f ClosestPointOnLineSegment(const Vector3f& point,
                                                   const Vector3f& segmentStart,
                                                   const Vector3f& segmentEnd);
 
         /**
-         * Find closest points between two line segments
+         * 查找两线段间最近点对
          *
-         * This is a fundamental geometric primitive used by many
-         * geometry-to-geometry distance calculations.
+         * 这是许多几何体间距离计算的基础。
          *
-         * @param seg1Start First segment start
-         * @param seg1End First segment end
-         * @param seg2Start Second segment start
-         * @param seg2End Second segment end
-         * @return Result with closest points on both segments
+         * @param seg1Start 第一条线段起点
+         * @param seg1End 第一条线段终点
+         * @param seg2Start 第二条线段起点
+         * @param seg2End 第二条线段终点
+         * @return 包含两线段上最近点的结果
          */
         static ClosestPointsResult ClosestPointsOnLineSegments(
             const Vector3f& seg1Start, const Vector3f& seg1End,

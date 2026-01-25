@@ -24,7 +24,7 @@ namespace hgl
 
     /**
      * @brief Floyd-Steinberg 抖动误差系数
-     * 
+     *
      * 经典的误差扩散抖动算法：
      *
      *      [当前]  7/16
@@ -135,7 +135,7 @@ namespace hgl
      * @param dither_pattern 可选的抖动值 [-0.5, 0.5]
      * @return 选中的调色板颜色的索引
      */
-    int PaletteDither(const Color3f &original, const std::vector<Color3f> &palette, 
+    int PaletteDither(const Color3f &original, const std::vector<Color3f> &palette,
                      float dither_pattern = 0.0f);
 
 } // namespace hgl

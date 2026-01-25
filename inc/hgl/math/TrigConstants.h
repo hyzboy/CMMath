@@ -1,6 +1,6 @@
 /**
  * TrigConstants.h - 三角函数常量与角度转换
- * 
+ *
  * 包含：
  * - 常用角度的 sin/cos 预定义值 (C++20 constexpr)
  * - 常用角度的弧度值
@@ -14,9 +14,9 @@
 #include<concepts>
 
 namespace hgl::math
-{    
+{
     // ==================== 常用三角函数值（C++20 constexpr） ====================
-    
+
     // 余弦值
     namespace cos_values {
         inline constexpr double deg_0   = 1.0;
@@ -28,7 +28,7 @@ namespace hgl::math
         inline constexpr double deg_270 = 0.0;
         inline constexpr double deg_315 = std::numbers::sqrt2_v<double> / 2.0;
     }
-    
+
     // 正弦值
     namespace sin_values {
         inline constexpr double deg_0   = 0.0;
@@ -40,9 +40,9 @@ namespace hgl::math
         inline constexpr double deg_270 = -1.0;
         inline constexpr double deg_315 = -(std::numbers::sqrt2_v<double> / 2.0);
     }
-    
+
     // ==================== 常用角度的弧度值 ====================
-    
+
     namespace radians {
         inline constexpr double deg_0   = 0.0;
         inline constexpr double deg_45  = std::numbers::pi_v<double> / 4.0;
@@ -53,7 +53,7 @@ namespace hgl::math
         inline constexpr double deg_270 = 3.0 * std::numbers::pi_v<double> / 2.0;
         inline constexpr double deg_315 = 7.0 * std::numbers::pi_v<double> / 4.0;
         inline constexpr double deg_360 = 2.0 * std::numbers::pi_v<double>;
-        
+
         // float 版本
         inline constexpr float deg_0_f   = 0.0f;
         inline constexpr float deg_45_f  = std::numbers::pi_v<float> / 4.0f;
@@ -65,9 +65,9 @@ namespace hgl::math
         inline constexpr float deg_315_f = 7.0f * std::numbers::pi_v<float> / 4.0f;
         inline constexpr float deg_360_f = 2.0f * std::numbers::pi_v<float>;
     }
-    
+
     // ==================== 角度与弧度转换（C++20 Concepts） ====================
-    
+
     /**
      * 角度转弧度（泛型版本，支持所有浮点类型）
      * @param degrees 角度值
@@ -78,7 +78,7 @@ namespace hgl::math
     {
         return degrees * (std::numbers::pi_v<T> / T(180));
     }
-    
+
     /**
      * 弧度转角度（泛型版本，支持所有浮点类型）
      * @param radians 弧度值
@@ -89,9 +89,9 @@ namespace hgl::math
     {
         return radians * (T(180) / std::numbers::pi_v<T>);
     }
-    
+
     // ==================== 向后兼容的别名 ====================
-    
+
     /**
      * 角度转弧度（向后兼容）
      * @deprecated 建议使用 degrees_to_radians
@@ -100,7 +100,7 @@ namespace hgl::math
     {
         return degrees_to_radians(deg);
     }
-    
+
     /**
      * 弧度转角度（向后兼容）
      * @deprecated 建议使用 radians_to_degrees
@@ -109,9 +109,9 @@ namespace hgl::math
     {
         return radians_to_degrees(rad);
     }
-    
+
     // ==================== 旧常量别名（向后兼容） ====================
-    
+
     inline constexpr double HGL_COS_0   = cos_values::deg_0;
     inline constexpr double HGL_COS_45  = cos_values::deg_45;
     inline constexpr double HGL_COS_90  = cos_values::deg_90;
@@ -120,7 +120,7 @@ namespace hgl::math
     inline constexpr double HGL_COS_225 = cos_values::deg_225;
     inline constexpr double HGL_COS_270 = cos_values::deg_270;
     inline constexpr double HGL_COS_315 = cos_values::deg_315;
-    
+
     inline constexpr double HGL_SIN_0   = sin_values::deg_0;
     inline constexpr double HGL_SIN_45  = sin_values::deg_45;
     inline constexpr double HGL_SIN_90  = sin_values::deg_90;
@@ -129,7 +129,7 @@ namespace hgl::math
     inline constexpr double HGL_SIN_225 = sin_values::deg_225;
     inline constexpr double HGL_SIN_270 = sin_values::deg_270;
     inline constexpr double HGL_SIN_315 = sin_values::deg_315;
-    
+
     inline constexpr double HGL_RAD_0   = radians::deg_0;
     inline constexpr double HGL_RAD_45  = radians::deg_45;
     inline constexpr double HGL_RAD_90  = radians::deg_90;
@@ -139,5 +139,5 @@ namespace hgl::math
     inline constexpr double HGL_RAD_270 = radians::deg_270;
     inline constexpr double HGL_RAD_315 = radians::deg_315;
     inline constexpr double HGL_RAD_360 = radians::deg_360;
-    
+
 }//namespace hgl::math

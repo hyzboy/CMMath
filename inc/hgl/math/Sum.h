@@ -1,6 +1,6 @@
 /**
  * Sum.h - 数组求和函数
- * 
+ *
  * 包含：
  * - sum 模板函数（计算数组元素总和）
  */
@@ -14,7 +14,7 @@ namespace hgl::math
      * @param result 输出：求和结果
      * @param data 输入：数据数组
      * @param count 数组元素个数
-     * 
+     *
      * 示例：
      * int arr[] = {1, 2, 3, 4, 5};
      * int total;

@@ -15,7 +15,12 @@
  */
 
 #include<hgl/math/Clamp.h>
+#include<hgl/color/Color3f.h>
+#include<hgl/color/Color3ub.h>
+#include<hgl/color/Color4f.h>
+#include<hgl/color/Color4ub.h>
 #include<hgl/math/VectorTypes.h>
+#include<type_traits>
 
 namespace hgl::math
 {
@@ -50,74 +55,26 @@ namespace hgl::math
     // ==================== Vector3 (RGB) Conversion ====================
     /// @defgroup vector3_conversion Vector3 RGB Color Conversion
     /// Conversion operations for 3-component color vectors (Red, Green, Blue)
+    /// Supports both Vector3u8 and Color3ub for input, and Vector3f and Color3f for output
     /// @{
 
-    /**
-     * @brief Convert Vector3u8 [0-255] to Vector3f [0.0-1.0]
-     * @param v Input vector with uint8 components (RGB)
-     * @return Output vector with float components (normalized)
-     * @category Normalization
-     */
-    inline Vector3f Vector3u8ToFloat(const Vector3u8 &v)
+    inline Color3f ToColorFloat(const Color3ub &v)
     {
-        return Vector3f(
-            ByteToFloat(v.r),
-            ByteToFloat(v.g),
-            ByteToFloat(v.b)
-        );
+        return Color3f(ByteToFloat(v.r),ByteToFloat(v.g),ByteToFloat(v.b));
     }
 
-    /**
-     * @brief Convert Vector3f [0.0-1.0] to Vector3u8 [0-255]
-     * @param v Input vector with float components (normalized)
-     * @return Output vector with uint8 components (clamped)
-     * @category Denormalization
-     */
-    inline Vector3u8 Vector3fToByte(const Vector3f &v)
+    inline Color4f ToColorFloat(const Color4ub &v)
     {
-        Vector3u8 result;
-        result.r = FloatToByte(v.r);
-        result.g = FloatToByte(v.g);
-        result.b = FloatToByte(v.b);
-        return result;
-    }
-    /// @}
-
-    // ==================== Vector4 (RGBA) Conversion ====================
-    /// @defgroup vector4_conversion Vector4 RGBA Color Conversion
-    /// Conversion operations for 4-component color vectors (Red, Green, Blue, Alpha)
-    /// @{
-
-    /**
-     * @brief Convert Vector4u8 [0-255] to Vector4f [0.0-1.0]
-     * @param v Input vector with uint8 components (RGBA)
-     * @return Output vector with float components (normalized)
-     * @category Normalization
-     */
-    inline Vector4f Vector4u8ToFloat(const Vector4u8 &v)
-    {
-        return Vector4f(
-            ByteToFloat(v.r),
-            ByteToFloat(v.g),
-            ByteToFloat(v.b),
-            ByteToFloat(v.a)
-        );
+        return Color4f(ByteToFloat(v.r),ByteToFloat(v.g),ByteToFloat(v.b),ByteToFloat(v.a));
     }
 
-    /**
-     * @brief Convert Vector4f [0.0-1.0] to Vector4u8 [0-255]
-     * @param v Input vector with float components (normalized)
-     * @return Output vector with uint8 components (clamped)
-     * @category Denormalization
-     */
-    inline Vector4u8 Vector4fToByte(const Vector4f &v)
+    inline Color3ub ToColorByte(const Color3f &v)
     {
-        Vector4u8 result;
-        result.r = FloatToByte(v.r);
-        result.g = FloatToByte(v.g);
-        result.b = FloatToByte(v.b);
-        result.a = FloatToByte(v.a);
-        return result;
+        return Color3ub(FloatToByte(v.r),FloatToByte(v.g),FloatToByte(v.b));
     }
-    /// @}
+
+    inline Color4ub ToColorByte(const Color4f &v)
+    {
+        return Color4ub(FloatToByte(v.r),FloatToByte(v.g),FloatToByte(v.b),FloatToByte(v.a));
+    }
 }

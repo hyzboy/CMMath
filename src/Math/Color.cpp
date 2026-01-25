@@ -302,7 +302,7 @@ namespace hgl::math
     Color3f AdjustContrast(const Color3f &color, float factor)
     {
         const Color3f mid(0.5f, 0.5f, 0.5f);
-        return mid + (color - mid) * factor;
+        return Color3f(mid + (color - mid) * factor);
     }
     
     Color3f AdjustHue(const Color3f &color, float shift)
@@ -325,7 +325,7 @@ namespace hgl::math
     Color3f ToneMapReinhardExtended(const Color3f &hdr, float white_point)
     {
         float white_sq = white_point * white_point;
-        return (hdr * (Color3f(1.0f) + hdr / white_sq)) / (Color3f(1.0f) + hdr);
+        return Color3f((hdr * (Color3f(1.0f) + hdr / white_sq)) / (Color3f(1.0f) + hdr));
     }
     
     Color3f ToneMapACES(const Color3f &hdr)
@@ -340,8 +340,8 @@ namespace hgl::math
         const float e = 0.14f;
         
         Color3f x = hdr;
-        return glm::clamp((x * (a * x + b)) / (x * (c * x + d) + e), 
-                          Color3f(0.0f), Color3f(1.0f));
+        return Color3f(glm::clamp(static_cast<glm::vec3>((x * (a * x + b)) / (x * (c * x + d) + e)), 
+                          glm::vec3(0.0f), glm::vec3(1.0f)));
     }
     
     static float Uncharted2ToneMapFunc(float x)
@@ -372,7 +372,7 @@ namespace hgl::math
         float white_scale = 1.0f / Uncharted2ToneMapFunc(white_point);
         result *= white_scale;
         
-        return glm::clamp(result, Color3f(0.0f), Color3f(1.0f));
+        return Color3f(glm::clamp(static_cast<glm::vec3>(result), glm::vec3(0.0f), glm::vec3(1.0f)));
     }
     
 }//namespace hgl::math

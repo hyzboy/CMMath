@@ -1,6 +1,6 @@
 /**
  * RaycastQuery.h - Ray-geometry intersection testing
- * 
+ *
  * Provides ray casting and intersection tests for all geometry primitives.
  * Ray casting is essential for:
  * - Mouse picking / selection
@@ -25,7 +25,7 @@ namespace hgl::math
 {
     /**
      * Raycast hit information
-     * 
+     *
      * Contains detailed information about a ray-geometry intersection:
      * - hit: Whether ray intersected the geometry
      * - distance: Distance along ray to hit point (t value)
@@ -38,7 +38,7 @@ namespace hgl::math
         float distance;          // Distance along ray (t parameter)
         Vector3f point;          // Hit point (world space)
         Vector3f normal;         // Surface normal at hit point
-        
+
         RaycastHit()
             : hit(false), distance(FLT_MAX), point(0, 0, 0), normal(0, 1, 0)
         {
@@ -47,21 +47,21 @@ namespace hgl::math
 
     /**
      * RaycastQuery - Static ray intersection methods
-     * 
+     *
      * Provides ray casting operations for all geometry types.
      * Methods come in two flavors:
      * - Intersects(..., float& t): Simple boolean test with distance
      * - Test(...): Detailed hit information with point and normal
-     * 
+     *
      * Usage:
      *     Ray ray(origin, direction);
      *     Sphere sphere(center, radius);
-     *     
+     *
      *     // Simple test
      *     float t;
      *     if (RaycastQuery::Intersects(ray, sphere, t))
      *         Vector3f hitPoint = ray.origin + ray.direction * t;
-     *     
+     *
      *     // Detailed test
      *     RaycastHit hit = RaycastQuery::Test(ray, sphere);
      *     if (hit.hit)
@@ -70,11 +70,11 @@ namespace hgl::math
     class RaycastQuery
     {
     public:
-    
+
         //=============================================================================
         // Ray-Sphere intersection
         //=============================================================================
-        
+
         /**
          * Test ray-sphere intersection
          * @param ray Ray to test
@@ -83,94 +83,94 @@ namespace hgl::math
          * @return true if ray intersects sphere
          */
         static bool Intersects(const Ray& ray, const Sphere& sphere, float& t);
-        
+
         /**
          * Simple ray-sphere intersection (no distance output)
          */
         static bool Intersects(const Ray& ray, const Sphere& sphere);
-        
+
         /**
          * Detailed ray-sphere intersection test
          * @return RaycastHit with full intersection information
          */
         static RaycastHit Test(const Ray& ray, const Sphere& sphere);
-        
+
         //=============================================================================
         // Ray-Capsule intersection
         //=============================================================================
-        
+
         /**
          * Test ray-capsule intersection
          */
         static bool Intersects(const Ray& ray, const Capsule& capsule, float& t);
         static bool Intersects(const Ray& ray, const Capsule& capsule);
         static RaycastHit Test(const Ray& ray, const Capsule& capsule);
-        
+
         //=============================================================================
         // Ray-Cylinder intersection
         //=============================================================================
-        
+
         /**
          * Test ray-cylinder intersection
          */
         static bool Intersects(const Ray& ray, const Cylinder& cylinder, float& t);
         static bool Intersects(const Ray& ray, const Cylinder& cylinder);
         static RaycastHit Test(const Ray& ray, const Cylinder& cylinder);
-        
+
         //=============================================================================
         // Ray-Cone intersection
         //=============================================================================
-        
+
         /**
          * Test ray-cone intersection
          */
         static bool Intersects(const Ray& ray, const Cone& cone, float& t);
         static bool Intersects(const Ray& ray, const Cone& cone);
         static RaycastHit Test(const Ray& ray, const Cone& cone);
-        
+
         //=============================================================================
         // Ray-Torus intersection
         //=============================================================================
-        
+
         /**
          * Test ray-torus intersection
          */
         static bool Intersects(const Ray& ray, const Torus& torus, float& t);
         static bool Intersects(const Ray& ray, const Torus& torus);
         static RaycastHit Test(const Ray& ray, const Torus& torus);
-        
+
         //=============================================================================
         // Ray-AABB/OBB/Plane (unified interface for existing functionality)
         //=============================================================================
-        
+
         /**
          * Test ray-AABB intersection
          */
         static bool Intersects(const Ray& ray, const AABB& box, float& t);
         static bool Intersects(const Ray& ray, const AABB& box);
         static RaycastHit Test(const Ray& ray, const AABB& box);
-        
+
         /**
          * Test ray-OBB intersection
          */
         static bool Intersects(const Ray& ray, const OBB& box, float& t);
         static bool Intersects(const Ray& ray, const OBB& box);
         static RaycastHit Test(const Ray& ray, const OBB& box);
-        
+
         /**
          * Test ray-plane intersection
          */
         static bool Intersects(const Ray& ray, const Plane& plane, float& t);
         static bool Intersects(const Ray& ray, const Plane& plane);
         static RaycastHit Test(const Ray& ray, const Plane& plane);
-        
+
         //=============================================================================
         // Ray-Triangle intersection (Möller-Trumbore algorithm)
         //=============================================================================
-        
+
         /**
          * Test ray-triangle intersection using Möller-Trumbore algorithm
-         * 
+         *
          * @param ray Ray to test
          * @param v0, v1, v2 Triangle vertices
          * @param t Output: distance along ray
@@ -182,7 +182,7 @@ namespace hgl::math
                                        const Vector3f& v1,
                                        const Vector3f& v2,
                                        float& t, float& u, float& v);
-        
+
         /**
          * Simple ray-triangle intersection (no barycentric coordinates)
          */

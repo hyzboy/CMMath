@@ -11,12 +11,12 @@ namespace hgl::math
      * @tparam P 位置类型（进度数据）
      * @tparam T 数据类型
      */
-    template<typename P, typename T> 
+    template<typename P, typename T>
     struct GradientStop
     {
         P pos;      ///< 进度数据
         T data;     ///< 数据
-        
+
         bool operator<(const GradientStop& other) const
         {
             return pos < other.pos;
@@ -25,25 +25,25 @@ namespace hgl::math
 
     /**
      * @brief 数据渐变类模板
-     * 
+     *
      * 用于在多个关键点之间进行插值，支持任意数据类型。
      * 常用于颜色渐变、数值动画等场景。
-     * 
+     *
      * @tparam P 位置类型（通常是 float 或 double）
      * @tparam T 数据类型（可以是数值、向量、颜色等）
-     * 
+     *
      * 使用示例：
      * ```cpp
      * Gradient<float, Color3f> colorGradient;
      * colorGradient.Add(0.0f, Color3f(1, 0, 0));  // 红色
      * colorGradient.Add(0.5f, Color3f(0, 1, 0));  // 绿色
      * colorGradient.Add(1.0f, Color3f(0, 0, 1));  // 蓝色
-     * 
+     *
      * Color3f result;
      * colorGradient.Get(result, 0.25f);  // 获取 25% 位置的颜色
      * ```
      */
-    template<typename P, typename T> 
+    template<typename P, typename T>
     class Gradient
     {
     private:
@@ -152,7 +152,7 @@ namespace hgl::math
          * @param start 起始值
          * @param end 结束值
          * @param t 插值参数 [0, 1]
-         * 
+         *
          * 默认使用 hgl::math::lerp 进行线性插值
          */
         virtual void Interpolate(T& result, const T& start, const T& end, float t) const
@@ -195,7 +195,7 @@ namespace hgl::math
                 {
                     const auto& prev = stop_list[i - 1];
                     const auto& curr = stop_list[i];
-                    
+
                     // 防止除零错误
                     P posDiff = curr.pos - prev.pos;
                     if (posDiff <= static_cast<P>(0))
@@ -203,10 +203,10 @@ namespace hgl::math
                         result = prev.data;
                         return;
                     }
-                    
-                    float t = static_cast<float>(pos - prev.pos) / 
+
+                    float t = static_cast<float>(pos - prev.pos) /
                              static_cast<float>(posDiff);
-                    
+
                     Interpolate(result, prev.data, curr.data, t);
                     return;
                 }
@@ -228,7 +228,7 @@ namespace hgl::math
     using FloatGradient = Gradient<float, float>;
     using VectorGradient2f = Gradient<float, Vector2f>;
     using VectorGradient3f = Gradient<float, Vector3f>;
-    
+
     // 注意：以下 Color 类型别名需要先包含 <hgl/math/Color.h>
     // Note: The following Color type aliases require including <hgl/math/Color.h> first
     // using ColorGradient3f = Gradient<float, Color3f>;

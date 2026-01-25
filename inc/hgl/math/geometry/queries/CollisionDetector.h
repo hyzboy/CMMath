@@ -1,15 +1,15 @@
 /**
  * CollisionDetector.h - Unified collision detection system
- * 
+ *
  * Centralized collision detection tool that handles intersection tests
  * and collision information between various geometry primitives.
- * 
+ *
  * Design principles:
  * - Static methods (stateless, thread-safe)
  * - Template-based polymorphism (zero virtual function overhead)
  * - Two-phase detection: broad phase (AABB) + narrow phase (precise)
  * - Symmetric overloads for intuitive usage
- * 
+ *
  * This class removes complex collision logic from geometry classes,
  * keeping them lightweight and focused on data representation.
  */
@@ -28,7 +28,7 @@ namespace hgl::math
 {
     /**
      * Collision information structure
-     * 
+     *
      * Contains detailed information about collision/intersection:
      * - intersects: Whether geometries are intersecting
      * - point: Contact/collision point (world space)
@@ -43,7 +43,7 @@ namespace hgl::math
         Vector3f normal;         // Collision normal (normalized)
         float penetration;       // Penetration depth (>0 if intersecting)
         float distance;          // Distance (if not intersecting)
-        
+
         CollisionInfo()
             : intersects(false), point(0, 0, 0), normal(0, 1, 0)
             , penetration(0.0f), distance(0.0f)
@@ -53,10 +53,10 @@ namespace hgl::math
 
     /**
      * CollisionDetector - Static collision detection methods
-     * 
+     *
      * Provides intersection tests and detailed collision information
      * for all geometry primitive pairs.
-     * 
+     *
      * Usage:
      *     Sphere s(...);
      *     Capsule c(...);
@@ -66,23 +66,23 @@ namespace hgl::math
     class CollisionDetector
     {
     public:
-    
+
         //=============================================================================
         // Sphere collision methods
         //=============================================================================
-        
+
         /**
          * Test sphere-sphere intersection
          * @return true if spheres overlap
          */
         static bool Intersects(const Sphere& a, const Sphere& b);
-        
+
         /**
          * Get detailed sphere-sphere collision information
          * @return Collision info with contact point, normal, and penetration
          */
         static CollisionInfo TestCollision(const Sphere& a, const Sphere& b);
-        
+
         /**
          * Test sphere-AABB intersection
          */
@@ -91,7 +91,7 @@ namespace hgl::math
         {
             return Intersects(sphere, box);
         }
-        
+
         /**
          * Test sphere-OBB intersection
          */
@@ -100,7 +100,7 @@ namespace hgl::math
         {
             return Intersects(sphere, box);
         }
-        
+
         /**
          * Test sphere-capsule intersection
          */
@@ -109,21 +109,21 @@ namespace hgl::math
         {
             return Intersects(sphere, capsule);
         }
-        
+
         //=============================================================================
         // Capsule collision methods
         //=============================================================================
-        
+
         /**
          * Test capsule-capsule intersection
          */
         static bool Intersects(const Capsule& a, const Capsule& b);
-        
+
         /**
          * Get detailed capsule-capsule collision information
          */
         static CollisionInfo TestCollision(const Capsule& a, const Capsule& b);
-        
+
         /**
          * Test capsule-AABB intersection
          */
@@ -132,7 +132,7 @@ namespace hgl::math
         {
             return Intersects(capsule, box);
         }
-        
+
         /**
          * Test capsule-OBB intersection
          */
@@ -141,7 +141,7 @@ namespace hgl::math
         {
             return Intersects(capsule, box);
         }
-        
+
         /**
          * Test capsule-cylinder intersection
          */
@@ -150,16 +150,16 @@ namespace hgl::math
         {
             return Intersects(capsule, cylinder);
         }
-        
+
         //=============================================================================
         // Cylinder collision methods
         //=============================================================================
-        
+
         /**
          * Test cylinder-cylinder intersection
          */
         static bool Intersects(const Cylinder& a, const Cylinder& b);
-        
+
         /**
          * Test cylinder-sphere intersection
          */
@@ -168,7 +168,7 @@ namespace hgl::math
         {
             return Intersects(cylinder, sphere);
         }
-        
+
         /**
          * Test cylinder-AABB intersection
          */
@@ -177,11 +177,11 @@ namespace hgl::math
         {
             return Intersects(cylinder, box);
         }
-        
+
         //=============================================================================
         // Cone collision methods
         //=============================================================================
-        
+
         /**
          * Test cone-sphere intersection
          */
@@ -190,7 +190,7 @@ namespace hgl::math
         {
             return Intersects(cone, sphere);
         }
-        
+
         /**
          * Test cone-AABB intersection
          */
@@ -199,11 +199,11 @@ namespace hgl::math
         {
             return Intersects(cone, box);
         }
-        
+
         //=============================================================================
         // Torus collision methods
         //=============================================================================
-        
+
         /**
          * Test torus-sphere intersection
          */
@@ -212,11 +212,11 @@ namespace hgl::math
         {
             return Intersects(torus, sphere);
         }
-        
+
         //=============================================================================
         // AABB/OBB unified interface (delegates to existing methods)
         //=============================================================================
-        
+
         /**
          * Test AABB-AABB intersection (delegates to AABB class)
          */
@@ -224,7 +224,7 @@ namespace hgl::math
         {
             return a.Intersects(b);
         }
-        
+
         /**
          * Test AABB-OBB intersection
          */
@@ -233,7 +233,7 @@ namespace hgl::math
         {
             return Intersects(aabb, obb);
         }
-        
+
         /**
          * Test OBB-OBB intersection (delegates to OBB class)
          */
@@ -241,17 +241,17 @@ namespace hgl::math
         {
             return a.Intersects(b);
         }
-        
+
         //=============================================================================
         // Generic template with automatic broad phase
         //=============================================================================
-        
+
         /**
          * Generic intersection test with automatic broad-phase optimization
-         * 
+         *
          * First tests bounding box overlap (cheap), then performs
          * precise collision detection (expensive) only if needed.
-         * 
+         *
          * @param a First geometry (must have GetBoundingBox() method)
          * @param b Second geometry (must have GetBoundingBox() method)
          * @return true if geometries intersect
@@ -262,7 +262,7 @@ namespace hgl::math
             // Broad phase: quick AABB rejection
             if (!a.GetBoundingBox().Intersects(b.GetBoundingBox()))
                 return false;
-            
+
             // Narrow phase: precise collision detection
             return Intersects(a, b);
         }

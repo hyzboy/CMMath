@@ -6,51 +6,50 @@
 namespace hgl::math
 {
     /**
-     * @brief Alpha blending modes for color composition
-     * 
-     * These modes define how source and destination colors are combined.
-     * This enum serves as the authoritative definition for alpha blending modes
-     * in both CMCoreType and CMMath libraries.
+     * @brief 颜色合成的 Alpha 混合模式
+     *
+     * 这些模式定义了源色和目标色如何组合。
+     * 该枚举作为 CMCoreType 和 CMMath 库中 Alpha 混合模式的权威定义。
      */
     enum class AlphaBlendMode
     {
-        None = 0,           ///< No blending, use source color directly
-        Normal,             ///< Standard alpha blending (src over dst)
-        Add,                ///< Additive blending (src + dst)
-        Subtract,           ///< Subtractive blending (dst - src)
-        Multiply,           ///< Multiplicative blending (src * dst)
-        Screen,             ///< Screen blending (1 - (1-src)*(1-dst))
-        Overlay,            ///< Overlay blending (combines multiply and screen)
-        Darken,             ///< Select darker of two colors (min)
-        Lighten,            ///< Select lighter of two colors (max)
-        ColorDodge,         ///< Dodge blending mode (brighten)
-        ColorBurn,          ///< Burn blending mode (darken)
-        HardLight,          ///< Hard light blending
-        SoftLight,          ///< Soft light blending
-        Difference,         ///< Difference blending (abs(dst - src))
-        Exclusion,          ///< Exclusion blending (similar to difference)
-        LinearBurn,         ///< Linear burn: dst + src - 1
-        LinearDodge,        ///< Linear dodge: dst + src
-        VividLight,         ///< Vivid light blending
-        LinearLight,        ///< Linear light blending
-        PinLight,           ///< Pin light blending
-        HardMix,            ///< Hard mix (posterize to 0 or 1)
-        DarkerColor,        ///< Select color with lower luminance
-        LighterColor,       ///< Select color with higher luminance
-        Hue,                ///< Use source hue with destination saturation and luminosity
-        Saturation,         ///< Use source saturation with destination hue and luminosity
-        Color,              ///< Use source hue and saturation with destination luminosity
-        Luminosity,         ///< Use source luminosity with destination hue and saturation
-        Divide,             ///< Division blending: dst / src
+        None = 0,           ///< 无混合，直接使用源颜色
+        Normal,             ///< 标准 alpha 混合（src 覆盖 dst）
+        Add,                ///< 相加混合（src + dst）
+        Subtract,           ///< 相减混合（dst - src）
+        Multiply,           ///< 正片叠底（src * dst）
+        Screen,             ///< 滤色（1 - (1-src)*(1-dst)）
+        Overlay,            ///< 叠加（结合 Multiply 与 Screen）
+        Darken,             ///< 取较暗颜色（最小值）
+        Lighten,            ///< 取较亮颜色（最大值）
+        ColorDodge,         ///< 颜色减淡（变亮）
+        ColorBurn,          ///< 颜色加深（变暗）
+        HardLight,          ///< 强光混合
+        SoftLight,          ///< 柔光混合
+        Difference,         ///< 差值混合（abs(dst - src)）
+        Exclusion,          ///< 排除混合（类似差值）
+        LinearBurn,         ///< 线性加深：dst + src - 1
+        LinearDodge,        ///< 线性减淡：dst + src
+        VividLight,         ///< 亮光混合
+        LinearLight,        ///< 线性光混合
+        PinLight,           ///< 点光混合
+        HardMix,            ///< 强混合（阈值化为 0 或 1）
+        DarkerColor,        ///< 选择亮度更低的颜色
+        LighterColor,       ///< 选择亮度更高的颜色
+        Hue,                ///< 色相模式：使用源色相，保留目标饱和度和明度
+        Saturation,         ///< 饱和度模式：使用源饱和度，保留目标色相和明度
+        Color,              ///< 颜色模式：使用源色相和饱和度，保留目标明度
+        Luminosity,         ///< 明度模式：使用源明度，保留目标色相和饱和度
+        Divide,             ///< 除法混合：dst / src
         PremultipliedAlpha,
-        
+
         ENUM_CLASS_RANGE(None, PremultipliedAlpha)
     };
 
     /**
-     * @brief Get the name of an alpha blend mode
-     * @param mode The alpha blend mode
-     * @return The name of the blend mode as a C string
+     * @brief 获取 Alpha 混合模式的名称
+     * @param mode 混合模式
+     * @return 返回混合模式的名称（C 字符串）
      */
     inline const char *GetAlphaBlendModeName(AlphaBlendMode mode)
     {

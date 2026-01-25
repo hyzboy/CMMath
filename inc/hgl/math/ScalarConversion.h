@@ -2,16 +2,15 @@
 
 /**
  * @file ScalarConversion.h
- * @brief Scalar and vector value conversion utilities between uint8 and float ranges
- * 
- * Provides conversion functions for scalar byte-float conversions and color vectors
- * between uint8 range [0-255] and float range [0.0-1.0] normalized representations.
- * 
- * @section Categories
- * - @ref scalar_conversion: Scalar byte↔float conversions with clamping
- * - @ref vector3_conversion: Vector3 color conversions (RGB)
- * - @ref vector4_conversion: Vector4 color conversions (RGBA)
- * - @ref compatibility: Alias functions for cross-module compatibility
+ * @brief uint8 与 float 范围的标量与向量值转换工具
+ *
+ * 提供标量字节与浮点数转换、颜色向量在 uint8 区间 [0-255] 与 float 区间 [0.0-1.0] 归一化表示之间的转换函数。
+ *
+ * @section 分类
+ * - @ref scalar_conversion: 标量字节↔浮点数转换（带钳制）
+ * - @ref vector3_conversion: Vector3 颜色转换（RGB）
+ * - @ref vector4_conversion: Vector4 颜色转换（RGBA）
+ * - @ref compatibility: 跨模块兼容的别名函数
  */
 
 #include<hgl/math/Clamp.h>
@@ -24,16 +23,16 @@
 
 namespace hgl::math
 {
-    // ==================== Scalar Conversion ====================
-    /// @defgroup scalar_conversion Scalar Byte↔Float Conversion
-    /// Fundamental conversion operations for byte-float type conversions
+    // ==================== 标量转换 ====================
+    /// @defgroup scalar_conversion 标量字节↔浮点数转换
+    /// 字节与浮点类型转换的基础操作
     /// @{
 
     /**
-     * @brief Convert uint8 [0,255] to float [0,1]
-     * @param b Input byte value [0-255]
-     * @return Normalized float value [0.0-1.0]
-     * @category Normalization
+     * @brief 将 uint8 [0,255] 转换为 float [0,1]
+     * @param b 输入字节值 [0-255]
+     * @return 归一化浮点值 [0.0-1.0]
+     * @category 归一化
      */
     inline float ByteToFloat(uint8 b)
     {
@@ -41,10 +40,10 @@ namespace hgl::math
     }
 
     /**
-     * @brief Convert float [0,1] to uint8 [0,255] with clamping
-     * @param f Input float value [0.0-1.0]
-     * @return Clamped byte value [0-255]
-     * @category Denormalization
+     * @brief 将 float [0,1] 转换为 uint8 [0,255]，带钳制
+     * @param f 输入浮点值 [0.0-1.0]
+     * @return 钳制后的字节值 [0-255]
+     * @category 反归一化
      */
     inline uint8 FloatToByte(float f)
     {
@@ -52,10 +51,10 @@ namespace hgl::math
     }
     /// @}
 
-    // ==================== Vector3 (RGB) Conversion ====================
-    /// @defgroup vector3_conversion Vector3 RGB Color Conversion
-    /// Conversion operations for 3-component color vectors (Red, Green, Blue)
-    /// Supports both Vector3u8 and Color3ub for input, and Vector3f and Color3f for output
+    // ==================== Vector3 (RGB) 转换 ====================
+    /// @defgroup vector3_conversion Vector3 RGB 颜色转换
+    /// 三分量颜色向量（红、绿、蓝）的转换操作
+    /// 输入支持 Vector3u8 和 Color3ub，输出支持 Vector3f 和 Color3f
     /// @{
 
     inline Color3f ToColorFloat(const Color3ub &v)

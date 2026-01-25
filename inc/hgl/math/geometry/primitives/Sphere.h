@@ -1,14 +1,14 @@
 /**
  * Sphere.h - Simplified sphere geometry primitive
- * 
+ *
  * This is the new lightweight Sphere class that focuses only on:
  * - Property storage and access
  * - Simple, high-frequency geometric queries
  * - Bounding box calculation for broad-phase collision
- * 
+ *
  * Complex collision detection has been moved to CollisionDetector.
  * This keeps the class clean and focused on its core responsibility.
- * 
+ *
  * For backward compatibility, the original Sphere class remains at
  * inc/hgl/math/geometry/primitives/Sphere.h and is still available.
  */
@@ -23,17 +23,17 @@ namespace hgl::math
 {
     /**
      * Sphere - Standard sphere with uniform radius
-     * 
+     *
      * Mathematical definition:
      * Surface equation: ||P - center|| = radius
      * i.e., (x-cx)² + (y-cy)² + (z-cz)² = r²
-     * 
+     *
      * Properties:
      * - Perfect symmetry (isotropic)
      * - Minimal surface area to volume ratio
      * - Rotation invariant
      * - Simplest collision detection
-     * 
+     *
      * Common uses:
      * - Bounding spheres for broad-phase collision
      * - Particle systems
@@ -49,7 +49,7 @@ namespace hgl::math
 
         /** Get sphere center */
         const Vector3f& GetCenter() const { return center; }
-        
+
         /** Get sphere radius */
         float GetRadius() const { return radius; }
 
@@ -107,10 +107,10 @@ namespace hgl::math
 
         /**
          * Get point on sphere surface in a given direction
-         * 
+         *
          * Returns the point on the sphere surface along the given direction
          * from the center. Direction does not need to be normalized.
-         * 
+         *
          * @param direction Direction vector from center
          * @return Point on sphere surface
          */
@@ -178,23 +178,23 @@ namespace hgl::math
 
     /**
      * EllipseSphere (Ellipsoid) - Non-uniform radii in xyz directions
-     * 
+     *
      * An ellipsoid is a generalization of a sphere with different radii
      * along the three coordinate axes. Similar to a stretched or flattened sphere.
-     * 
+     *
      * Mathematical definition:
      * Ellipsoid equation: (x-cx)²/a² + (y-cy)²/b² + (z-cz)²/c² = 1
      * where a, b, c are the radii along each axis
-     * 
+     *
      * Differences from standard sphere:
      * - Sphere: radius.x = radius.y = radius.z (perfect symmetry)
      * - Ellipsoid: radius.x ≠ radius.y ≠ radius.z (anisotropic)
-     * 
+     *
      * Special cases:
      * - Spheroid: Two radii equal (e.g., Earth: equal equatorial radii, different polar)
      * - Oblate: Polar radius < equatorial radius (Earth shape)
      * - Prolate: Polar radius > equatorial radius (football shape)
-     * 
+     *
      * Common uses:
      * - Celestial body modeling (Earth, planets)
      * - Character animation (head, body approximations)
@@ -211,7 +211,7 @@ namespace hgl::math
 
         /** Get ellipsoid center */
         const Vector3f& GetCenter() const { return center; }
-        
+
         /** Get three axis radii vector */
         const Vector3f& GetRadius() const { return radius; }
 
@@ -272,10 +272,10 @@ namespace hgl::math
 
         /**
          * Get point on ellipsoid surface in a given direction
-         * 
+         *
          * Note: For ellipsoids, the direction vector is scaled by axis radii.
          * This means the returned point may not be in the exact direction.
-         * 
+         *
          * @param direction Direction vector
          * @return Point on ellipsoid surface near that direction
          */

@@ -1,6 +1,6 @@
 /**
  * Cylinder.h - Simplified cylinder geometry primitive
- * 
+ *
  * A cylinder is a 3D shape with circular cross-sections perpendicular
  * to its axis. This lightweight class focuses on geometric properties
  * and simple queries.
@@ -16,13 +16,13 @@ namespace hgl::math
 {
     /**
      * Cylinder - Circular cylinder with axis, height, and radius
-     * 
+     *
      * Defined by:
      * - Center: Geometric center of the cylinder
      * - Axis: Direction of cylinder axis (normalized)
      * - Height: Length along axis
      * - Radius: Radius of circular cross-section
-     * 
+     *
      * Common uses:
      * - Columnar structures (pillars, trees)
      * - Pipe modeling
@@ -75,13 +75,13 @@ namespace hgl::math
 
         /** Get cylinder center */
         const Vector3f& GetCenter() const { return center; }
-        
+
         /** Get cylinder axis (unit vector) */
         const Vector3f& GetAxis() const { return axis; }
-        
+
         /** Get cylinder height */
         float GetHeight() const { return height; }
-        
+
         /** Get cylinder radius */
         float GetRadius() const { return radius; }
 
@@ -136,19 +136,19 @@ namespace hgl::math
         bool ContainsPoint(const Vector3f& point) const
         {
             Vector3f to_point = point - center;
-            
+
             // Project onto axis
             float axis_projection = Dot(to_point, axis);
-            
+
             // Check height bounds
             float half_height = height * 0.5f;
             if (std::abs(axis_projection) > half_height)
                 return false;
-            
+
             // Check radial distance
             Vector3f axis_point = center + axis * axis_projection;
             float radial_distance = Length(point - axis_point);
-            
+
             return radial_distance <= radius;
         }
 
@@ -161,22 +161,22 @@ namespace hgl::math
         {
             Vector3f to_point = point - center;
             float axis_projection = Dot(to_point, axis);
-            
+
             // Clamp to height range
             float half_height = height * 0.5f;
             axis_projection = clamp(axis_projection, -half_height, half_height);
-            
+
             Vector3f axis_point = center + axis * axis_projection;
             Vector3f radial = point - axis_point;
             float radial_length = Length(radial);
-            
+
             if (radial_length <= radius)
             {
                 // Point inside - find nearest surface
                 float top_dist = half_height - axis_projection;
                 float bottom_dist = half_height + axis_projection;
                 float radial_dist = radius - radial_length;
-                
+
                 if (radial_dist < top_dist && radial_dist < bottom_dist)
                 {
                     // Nearest is lateral surface
@@ -222,14 +222,14 @@ namespace hgl::math
             Vector3f half_axis = axis * (height * 0.5f);
             Vector3f top_center = center + half_axis;
             Vector3f bottom_center = center - half_axis;
-            
+
             // For axis-aligned bbox, we need maximum extent in all directions
             // This is conservative but correct for any axis orientation
             Vector3f extent(radius, radius, radius);
-            
+
             // Account for axis direction by adding half-height extent
             extent += glm::abs(half_axis);
-            
+
             AABB box;
             box.SetMinMax(center - extent, center + extent);
             return box;

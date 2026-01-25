@@ -1,6 +1,6 @@
 /**
  * Cone.h - Simplified cone geometry primitive
- * 
+ *
  * A cone is formed by connecting a circular base to an apex point.
  * This lightweight class focuses on geometric properties and simple queries.
  */
@@ -15,18 +15,18 @@ namespace hgl::math
 {
     /**
      * Cone - Circular cone with apex, axis, height, and base radius
-     * 
+     *
      * Geometric definition:
      * - Apex: The tip of the cone
      * - Axis: Direction from apex to base center (normalized)
      * - Height: Distance from apex to base
      * - Base radius: Radius of circular base
-     * 
+     *
      * Properties:
      * - Slant height = sqrt(h² + r²)
      * - Radius at height h' = r * (1 - h'/h)
      * - Cone angle = arctan(r/h)
-     * 
+     *
      * Common uses:
      * - Cone-shaped objects
      * - Spotlight volumes
@@ -79,13 +79,13 @@ namespace hgl::math
 
         /** Get apex position */
         const Vector3f& GetApex() const { return apex; }
-        
+
         /** Get axis direction */
         const Vector3f& GetAxis() const { return axis; }
-        
+
         /** Get height */
         float GetHeight() const { return height; }
-        
+
         /** Get base radius */
         float GetBaseRadius() const { return base_radius; }
 
@@ -147,7 +147,7 @@ namespace hgl::math
         {
             if (h < 0.0f || h > height)
                 return 0.0f;
-            
+
             // Linear interpolation
             return base_radius * (h / height);
         }
@@ -161,18 +161,18 @@ namespace hgl::math
         {
             Vector3f to_point = point - apex;
             float axis_projection = Dot(to_point, axis);
-            
+
             // Check height bounds
             if (axis_projection < 0.0f || axis_projection > height)
                 return false;
-            
+
             // Get radius at this height
             float radius_at_height = GetRadiusAtHeight(axis_projection);
-            
+
             // Check radial distance
             Vector3f axis_point = apex + axis * axis_projection;
             float radial_distance = Length(point - axis_point);
-            
+
             return radial_distance <= radius_at_height;
         }
 
@@ -185,13 +185,13 @@ namespace hgl::math
         {
             Vector3f to_point = point - apex;
             float axis_projection = Dot(to_point, axis);
-            
+
             if (axis_projection <= 0.0f)
             {
                 // Point above apex
                 return apex;
             }
-            
+
             if (axis_projection >= height)
             {
                 // Point below base
@@ -199,7 +199,7 @@ namespace hgl::math
                 Vector3f to_base = point - base_center;
                 Vector3f radial = to_base - axis * Dot(to_base, axis);
                 float radial_length = Length(radial);
-                
+
                 if (radial_length <= base_radius)
                 {
                     // Projects inside base circle
@@ -211,14 +211,14 @@ namespace hgl::math
                     return base_center + glm::normalize(radial) * base_radius;
                 }
             }
-            
+
             // Point within height range
             Vector3f axis_point = apex + axis * axis_projection;
             float radius_at_height = GetRadiusAtHeight(axis_projection);
-            
+
             Vector3f radial = point - axis_point;
             float radial_length = Length(radial);
-            
+
             if (radial_length <= radius_at_height)
             {
                 // Point inside - return point on lateral surface
@@ -230,7 +230,7 @@ namespace hgl::math
                         perpendicular = Cross(axis, Vector3f(1, 0, 0));
                     else
                         perpendicular = Cross(axis, Vector3f(0, 1, 0));
-                    
+
                     return axis_point + glm::normalize(perpendicular) * radius_at_height;
                 }
                 else
@@ -263,12 +263,12 @@ namespace hgl::math
         AABB GetBoundingBox() const
         {
             Vector3f base_center = GetBaseCenter();
-            
+
             // Conservative bounding box considering apex and base
             Vector3f r(base_radius, base_radius, base_radius);
             Vector3f min_pt = glm::min(apex, base_center - r);
             Vector3f max_pt = glm::max(apex, base_center + r);
-            
+
             AABB box;
             box.SetMinMax(min_pt, max_pt);
             return box;

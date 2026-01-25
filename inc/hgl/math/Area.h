@@ -34,7 +34,7 @@ namespace hgl::math
     {
         return size.x*size.y;
     }
-    
+
     /**
      * 正圆面积计算
      * @param radius 半径
@@ -43,7 +43,7 @@ namespace hgl::math
     {
         return std::numbers::pi_v<float>*radius*radius;
     }
-    
+
     /**
      * 椭圆面积计算
      * @param l_radius 长半径

@@ -1,14 +1,14 @@
 ﻿/**
  * Capsule.h - Simplified capsule geometry primitive
- * 
+ *
  * A capsule is formed by sweeping a sphere along a line segment.
  * It consists of a cylindrical body with hemispherical end caps.
- * 
+ *
  * This lightweight class focuses on:
  * - Property storage and access
  * - Simple geometric queries
  * - Bounding box calculation
- * 
+ *
  * Complex collision detection has been moved to CollisionDetector.
  */
 #pragma once
@@ -21,21 +21,21 @@ namespace hgl::math
 {
     /**
      * Capsule - A sphere swept along a line segment
-     * 
+     *
      * Geometric definition:
      * - Start point: One end of the center axis
      * - End point: Other end of the center axis
      * - Radius: Distance from axis to surface
-     * 
+     *
      * Mathematical representation:
      * Surface points satisfy: distance_to_segment(P, start, end) = radius
-     * 
+     *
      * Properties:
      * - Total length = ||end - start|| + 2 * radius
      * - Volume = πr²h + (4/3)πr³ (cylinder + sphere)
      * - Rotation invariant around axis
      * - Excellent for character controllers
-     * 
+     *
      * Common uses:
      * - Character collision bodies
      * - Physics capsule rigid bodies
@@ -52,13 +52,13 @@ namespace hgl::math
 
         /** Get start point of center axis */
         const Vector3f& GetStart() const { return start; }
-        
+
         /** Get end point of center axis */
         const Vector3f& GetEnd() const { return end; }
-        
+
         /** Get capsule radius */
         float GetRadius() const { return radius; }
-        
+
         /**
          * Get capsule geometric center
          * @return Midpoint of the line segment
@@ -67,7 +67,7 @@ namespace hgl::math
         {
             return (start + end) * 0.5f;
         }
-        
+
         /**
          * Get capsule axis direction (normalized)
          * @return Unit vector from start to end
@@ -76,7 +76,7 @@ namespace hgl::math
         {
             return Normalized(end - start);
         }
-        
+
         /**
          * Get cylinder height (excluding end caps)
          * @return Length of center axis
@@ -85,7 +85,7 @@ namespace hgl::math
         {
             return Length(end - start);
         }
-        
+
         /**
          * Get total capsule length (including end caps)
          * @return Total length = cylinder height + 2 * radius
@@ -138,10 +138,10 @@ namespace hgl::math
         float GetVolume() const
         {
             float h = GetCylinderHeight();
-            return std::numbers::pi_v<float> * radius * radius * h + 
+            return std::numbers::pi_v<float> * radius * radius * h +
                    (4.0f / 3.0f) * std::numbers::pi_v<float> * radius * radius * radius;
         }
-        
+
         /**
          * Calculate capsule surface area
          * Surface area = cylinder lateral area + sphere surface area
@@ -150,7 +150,7 @@ namespace hgl::math
         float GetSurfaceArea() const
         {
             float h = GetCylinderHeight();
-            return 2.0f * std::numbers::pi_v<float> * radius * h + 
+            return 2.0f * std::numbers::pi_v<float> * radius * h +
                    4.0f * std::numbers::pi_v<float> * radius * radius;
         }
 
@@ -164,12 +164,12 @@ namespace hgl::math
             // Find closest point on line segment
             Vector3f segment = end - start;
             Vector3f to_point = point - start;
-            
+
             float t = Dot(to_point, segment) / Dot(segment, segment);
             t = clamp(t, 0.0f, 1.0f);
-            
+
             Vector3f closest_on_segment = start + segment * t;
-            
+
             // Check if distance to segment is within radius
             return LengthSquared(point - closest_on_segment) <= radius * radius;
         }
@@ -184,19 +184,19 @@ namespace hgl::math
             // Find closest point on line segment
             Vector3f segment = end - start;
             Vector3f to_point = point - start;
-            
+
             float t = Dot(to_point, segment) / Dot(segment, segment);
             t = clamp(t, 0.0f, 1.0f);
-            
+
             Vector3f closest_on_segment = start + segment * t;
-            
+
             // Project from segment to surface along radius
             Vector3f dir = point - closest_on_segment;
             float dist = Length(dir);
-            
+
             if (dist <= radius)
                 return point;  // Point is inside
-            
+
             return closest_on_segment + dir * (radius / dist);
         }
 
@@ -210,12 +210,12 @@ namespace hgl::math
             // Find closest point on line segment
             Vector3f segment = end - start;
             Vector3f to_point = point - start;
-            
+
             float t = Dot(to_point, segment) / Dot(segment, segment);
             t = clamp(t, 0.0f, 1.0f);
-            
+
             Vector3f closest_on_segment = start + segment * t;
-            
+
             float dist = Length(point - closest_on_segment) - radius;
             return dist > 0.0f ? dist : 0.0f;
         }
@@ -229,7 +229,7 @@ namespace hgl::math
             Vector3f r(radius, radius, radius);
             Vector3f min_pt = glm::min(start, end) - r;
             Vector3f max_pt = glm::max(start, end) + r;
-            
+
             AABB box;
             box.SetMinMax(min_pt, max_pt);
             return box;

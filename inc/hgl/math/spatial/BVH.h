@@ -1,9 +1,9 @@
 /**
  * BVH.h - 层次包围盒 (Bounding Volume Hierarchy)
- * 
+ *
  * 实现 BVH 用于射线追踪和碰撞检测优化
  * 支持 SAH (Surface Area Heuristic) 构建策略
- * 
+ *
  * 参考：
  * - "Real-Time Collision Detection" by Christer Ericson
  * - "On fast Construction of SAH-based Bounding Volume Hierarchies"
@@ -57,13 +57,13 @@ namespace hgl::math
         // 禁止拷贝
         BVH(const BVH&) = delete;
         BVH& operator=(const BVH&) = delete;
-        
+
         /**
          * 重建 BVH（当对象位置发生变化时）
          * @param objects 更新后的对象列表
          */
         void Rebuild(const std::vector<IBVHData*> &objects);
-        
+
         /**
          * 射线相交测试
          * @param ray 射线
@@ -72,29 +72,29 @@ namespace hgl::math
          * @return 是否命中
          */
         bool IntersectRay(const Ray &ray, IBVHData* &out_hit, float &out_t) const;
-        
+
         /**
          * 查询与区域相交的所有对象
          */
         void Query(const AABB &area, std::vector<IBVHData*> &out_results) const;
-        
+
         /**
          * 查询与球体相交的所有对象
          */
         void QuerySphere(const Vector3f &center, float radius, std::vector<IBVHData*> &out_results) const;
-        
+
         /**
          * 获取统计信息
          */
         int GetTotalNodes() const;
         int GetTreeDepth() const;
         float GetSAHCost() const;  // SAH 策略的成本评估
-        
+
     private:
         class BVHNode;
         BVHNode *root;
         BVHBuildStrategy build_strategy;
-        
+
         // 构建辅助函数
         BVHNode* BuildRecursive(std::vector<IBVHData*> &objects, int start, int end, int depth);
         BVHNode* BuildSAH(std::vector<IBVHData*> &objects, int start, int end, int depth);

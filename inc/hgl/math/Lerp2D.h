@@ -2,20 +2,20 @@
 
 /**
  * @file Lerp2D.h
- * @brief Vector2f interpolation functions
+ * @brief Vector2f 插值函数
  *
- * This file provides interpolation functions specifically for Vector2f.
- * It is a specialization of the generic interpolation algorithms from Lerp1D.h,
- * applying them directly to 2D vectors.
+ * 本文件专为 Vector2f 提供插值函数。
+ * 它是对 Lerp1D.h 中通用插值算法的特化，
+ * 直接应用于二维向量。
  *
- * Note on Lerp function hierarchy:
- * - Lerp1D.h: Generic scalar interpolation templates (core algorithms)
- * - Lerp2D.h (this file): Vector2f specialization that wraps Lerp1D
- * - Lerp3D.h: Vector3f specialization that wraps Lerp1D
- * - VectorLerp.h: Integer vector interpolation (u8/u16) + direction interpolation
+ * 关于 Lerp 函数层级说明：
+ * - Lerp1D.h：通用标量插值模板（核心算法）
+ * - Lerp2D.h（本文件）：对 Vector2f 的特化包装
+ * - Lerp3D.h：对 Vector3f 的特化包装
+ * - VectorLerp.h：整数向量插值（u8/u16）及方向插值
  *
- * The algorithms implemented here are mathematically equivalent to what Lerp1D
- * provides, but directly operate on Vector2f for convenience and efficiency.
+ * 此处实现的算法在数学上等价于 Lerp1D，
+ * 但直接作用于 Vector2f，便于高效调用。
  */
 
 #include<numbers>
@@ -27,15 +27,15 @@ namespace hgl
 {
     namespace graph
     {
-        // ==================== Function Pointer Type Definitions ====================
+        // ==================== 函数指针类型定义 ====================
 
-        /// 2-point Vector2f Lerp function pointer type (Linear, Cosine, Cubic, Hermite)
+        /// 2 点 Vector2f 插值函数指针类型（线性、余弦、三次、Hermite）
         typedef Vector2f (*LerpFunc2PointVec2f)(const math::Vector2f&, const math::Vector2f&, const float);
 
-        /// 4-point Vector2f Lerp function pointer type (Bezier, CatmullRom, BSpline)
+        /// 4 点 Vector2f 插值函数指针类型（贝塞尔、CatmullRom、BSpline）
         typedef Vector2f (*LerpFunc4PointVec2f)(const math::Vector2f&, const math::Vector2f&, const math::Vector2f&, const math::Vector2f&, const float);
 
-        // ==================== Interpolation Functions ====================
+        // ==================== 插值函数 ====================
 
         inline float LerpLinear(const float from,const float to,const float t)
         {
@@ -135,12 +135,12 @@ namespace hgl
                     +p3*(t3)/6.0f;
         }
 
-        // ==================== Function Pointer Getters ====================
+        // ==================== 函数指针获取器 ====================
 
         /**
-         * @brief Get 2-point Lerp function pointer for Vector2f (Linear, Cosine, Cubic, Hermite)
-         * @param type Interpolation type
-         * @return Function pointer to the corresponding Lerp function, or nullptr if invalid type
+         * @brief 获取 Vector2f 的 2 点插值函数指针（线性、余弦、三次、Hermite）
+         * @param type 插值类型
+         * @return 对应插值函数的指针，类型无效时返回 nullptr
          */
         inline LerpFunc2PointVec2f GetLerpFuncPointer(LerpType type)
         {
@@ -155,9 +155,9 @@ namespace hgl
         }
 
         /**
-         * @brief Get 4-point Lerp function pointer for Vector2f (Bezier, CatmullRom, BSpline)
-         * @param type Interpolation type
-         * @return Function pointer to the corresponding Lerp function, or nullptr if invalid type
+         * @brief 获取 Vector2f 的 4 点插值函数指针（贝塞尔、CatmullRom、BSpline）
+         * @param type 插值类型
+         * @return 对应插值函数的指针，类型无效时返回 nullptr
          */
         inline LerpFunc4PointVec2f GetLerpBezierFuncPointer(LerpType type)
         {

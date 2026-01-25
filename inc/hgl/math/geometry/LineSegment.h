@@ -6,27 +6,27 @@ namespace hgl::math
 {
     /**
     * 线段(Line Segment)
-    * 
+    *
     * 线段是连接两个点的直线的有限部分，是最基础的几何图元之一。
     * 在3D图形学中，线段用于表示边、路径、射线的有限部分等。
-    * 
+    *
     * 几何定义:
     * - 起点(Start): 线段的起始端点
     * - 终点(End): 线段的终止端点
     * - 方向: 从起点指向终点的向量
     * - 长度: 起点和终点之间的欧几里得距离
-    * 
+    *
     * 参数表示:
     * 线段上的任意点可以表示为: P(t) = start + t * (end - start), 其中 t ∈ [0, 1]
     * - t = 0 时，P(t) = start
     * - t = 1 时，P(t) = end
     * - 0 < t < 1 时，P(t) 在线段内部
-    * 
+    *
     * 与射线(Ray)的区别:
     * - 线段: 有限长度，两端都有端点
     * - 射线: 从起点出发，沿方向无限延伸
     * - 直线: 双向无限延伸
-    * 
+    *
     * 应用场景:
     * - 边的表示（三角形、多边形的边）
     * - 路径规划中的路径片段
@@ -48,7 +48,7 @@ namespace hgl::math
         * 不初始化起点和终点，需要后续调用Set设置
         */
         LineSegment()=default;
-        
+
         /**
         * 参数化构造函数
         * @param s 线段起点
@@ -87,10 +87,10 @@ namespace hgl::math
 
         /** 获取线段起点 */
         const Vector3f &GetStart()const{return start;}
-        
+
         /** 获取线段终点 */
         const Vector3f &GetEnd()const{return end;}
-        
+
         /**
         * 获取线段中点
         * @return 起点和终点的中点位置
@@ -103,14 +103,14 @@ namespace hgl::math
         * @return 归一化的方向向量
         */
         const Vector3f GetStartDirection()const{return Normalized(end-start);}
-        
+
         /**
         * 获取从终点到起点的方向（归一化）
         * 这是线段的反向方向
         * @return 归一化的反方向向量
         */
         const Vector3f GetEndDirection()const{return Normalized(start-end);}
-        
+
         /**
         * 获取从起点到终点的向量（未归一化）
         * @return 位移向量 = end - start
@@ -123,13 +123,13 @@ namespace hgl::math
         * @return 长度的平方值
         */
         const float DistanceSquared()const{return LengthSquared(start,end);}
-        
+
         /**
         * 计算线段长度
         * @return 起点到终点的欧几里得距离
         */
         const float Distance()const{return Length(start,end);}
-        
+
         /**
         * 获取线段上的参数化点
         * @param t 参数值，t∈[0,1]，0表示起点，1表示终点
@@ -139,7 +139,7 @@ namespace hgl::math
         {
             return start + (end - start) * t;
         }
-        
+
         /**
         * 计算点到线段的最近点
         * @param point 空间中的任意点
@@ -149,13 +149,13 @@ namespace hgl::math
         {
             Vector3f dir = end - start;
             float len_sq = Dot(dir, dir);
-            
+
             if(len_sq < 0.0001f)  // 线段退化为点
                 return start;
-            
+
             float t = Dot(point - start, dir) / len_sq;
             t = clamp(t, 0.0f, 1.0f);  // 限制在[0,1]范围内
-            
+
             return start + dir * t;
         }
     };//class LineSegment

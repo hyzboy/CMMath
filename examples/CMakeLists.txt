@@ -13,6 +13,8 @@ macro(cm_example_project sub_folder project_name)
 endmacro()
 
 ####################################################################################################
+add_subdirectory(color)
+####################################################################################################
 
 cm_example_project("" HalfFloatTest         HalfFloatTest.cpp)
 cm_example_project("" AlphaBlendTest        AlphaBlendTest.cpp)

@@ -324,6 +324,17 @@ source_group("Math\\Curves"             FILES ${CMMATH_MATH_CURVES_HEADERS}     
 source_group("Math\\SIMD"               FILES ${CMMATH_MATH_SIMD_HEADERS})
 source_group("Math\\Game"               FILES ${CMMATH_MATH_GAME_HEADERS}       ${CMMATH_MATH_GAME_SOURCES})
 
+# Color Quantize & Dithering
+set(CMMATH_COLOR_QUANTIZEDITHER_HEADERS
+    ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hgl/color/ColorQuantize.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hgl/color/ColorDithering.h
+)
+set(CMMATH_COLOR_QUANTIZEDITHER_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/Color/ColorQuantize.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Color/ColorDithering.cpp
+)
+source_group("Color/QuantizeDither" FILES ${CMMATH_COLOR_QUANTIZEDITHER_HEADERS} ${CMMATH_COLOR_QUANTIZEDITHER_SOURCES})
+
 # Geometry module groups
 source_group("Geometry\\Primitives"     FILES ${CMMATH_GEOMETRY_PRIMITIVES_HEADERS}     ${CMMATH_GEOMETRY_PRIMITIVES_SOURCES})
 source_group("Geometry\\Solids"         FILES ${CMMATH_GEOMETRY_SOLIDS_HEADERS})
@@ -357,6 +368,8 @@ add_cm_library(CMMath "CM"
     ${CMMATH_TRANSFORM_HEADERS}
     ${CMMATH_TRANSFORM_SOURCES}
     ${CMMATH_GRAPH_HEADERS}
+
+    ${CMMATH_COLOR_QUANTIZEDITHER_HEADERS} ${CMMATH_COLOR_QUANTIZEDITHER_SOURCES}
 )
 
 ##==================================================================================================

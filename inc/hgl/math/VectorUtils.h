@@ -12,7 +12,10 @@ namespace hgl::math
 {
     /**
      * 向量工具函数
-     * 包括：转换、几何计算、射线相关等
+     * 包括：维度转换、极值、极坐标转换等
+     *
+     * 注意：向量插值函数已分离到 VectorLerp.h
+     * 注意：方向插值（LerpDirection）已分离到 VectorLerp.h
      */
 
     // ==================== 向量维度转换 ====================
@@ -72,13 +75,6 @@ namespace hgl::math
                         hgl_max(v1.w,v2.w));
     }
 
-    // ==================== 方向插值 ====================
-
-    inline const Vector3f LerpDirection(const Vector3f &old_direction,const Vector3f &new_direction,const float alpha)
-    {
-        return glm::normalize(old_direction*(1.0f-alpha)+new_direction*alpha);
-    }
-
     // ==================== 角度计算 ====================
 
     /**
@@ -122,7 +118,7 @@ namespace hgl::math
 
         if(val>1)return 0;
         if(val<-1)return std::numbers::pi_v<float>;
-    
+
         return acos(val);
     }
 
@@ -135,7 +131,7 @@ namespace hgl::math
 
         if(val>1)return 0;
         if(val<-1)return 180;
-    
+
         return rad2deg(acos(val));
     }
 

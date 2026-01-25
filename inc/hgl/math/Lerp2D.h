@@ -1,4 +1,23 @@
 ﻿#pragma once
+
+/**
+ * @file Lerp2D.h
+ * @brief Vector2f interpolation functions
+ *
+ * This file provides interpolation functions specifically for Vector2f.
+ * It is a specialization of the generic interpolation algorithms from Lerp1D.h,
+ * applying them directly to 2D vectors.
+ *
+ * Note on Lerp function hierarchy:
+ * - Lerp1D.h: Generic scalar interpolation templates (core algorithms)
+ * - Lerp2D.h (this file): Vector2f specialization that wraps Lerp1D
+ * - Lerp3D.h: Vector3f specialization that wraps Lerp1D
+ * - VectorLerp.h: Integer vector interpolation (u8/u16) + direction interpolation
+ *
+ * The algorithms implemented here are mathematically equivalent to what Lerp1D
+ * provides, but directly operate on Vector2f for convenience and efficiency.
+ */
+
 #include<numbers>
 
 #include<hgl/math/Vector.h>

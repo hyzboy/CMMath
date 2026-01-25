@@ -1,5 +1,28 @@
 #pragma once
 
+/**
+ * @file Lerp1D.h
+ * @brief Generic scalar (1D) interpolation functions
+ *
+ * This file provides template-based interpolation functions for scalar values.
+ * It is the core implementation of various interpolation algorithms including:
+ * - Linear interpolation
+ * - Cosine interpolation
+ * - Cubic Hermite interpolation
+ * - Bezier curve interpolation
+ * - Catmull-Rom spline interpolation
+ * - B-spline interpolation
+ *
+ * Note on Lerp function hierarchy:
+ * - Lerp1D.h (this file): Generic scalar interpolation templates
+ * - Lerp2D.h: Vector2f specialization that uses Lerp1D algorithms
+ * - Lerp3D.h: Vector3f specialization that uses Lerp1D algorithms
+ * - VectorLerp.h: Integer vector interpolation (u8/u16) + direction interpolation
+ *
+ * The specializations in Lerp2D/3D essentially wrap the algorithms from Lerp1D
+ * to work directly with 2D and 3D vectors.
+ */
+
 #include<hgl/math/Vector.h>
 #include<hgl/math/LerpType.h>
 #include<numbers>
@@ -423,7 +446,7 @@ namespace hgl
          */
         inline float LerpEaseInOutExpo(const float from, const float to, const float t)
         {
-            float eased = (t == 0.0f) ? 0.0f : (t == 1.0f) ? 1.0f : 
+            float eased = (t == 0.0f) ? 0.0f : (t == 1.0f) ? 1.0f :
                          (t < 0.5f) ? pow(2.0f, 20.0f * t - 10.0f) / 2.0f : (2.0f - pow(2.0f, -20.0f * t + 10.0f)) / 2.0f;
             return from + (to - from) * eased;
         }
@@ -433,7 +456,7 @@ namespace hgl
          */
         inline float LerpEaseInOutCirc(const float from, const float to, const float t)
         {
-            float eased = (t < 0.5f) ? (1.0f - sqrt(1.0f - pow(2.0f * t, 2.0f))) / 2.0f : 
+            float eased = (t < 0.5f) ? (1.0f - sqrt(1.0f - pow(2.0f * t, 2.0f))) / 2.0f :
                          (sqrt(1.0f - pow(-2.0f * t + 2.0f, 2.0f)) + 1.0f) / 2.0f;
             return from + (to - from) * eased;
         }

@@ -37,3 +37,5 @@ cm_example_project("" TriangleTest          TriangleTest.cpp)
 cm_example_project("" AngleTest             AngleTest.cpp)
 cm_example_project("" QuaternionTest        QuaternionTest.cpp)
 cm_example_project("" GeometryTest          GeometryTest.cpp)
+
+cm_example_project("" TypeSizeof            TypeSizeof.cpp)

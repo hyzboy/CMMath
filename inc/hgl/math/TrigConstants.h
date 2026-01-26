@@ -96,7 +96,8 @@ namespace hgl::math
      * 角度转弧度（向后兼容）
      * @deprecated 建议使用 degrees_to_radians
      */
-    [[nodiscard]] constexpr float deg2rad(float deg) noexcept
+    template<std::floating_point T>
+    [[nodiscard]] constexpr T deg2rad(T deg) noexcept
     {
         return degrees_to_radians(deg);
     }
@@ -105,7 +106,8 @@ namespace hgl::math
      * 弧度转角度（向后兼容）
      * @deprecated 建议使用 radians_to_degrees
      */
-    [[nodiscard]] constexpr float rad2deg(float rad) noexcept
+    template<std::floating_point T>
+    [[nodiscard]] constexpr T rad2deg(T rad) noexcept
     {
         return radians_to_degrees(rad);
     }

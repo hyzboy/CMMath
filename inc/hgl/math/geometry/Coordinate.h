@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/math/Vector.h>
 
@@ -6,7 +6,7 @@ namespace hgl::math
 {
     /**
      * 坐标系转换函数
-     * 
+     *
      * 坐标系约定:
      * - OpenGL标准: X右, Y上, Z后 (右手坐标系, Y-up, 摄像机朝-Z)
      * - Vulkan标准: X右, Y下, Z前 (右手坐标系, Y-down, 摄像机朝+Z) [NDC空间]

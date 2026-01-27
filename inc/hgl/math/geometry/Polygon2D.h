@@ -1,6 +1,6 @@
-/**
+﻿/**
  * Polygon2D.h - 2D多边形及三角剖分功能
- * 
+ *
  * 提供2D多边形的表示和三角剖分（Triangulation）功能。
  * 三角剖分是将多边形分解为多个三角形的过程，广泛应用于：
  * - 2D图形渲染和填充
@@ -8,13 +8,13 @@
  * - 纹理映射
  * - 物理模拟
  * - UI界面渲染
- * 
+ *
  * 算法说明：
  * 使用耳切法（Ear Clipping）进行三角剖分。
  * - 适用于简单多边形（无自相交）
  * - 时间复杂度：O(n²)，n为顶点数
  * - 稳定可靠，实现简单
- * 
+ *
  * 参考资料：
  * - "Computational Geometry: Algorithms and Applications" (de Berg et al.)
  * - "Real-Time Collision Detection" (Christer Ericson)
@@ -32,12 +32,12 @@ namespace hgl::math
 {
     /**
      * @brief 计算2D多边形的有向面积
-     * 
+     *
      * 使用Shoelace公式（鞋带公式）计算多边形的有向面积。
      * - 正值：逆时针方向（CCW）
      * - 负值：顺时针方向（CW）
      * - 绝对值即为多边形面积
-     * 
+     *
      * @param vertices 多边形顶点数组
      * @return 有向面积（可为负）
      */
@@ -62,7 +62,7 @@ namespace hgl::math
 
     /**
      * @brief 计算2D多边形的面积（绝对值）
-     * 
+     *
      * @param vertices 多边形顶点数组
      * @return 多边形面积（非负）
      */
@@ -74,7 +74,7 @@ namespace hgl::math
 
     /**
      * @brief 判断多边形顶点是否按逆时针顺序排列
-     * 
+     *
      * @param vertices 多边形顶点数组
      * @return true表示逆时针，false表示顺时针
      */
@@ -86,10 +86,10 @@ namespace hgl::math
 
     /**
      * @brief 判断点是否在三角形内（2D）
-     * 
+     *
      * 使用叉积法判断点是否在三角形内部。
      * 检查点是否在三条边的同一侧。
-     * 
+     *
      * @param a 三角形顶点A
      * @param b 三角形顶点B
      * @param c 三角形顶点C
@@ -97,9 +97,9 @@ namespace hgl::math
      * @return true表示点在三角形内或边上
      */
     template<typename T>
-    inline bool IsPointInTriangle2D(const glm::vec<2, T>& a, 
-                                    const glm::vec<2, T>& b, 
-                                    const glm::vec<2, T>& c, 
+    inline bool IsPointInTriangle2D(const glm::vec<2, T>& a,
+                                    const glm::vec<2, T>& b,
+                                    const glm::vec<2, T>& c,
                                     const glm::vec<2, T>& p)
     {
         // 计算叉积判断点的位置
@@ -120,12 +120,12 @@ namespace hgl::math
 
     /**
      * @brief 判断三角形是否为"耳朵"
-     * 
+     *
      * 耳朵的定义：
      * 1. 三角形的三个顶点在多边形上连续
      * 2. 三角形完全在多边形内部
      * 3. 三角形内部不包含其他多边形顶点
-     * 
+     *
      * @param vertices 多边形所有顶点
      * @param i 三角形中间顶点的索引
      * @param indices 当前剩余顶点的索引数组
@@ -169,13 +169,13 @@ namespace hgl::math
 
     /**
      * @brief 判断三角形是否为"耳朵"（带边长约束版本）
-     * 
+     *
      * 耳朵的定义：
      * 1. 三角形的三个顶点在多边形上连续
      * 2. 三角形完全在多边形内部
      * 3. 三角形内部不包含其他多边形顶点
      * 4. 三角形的所有边长满足指定的最小和最大长度约束
-     * 
+     *
      * @param vertices 多边形所有顶点
      * @param i 三角形中间顶点的索引
      * @param indices 当前剩余顶点的索引数组
@@ -236,20 +236,20 @@ namespace hgl::math
 
     /**
      * @brief 2D多边形三角剖分（Ear Clipping算法）
-     * 
+     *
      * 将简单多边形（无自相交）分解为多个三角形。
-     * 
+     *
      * 算法流程：
      * 1. 确保顶点按逆时针顺序排列
      * 2. 寻找一个"耳朵"（满足特定条件的三角形）
      * 3. 切除该耳朵，添加到输出三角形列表
      * 4. 重复步骤2-3，直到只剩下一个三角形
-     * 
+     *
      * 注意事项：
      * - 输入多边形必须是简单多边形（边不能相交）
      * - 顶点数必须 >= 3
      * - 算法会自动处理顶点顺序
-     * 
+     *
      * @param vertices 多边形顶点数组（至少3个顶点）
      * @param out_triangles 输出三角形索引数组，每3个索引构成一个三角形
      * @return true表示三角剖分成功，false表示失败（通常因为输入无效）
@@ -340,27 +340,27 @@ namespace hgl::math
 
     /**
      * @brief 2D多边形三角剖分（带边长约束的Ear Clipping算法）
-     * 
+     *
      * 将简单多边形（无自相交）分解为多个三角形，同时满足边长约束。
-     * 
+     *
      * 算法流程：
      * 1. 确保顶点按逆时针顺序排列
      * 2. 寻找一个"耳朵"（满足特定条件且边长在范围内的三角形）
      * 3. 切除该耳朵，添加到输出三角形列表
      * 4. 重复步骤2-3，直到只剩下一个三角形
-     * 
+     *
      * 边长约束说明：
      * - 生成的所有三角形的每条边长度必须在 [min_edge_length, max_edge_length] 范围内
      * - min_edge_length 默认为1.0（最小1像素点）
      * - max_edge_length 默认为无限大（std::numeric_limits<T>::max()）
      * - 如果无法找到满足边长约束的三角剖分，函数返回false
-     * 
+     *
      * 注意事项：
      * - 输入多边形必须是简单多边形（边不能相交）
      * - 顶点数必须 >= 3
      * - 算法会自动处理顶点顺序
      * - 过于严格的边长约束可能导致无法完成三角剖分
-     * 
+     *
      * @param vertices 多边形顶点数组（至少3个顶点）
      * @param out_triangles 输出三角形索引数组，每3个索引构成一个三角形
      * @param min_edge_length 三角形最小边长约束（默认1.0）
@@ -385,11 +385,11 @@ namespace hgl::math
             const glm::vec<2, T>& a = vertices[0];
             const glm::vec<2, T>& b = vertices[1];
             const glm::vec<2, T>& c = vertices[2];
-            
+
             T edge1 = glm::length(b - a);
             T edge2 = glm::length(c - b);
             T edge3 = glm::length(a - c);
-            
+
             // 检查所有边是否满足长度约束
             if (edge1 >= min_edge_length && edge1 <= max_edge_length &&
                 edge2 >= min_edge_length && edge2 <= max_edge_length &&
@@ -463,11 +463,11 @@ namespace hgl::math
             const glm::vec<2, T>& a = ordered_vertices[indices[0]];
             const glm::vec<2, T>& b = ordered_vertices[indices[1]];
             const glm::vec<2, T>& c = ordered_vertices[indices[2]];
-            
+
             T edge1 = glm::length(b - a);
             T edge2 = glm::length(c - b);
             T edge3 = glm::length(a - c);
-            
+
             // 检查最后一个三角形是否满足边长约束
             if (edge1 >= min_edge_length && edge1 <= max_edge_length &&
                 edge2 >= min_edge_length && edge2 <= max_edge_length &&
@@ -486,15 +486,15 @@ namespace hgl::math
 
     /**
      * @brief 2D多边形类
-     * 
+     *
      * 表示2D平面上的多边形，支持三角剖分功能。
-     * 
+     *
      * 主要功能：
      * - 顶点管理：添加、删除、获取顶点
      * - 几何计算：面积、周长
      * - 三角剖分：将多边形分解为三角形
      * - 拓扑验证：检查多边形是否有效
-     * 
+     *
      * @tparam T 坐标类型（float, double等）
      */
     template<typename T>
@@ -608,9 +608,9 @@ namespace hgl::math
 
         /**
          * @brief 对多边形进行三角剖分
-         * 
+         *
          * 将多边形分解为多个三角形。
-         * 
+         *
          * @param out_triangles 输出三角形索引数组，每3个索引构成一个三角形
          * @return true表示成功，false表示失败
          */
@@ -621,7 +621,7 @@ namespace hgl::math
 
         /**
          * @brief 对多边形进行三角剖分，返回Triangle2对象数组
-         * 
+         *
          * @param out_triangles 输出Triangle2对象数组
          * @return true表示成功，false表示失败
          */
@@ -648,10 +648,10 @@ namespace hgl::math
 
         /**
          * @brief 对多边形进行三角剖分（带边长约束版本）
-         * 
+         *
          * 将多边形分解为多个三角形，同时满足边长约束。
          * 所有生成的三角形的边长必须在指定范围内。
-         * 
+         *
          * @param out_triangles 输出三角形索引数组，每3个索引构成一个三角形
          * @param min_edge_length 三角形最小边长约束（默认1.0，最小1像素点）
          * @param max_edge_length 三角形最大边长约束（默认无限大）
@@ -666,10 +666,10 @@ namespace hgl::math
 
         /**
          * @brief 对多边形进行三角剖分，返回Triangle2对象数组（带边长约束版本）
-         * 
+         *
          * 将多边形分解为多个三角形，同时满足边长约束。
          * 所有生成的三角形的边长必须在指定范围内。
-         * 
+         *
          * @param out_triangles 输出Triangle2对象数组
          * @param min_edge_length 三角形最小边长约束（默认1.0，最小1像素点）
          * @param max_edge_length 三角形最大边长约束（默认无限大）

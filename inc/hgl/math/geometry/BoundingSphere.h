@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<numbers>
 
 #include<hgl/math/Vector.h>
@@ -134,14 +134,14 @@ namespace hgl::math
         {
             Vector3f dir = point - center;
             float dist_sq = glm::dot(dir, dir);
-            
+
             if (dist_sq <= radius * radius)
                 return point;
-            
+
             float dist = glm::sqrt(dist_sq);
             if (dist < 1e-6f)  // 避免除零
                 return center + Vector3f(radius, 0, 0);
-            
+
             return center + dir * (radius / dist);
         }
 

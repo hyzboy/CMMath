@@ -1,4 +1,4 @@
-/**
+﻿/**
  * AABB2D.h - 2D 轴对齐包围盒
  *
  * 实现 2D 轴对齐包围盒（Axis-Aligned Bounding Box），

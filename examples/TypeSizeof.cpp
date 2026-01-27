@@ -1,4 +1,4 @@
-#include<hgl/CoreType.h>
+﻿#include<hgl/CoreType.h>
 #include<hgl/math/Vector.h>
 #include<hgl/math/Matrix.h>
 #include<hgl/math/Quaternion.h>

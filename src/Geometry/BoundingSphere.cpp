@@ -1,4 +1,4 @@
-#include <hgl/math/geometry/BoundingSphere.h>
+﻿#include <hgl/math/geometry/BoundingSphere.h>
 #include <hgl/math/geometry/AABB.h>
 #include <hgl/math/geometry/OBB.h>
 #include <hgl/math/geometry/Ray.h>
@@ -12,7 +12,7 @@ namespace hgl::math
 
         if(pts==nullptr||count==0)
             return;
-    
+
         glm::vec3 c(0.0f);
 
         const float *p=pts;
@@ -25,7 +25,7 @@ namespace hgl::math
             p+=component_count;
         }
         c /= static_cast<float>(count);
-    
+
         float r=0.0f;
 
         p=pts;
@@ -38,7 +38,7 @@ namespace hgl::math
 
             p+=component_count;
         }
-    
+
         center = c;
         radius = r;
     }
@@ -97,13 +97,13 @@ namespace hgl::math
 
         // 计算新的球
         float new_radius = (dist + radius + other.radius) * 0.5f;
-        
+
         if (dist > 1e-6f)  // 避免除零
         {
             float t = (new_radius - radius) / dist;
             center = center + d * t;
         }
-        
+
         radius = new_radius;
     }
 
@@ -114,7 +114,7 @@ namespace hgl::math
 
         // 计算 AABB 上距离球心最近的点
         Vector3f closest = aabb.ClampPoint(center);
-        
+
         // 检查最近点是否在球内
         Vector3f diff = closest - center;
         return glm::dot(diff, diff) <= radius * radius;
@@ -127,7 +127,7 @@ namespace hgl::math
 
         // 计算 OBB 上距离球心最近的点
         Vector3f closest = obb.ClosestPoint(center);
-        
+
         // 检查最近点是否在球内
         Vector3f diff = closest - center;
         return glm::dot(diff, diff) <= radius * radius;
@@ -203,13 +203,13 @@ namespace hgl::math
 
         // 变换中心点
         Vector3f new_center = Vector3f(transform * Vector4f(center, 1.0f));
-        
+
         // 计算最大缩放因子来缩放半径
         const float s0 = glm::length(Vector3f(transform[0]));
         const float s1 = glm::length(Vector3f(transform[1]));
         const float s2 = glm::length(Vector3f(transform[2]));
         const float max_scale = glm::max(glm::max(s0, s1), s2);
-        
+
         return BoundingSphere(new_center, radius * max_scale);
     }
 

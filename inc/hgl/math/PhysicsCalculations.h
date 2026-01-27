@@ -1,6 +1,6 @@
-/**
+﻿/**
  * PhysicsCalculations.h - 物理计算函数
- * 
+ *
  * 物理学相关的计算函数和单位转换
  * 物理常量应从 CMCoreType 库引入
  */
@@ -73,7 +73,7 @@ namespace hgl
         return m0 / sqrt(1.0 - (v * v) / (speed_of_light * speed_of_light));
     }
 
-    /** 
+    /**
      * 摄氏度到华氏度
      */
     template<typename T>
@@ -90,7 +90,7 @@ namespace hgl
     {
         return (f - 32) / 1.8;
     }
-    
+
     /**
      * 摄氏度到开尔文度
      */

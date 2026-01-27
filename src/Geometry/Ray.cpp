@@ -1,4 +1,4 @@
-#include<hgl/math/geometry/Ray.h>
+﻿#include<hgl/math/geometry/Ray.h>
 #include<hgl/math/geometry/primitives/Sphere.h>
 #include<hgl/math/geometry/AABB.h>
 #include<hgl/math/geometry/OBB.h>
@@ -20,10 +20,10 @@ namespace hgl::math
         else
             return origin+direction*length;
     }
-        
+
     /**
      * 屏幕坐标反投影生成射线 (Vulkan Z-up, 深度范围[0,1])
-     * 
+     *
      * @param origin 输出：射线起点（近平面上的点）
      * @param direction 输出：射线方向（归一化）
      * @param win 屏幕坐标 (左上角为原点)
@@ -65,11 +65,11 @@ namespace hgl::math
 
     /**
      * 从屏幕坐标生成拾取射线 (Vulkan Z-up)
-     * 
+     *
      * @param mp 屏幕点坐标 (左上角为原点)
      * @param ci 摄像机信息
      * @param vp_size 视口大小
-     * 
+     *
      * 生成的射线：
      * - origin: 近平面上对应屏幕点的世界坐标
      * - direction: 从摄像机指向该点的方向（Z-up系统中沿+Y方向）
@@ -194,7 +194,7 @@ namespace hgl::math
         const Vector3f normal=Cross(a2-a1,a3-a1);
 
         float rad=Dot(normal,direction);
-            
+
         if(rad>=0)              //射线与三角形背对
         {
             if(!two_side)

@@ -1,4 +1,4 @@
-#include<hgl/math/Geometry.h>
+﻿#include<hgl/math/Geometry.h>
 #include<iostream>
 
 using namespace hgl::math;

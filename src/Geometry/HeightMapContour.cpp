@@ -1,4 +1,4 @@
-#include <hgl/math/geometry/HeightMapContour.h>
+﻿#include <hgl/math/geometry/HeightMapContour.h>
 #include <glm/glm.hpp>
 
 namespace hgl::math

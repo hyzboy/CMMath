@@ -1,4 +1,4 @@
-#include<hgl/math/geometry/Triangle.h>
+﻿#include<hgl/math/geometry/Triangle.h>
 #include<iostream>
 
 using namespace hgl::math;

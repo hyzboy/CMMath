@@ -1,4 +1,4 @@
-#include<hgl/math/geometry/Ray.h>
+﻿#include<hgl/math/geometry/Ray.h>
 #include<hgl/math/geometry/Plane.h>
 #include<iostream>
 

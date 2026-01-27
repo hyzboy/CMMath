@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<numbers>
 
 #include<hgl/math/Vector.h>
@@ -7,17 +7,17 @@ namespace hgl::math
 {
     /**
     * 空心圆柱体(Hollow Cylinder) - 圆环的空心圆柱形式
-    * 
+    *
     * 空心圆柱体是具有内外两个同心圆柱面的几何体。
     * 形状类似于管道、圆筒或空心柱体。
-    * 
+    *
     * 几何定义:
     * - 中心点: 圆柱的几何中心
     * - 轴向: 圆柱的对称轴方向(必须归一化)
     * - 高度: 沿轴向的长度
     * - 外半径: 外侧圆柱面的半径
     * - 内半径: 内侧圆柱面的半径 (必须 < 外半径)
-    * 
+    *
     * 实体部分是外圆柱和内圆柱之间的环形区域。
     * 应用场景: 管道、筒体、空心支柱等。
     */
@@ -95,7 +95,7 @@ namespace hgl::math
             float lateral_outer = 2.0f * std::numbers::pi_v<float> * outer_radius * height;
             float lateral_inner = 2.0f * std::numbers::pi_v<float> * inner_radius * height;
             float ring_area = std::numbers::pi_v<float> * (outer_radius * outer_radius - inner_radius * inner_radius);
-            
+
             return lateral_outer + lateral_inner + 2.0f * ring_area;
         }
 
@@ -105,19 +105,19 @@ namespace hgl::math
         bool ContainsPoint(const Vector3f &point) const
         {
             Vector3f to_point = point - center;
-            
+
             // 计算点在圆柱轴方向的投影长度
             float axis_projection = Dot(to_point, axis);
-            
+
             // 检查是否在高度范围内
             float half_height = height * 0.5f;
             if (abs(axis_projection) > half_height)
                 return false;
-            
+
             // 计算点到圆柱轴的距离
             Vector3f axis_point = center + axis * axis_projection;
             float radial_distance = Length(point - axis_point);
-            
+
             // 在外半径内且在内半径外
             return radial_distance <= outer_radius && radial_distance >= inner_radius;
         }

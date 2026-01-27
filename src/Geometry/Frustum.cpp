@@ -1,14 +1,14 @@
-#include<hgl/math/geometry/Frustum.h>
+﻿#include<hgl/math/geometry/Frustum.h>
 
 namespace hgl::math
 {
     /**
      * 从MVP矩阵提取视锥体六个平面 (Vulkan Z-up)
-     * 
+     *
      * 坐标系约定：
      * - 世界空间：X右，Y前（摄像机朝向），Z上
      * - Vulkan NDC：x右，y下，z前（深度[0,1]）
-     * 
+     *
      * 平面提取基于：https://github.com/SaschaWillems/Vulkan/base/frustum.hpp
      * 但需要注意：原实现假设Y-up，我们使用Z-up
      */
@@ -100,7 +100,7 @@ namespace hgl::math
         {
             if (pl[i].Distance(b.GetVertexP(pl[i].normal)) < 0)
                 return Frustum::Scope::OUTSIDE;
-            else 
+            else
             if (pl[i].Distance(b.GetVertexN(pl[i].normal)) < 0)
                 result = Frustum::Scope::INTERSECT;
         }

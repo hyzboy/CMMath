@@ -1,4 +1,4 @@
-#include<hgl/math/transform/Transform.h>
+﻿#include<hgl/math/transform/Transform.h>
 
 namespace hgl::math
 {
@@ -134,7 +134,7 @@ namespace hgl::math
         DecomposeTransform(m,translation_vector,rotation_quat,scale_vector);
 
         ExtractQuat(rotation_quat,rotation_axis,rotate_angle);
-        
+
         UpdateVersion();
     }
 }//namespace hgl::math

@@ -1,4 +1,4 @@
-#include<hgl/math/geometry/AABB.h>
+﻿#include<hgl/math/geometry/AABB.h>
 #include<hgl/math/geometry/OBB.h>
 #include<hgl/math/geometry/Ray.h>
 #include<hgl/math/geometry/Triangle.h>
@@ -50,7 +50,7 @@ namespace hgl::math
             return;
 
         const float *p=pts;
-            
+
         Vector3f minp(p[0],p[1],p[2]);
         Vector3f maxp(p[0],p[1],p[2]);
         p+=component_count;
@@ -239,8 +239,8 @@ namespace hgl::math
         // 完整实现需要使用分离轴定理，这里先提供基本版本
 
         // 检查三角形顶点是否在AABB内
-        if (ContainsPoint(triangle[0]) || 
-            ContainsPoint(triangle[1]) || 
+        if (ContainsPoint(triangle[0]) ||
+            ContainsPoint(triangle[1]) ||
             ContainsPoint(triangle[2]))
             return true;
 

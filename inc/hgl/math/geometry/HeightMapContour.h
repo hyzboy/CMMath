@@ -1,4 +1,4 @@
-/**
+﻿/**
  * HeightMapContour.h - 高度图等高线提取
  *
  * 使用 Marching Squares 算法从单通道高度图提取等高线

@@ -1,6 +1,6 @@
-/**
+﻿/**
  * test_heightmap_contour.cpp
- * 
+ *
  * Test cases for heightmap contour extraction functionality
  */
 
@@ -53,10 +53,10 @@ void test_simple_heightmap_uint8() {
     };
 
     HeightMapContourExtractor<uint8_t> extractor(heightmap, 4, 4, 80, 120);
-    
+
     // Should not crash
     HeightMapContourResult result = extractor.Extract();
-    
+
     // Basic validation - should have extracted some contours
     ASSERT_TRUE(result.low_to_mid_contours.size() >= 0);
     ASSERT_TRUE(result.mid_to_high_contours.size() >= 0);
@@ -72,9 +72,9 @@ void test_simple_heightmap_float() {
     };
 
     HeightMapContourExtractor<float> extractor(heightmap, 4, 4, 0.4f, 0.6f);
-    
+
     HeightMapContourResult result = extractor.Extract();
-    
+
     ASSERT_TRUE(result.low_to_mid_contours.size() >= 0);
     ASSERT_TRUE(result.mid_to_high_contours.size() >= 0);
 }
@@ -86,9 +86,9 @@ void test_uniform_heightmap() {
         heightmap[i] = 100;
 
     HeightMapContourExtractor<uint8_t> extractor(heightmap, 4, 4, 80, 120);
-    
+
     HeightMapContourResult result = extractor.Extract();
-    
+
     // Uniform heightmap should produce no contours or very simple ones
     ASSERT_TRUE(true);  // Just check it doesn't crash
 }
@@ -171,7 +171,7 @@ void test_smooth_line() {
 
 void test_shoreline_contour_basic() {
     ShorelineContour contour;
-    
+
     // Add some segments
     ShorelineSegment seg;
     seg.start = Vector2f(0, 0);
@@ -179,7 +179,7 @@ void test_shoreline_contour_basic() {
     seg.length = 1.0f;
     seg.accumulated_length = 0.0f;
     seg.normal = Vector2f(0, 1);
-    
+
     contour.segments.push_back(seg);
     contour.total_length = 1.0f;
     contour.is_closed = false;
@@ -187,14 +187,14 @@ void test_shoreline_contour_basic() {
     // Query distance
     Vector2f point(0.5f, 0.5f);
     float dist = contour.QueryDistance(point);
-    
+
     ASSERT_TRUE(dist >= 0.0f);
     ASSERT_NEAR(dist, 0.5f, 0.1f);
 }
 
 void test_shallow_water_mesh_config() {
     ShallowWaterMeshConfig config;
-    
+
     ASSERT_TRUE(config.grid_spacing > 0.0f);
     ASSERT_TRUE(config.max_wave_depth > 0.0f);
     ASSERT_TRUE(config.generate_indices == true);
@@ -203,27 +203,27 @@ void test_shallow_water_mesh_config() {
 void test_shallow_water_data_extractor() {
     // Create simple contour result
     HeightMapContourResult contour_result;
-    
+
     ContourPolygon poly;
     poly.vertices.push_back(Vector2f(0, 0));
     poly.vertices.push_back(Vector2f(1, 0));
     poly.vertices.push_back(Vector2f(1, 1));
     poly.is_closed = false;
-    
+
     contour_result.mid_to_high_contours.push_back(poly);
 
     ShallowWaterMeshConfig config;
     ShallowWaterDataExtractor extractor(&contour_result, config);
-    
+
     // Should not crash
     ShallowWaterMeshData mesh_data = extractor.Extract();
-    
+
     ASSERT_TRUE(true);  // Basic validation
 }
 
 void test_mesh_data_export() {
     ShallowWaterMeshData mesh_data;
-    
+
     // Add a simple vertex
     ShallowWaterVertex v;
     v.position = Vector2f(1.0f, 2.0f);
@@ -232,7 +232,7 @@ void test_mesh_data_export() {
     v.depth_normalized = 0.7f;
     v.shore_normal = Vector2f(0.0f, 1.0f);
     v.contour_id = 0;
-    
+
     mesh_data.vertices.push_back(v);
     mesh_data.indices.push_back(0);
 
@@ -268,29 +268,29 @@ void test_mesh_data_export() {
 int main()
 {
     std::cout << "=== HeightMap Contour Extraction Tests ===" << std::endl;
-    
+
     TEST(simple_heightmap_uint8);
     TEST(simple_heightmap_float);
     TEST(uniform_heightmap);
-    
+
     std::cout << "\n=== Douglas-Peucker Simplification Tests ===" << std::endl;
-    
+
     TEST(simplify_straight_line);
     TEST(simplify_zigzag);
-    
+
     std::cout << "\n=== Chaikin Smoothing Tests ===" << std::endl;
-    
+
     TEST(smooth_square);
     TEST(smooth_line);
-    
+
     std::cout << "\n=== Shoreline Data Tests ===" << std::endl;
-    
+
     TEST(shoreline_contour_basic);
     TEST(shallow_water_mesh_config);
     TEST(shallow_water_data_extractor);
     TEST(mesh_data_export);
-    
+
     std::cout << "\n=== All Tests Passed! ===" << std::endl;
-    
+
     return 0;
 }

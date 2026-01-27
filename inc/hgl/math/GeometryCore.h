@@ -1,6 +1,6 @@
-/**
+﻿/**
  * GeometryCore.h - Core geometry primitives (most commonly used)
- * 
+ *
  * Includes the most frequently used geometric primitives for game development:
  * - AABB (Axis-Aligned Bounding Box)
  * - OBB (Oriented Bounding Box)
@@ -8,7 +8,7 @@
  * - Ray
  * - Sphere
  * - Capsule
- * 
+ *
  * These are lightweight classes optimized for high-frequency queries.
  */
 #pragma once

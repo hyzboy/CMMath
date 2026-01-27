@@ -1,4 +1,4 @@
-/**
+﻿/**
  * CatmullRomSpline2D.h - 2D Catmull-Rom 样条曲线
  *
  * 通过控制点序列，生成平滑的二维曲线

@@ -1,4 +1,4 @@
-#include<hgl/math/geometry/LineSegment.h>
+﻿#include<hgl/math/geometry/LineSegment.h>
 #include<iostream>
 
 using namespace hgl::math;

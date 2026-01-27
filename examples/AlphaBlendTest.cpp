@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <iomanip>
 #include <hgl/color/Color3f.h>
 #include <hgl/math/AlphaBlend.h>
@@ -213,7 +213,7 @@ bool test_function_pointers()
     {
         auto func = GetAlphaBlendFuncColor3f(AlphaBlendMode::Normal);
         TEST_ASSERT(func != nullptr, "Normal blend function pointer valid");
-        
+
         if (func)
         {
             Color3f result = func(base, blend, alpha);

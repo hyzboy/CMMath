@@ -1,4 +1,4 @@
-#include<hgl/math/geometry/primitives/Sphere.h>
+﻿#include<hgl/math/geometry/primitives/Sphere.h>
 #include<hgl/math/Vector.h>
 #include<iostream>
 #include<iomanip>

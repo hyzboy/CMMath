@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/math/Vector.h>
 #include<hgl/math/AlphaBlendMode.h>
@@ -127,7 +127,7 @@ namespace hgl::math
     {
         T blended = blend * alpha;
         T neutral = base * (1.0f - alpha) + T(0.5f) * alpha;
-            
+
         // 对于向量类型，需要逐分量处理
         if constexpr (std::is_arithmetic_v<T>)
         {
@@ -158,7 +158,7 @@ namespace hgl::math
     inline T AlphaBlendHardLight(const T &base, const T &blend, float alpha)
     {
         T blended = blend * alpha;
-            
+
         if constexpr (std::is_arithmetic_v<T>)
         {
             if (blended < 0.5f)
@@ -187,7 +187,7 @@ namespace hgl::math
     inline T AlphaBlendSoftLight(const T &base, const T &blend, float alpha)
     {
         T blended = blend * alpha;
-            
+
         if constexpr (std::is_arithmetic_v<T>)
         {
             if (blended < 0.5f)
@@ -221,7 +221,7 @@ namespace hgl::math
     {
         T blended = blend * alpha;
         T divisor = T(1.0f) - blended;
-            
+
         // 防止除零
         const float epsilon = 1e-6f;
         if constexpr (std::is_arithmetic_v<T>)
@@ -253,7 +253,7 @@ namespace hgl::math
     inline T AlphaBlendColorBurn(const T &base, const T &blend, float alpha)
     {
         T blended = blend * alpha;
-            
+
         const float epsilon = 1e-6f;
         if constexpr (std::is_arithmetic_v<T>)
         {
@@ -314,7 +314,7 @@ namespace hgl::math
     {
         T blended = blend * alpha;
         T interpolated = base * (1.0f - alpha) + blended;
-            
+
         // 对于标量和向量都使用简单比较
         // Vector类型重载了<运算符进行逐分量比较
         T result;
@@ -346,7 +346,7 @@ namespace hgl::math
     {
         T blended = blend * alpha;
         T interpolated = base * (1.0f - alpha) + blended;
-            
+
         // 对于标量和向量都使用简单比较
         T result;
         if constexpr (std::is_arithmetic_v<T>)
@@ -376,7 +376,7 @@ namespace hgl::math
     inline T AlphaBlendDifference(const T &base, const T &blend, float alpha)
     {
         T blended = blend * alpha;
-            
+
         if constexpr (std::is_arithmetic_v<T>)
         {
             return AbsValue(base - blended);
@@ -638,14 +638,14 @@ namespace hgl::math
         {
             const int index = static_cast<int>(mode);
             constexpr int table_size = sizeof(blend_function_table<T>) / sizeof(blend_function_table<T>[0]);
-                
+
             if (index >= 0 && index < table_size)
                 return blend_function_table<T>[index];
-                
+
             return nullptr;
         }
     }
-        
+
     /// Alpha混合函数指针类型（标量）
     typedef AlphaBlendFunc<float> AlphaBlendFuncFloat;
 

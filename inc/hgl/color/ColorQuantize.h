@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/color/Color3f.h>
 #include<hgl/color/Color3ub.h>

@@ -1,7 +1,7 @@
 ﻿#include<hgl/math/geometry/BoundingVolumes.h>
 
 namespace hgl::math
-{    
+{
     // Helper: sphere from AABB (center = mid, radius = half diagonal)
     BoundingSphere ToBoundingSphere(const AABB &a)
     {
@@ -21,7 +21,7 @@ namespace hgl::math
     BoundingSphere ToBoundingSphere(const OBB &obb)
     {
         BoundingSphere s;
-        
+
         if(obb.IsEmpty())
         {
             s.Clear();
@@ -30,14 +30,14 @@ namespace hgl::math
 
         s.center = obb.GetCenter();
         s.radius = glm::length(obb.GetHalfExtend());
-        
+
         return s;
     }
 
     AABB ToAABB(const BoundingSphere &sphere)
     {
         AABB aabb;
-        
+
         if(sphere.IsEmpty())
         {
             aabb.Clear();
@@ -46,14 +46,14 @@ namespace hgl::math
 
         const Vector3f extent = Vector3f(sphere.radius);
         aabb.SetMinMax(sphere.center - extent, sphere.center + extent);
-        
+
         return aabb;
     }
 
     OBB ToOBB(const BoundingSphere &sphere)
     {
         OBB obb;
-        
+
         if(sphere.IsEmpty())
         {
             obb.Clear();
@@ -61,7 +61,7 @@ namespace hgl::math
         }
 
         obb.Set(sphere.center, Vector3f(sphere.radius));
-        
+
         return obb;
     }
 
@@ -78,7 +78,7 @@ namespace hgl::math
         const glm::vec3 ax = glm::abs(obb.GetAxis(0));
         const glm::vec3 ay = glm::abs(obb.GetAxis(1));
         const glm::vec3 az = glm::abs(obb.GetAxis(2));
-        
+
         // Calculate the extent by projecting OBB half-lengths onto world axes
         const math::Vector3f half_extent = obb.GetHalfExtend();
         const glm::vec3 e = ax * half_extent.x + ay * half_extent.y + az * half_extent.z;
@@ -99,7 +99,7 @@ namespace hgl::math
     {
         // Transform the center
         math::Vector3f center = Vector3f(transform * math::Vector4f(aabb.GetCenter(), 1.0f));
-        
+
         // Extract rotation and scale from transform
         const float s0 = glm::length(glm::vec3(transform[0]));
         const float s1 = glm::length(glm::vec3(transform[1]));
@@ -129,19 +129,19 @@ namespace hgl::math
         packed->aabbMax[0] = aabb.GetMax().x;
         packed->aabbMax[1] = aabb.GetMax().y;
         packed->aabbMax[2] = aabb.GetMax().z;
-    
+
         packed->obbCenter[0] = obb.GetCenter().x;
         packed->obbCenter[1] = obb.GetCenter().y;
         packed->obbCenter[2] = obb.GetCenter().z;
-    
+
         packed->obbAxisX[0] = obb.GetAxis(0).x;
         packed->obbAxisX[1] = obb.GetAxis(0).y;
         packed->obbAxisX[2] = obb.GetAxis(0).z;
-    
+
         packed->obbAxisY[0] = obb.GetAxis(1).x;
         packed->obbAxisY[1] = obb.GetAxis(1).y;
         packed->obbAxisY[2] = obb.GetAxis(1).z;
-    
+
         packed->obbAxisZ[0] = obb.GetAxis(2).x;
         packed->obbAxisZ[1] = obb.GetAxis(2).y;
         packed->obbAxisZ[2] = obb.GetAxis(2).z;
@@ -163,7 +163,7 @@ namespace hgl::math
 
         bounds->aabb.SetMinMax(Vector3f(aabbMin[0], aabbMin[1], aabbMin[2]),
                               math::Vector3f(aabbMax[0], aabbMax[1], aabbMax[2]));
-        
+
         bounds->obb.Set(Vector3f(obbCenter[0], obbCenter[1], obbCenter[2]),
                        math::Vector3f(obbAxisX[0], obbAxisX[1], obbAxisX[2]),
                        math::Vector3f(obbAxisY[0], obbAxisY[1], obbAxisY[2]),

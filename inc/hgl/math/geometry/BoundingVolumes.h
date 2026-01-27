@@ -362,7 +362,7 @@ namespace hgl::math
             result.aabb = aabb.Transformed(transform);
             result.obb = obb.Transformed(transform);
             result.bsphere = bsphere.Transformed(transform);
-            
+
             return result;
         }
 
@@ -370,7 +370,7 @@ namespace hgl::math
 
         void Pack(BoundingVolumesData *packed) const;
     };
-    
+
 #pragma pack(push,1)
     struct BoundingVolumesData
     {

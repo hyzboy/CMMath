@@ -1,9 +1,9 @@
-/**
+﻿/**
  * SimplexNoise.cpp - Simplex 噪声实现
- * 
+ *
  * 基于 Stefan Gustavson 的 Simplex 噪声算法
  * 比 Perlin 噪声更快，且没有方向性伪影
- * 
+ *
  * 参考：
  * - Stefan Gustavson: "Simplex noise demystified" (2005)
  * - Ken Perlin: US Patent 6867776
@@ -20,7 +20,7 @@ namespace hgl::math
     extern int p[512];
     extern bool permutation_initialized;
     extern std::mutex init_mutex;
-    
+
     // 声明外部初始化函数
     extern void InitializePermutation();
 
@@ -115,7 +115,7 @@ namespace hgl::math
 
         // 计算三个角的贡献
         float n0, n1, n2;
-        
+
         float t0 = 0.5f - x0 * x0 - y0 * y0;
         if (t0 < 0) n0 = 0.0f;
         else {
@@ -387,7 +387,7 @@ namespace hgl::math
         {
             result += SimplexNoise2D(pos.x * frequency, pos.y * frequency) * amplitude;
             max_value += amplitude;
-            
+
             amplitude *= gain;
             frequency *= lacunarity;
         }
@@ -406,7 +406,7 @@ namespace hgl::math
         {
             result += SimplexNoise3D(pos.x * frequency, pos.y * frequency, pos.z * frequency) * amplitude;
             max_value += amplitude;
-            
+
             amplitude *= gain;
             frequency *= lacunarity;
         }
@@ -427,7 +427,7 @@ namespace hgl::math
         {
             result += std::abs(SimplexNoise2D(pos.x * frequency, pos.y * frequency)) * amplitude;
             max_value += amplitude;
-            
+
             amplitude *= 0.5f;
             frequency *= 2.0f;
         }
@@ -446,7 +446,7 @@ namespace hgl::math
         {
             result += std::abs(SimplexNoise3D(pos.x * frequency, pos.y * frequency, pos.z * frequency)) * amplitude;
             max_value += amplitude;
-            
+
             amplitude *= 0.5f;
             frequency *= 2.0f;
         }
@@ -466,7 +466,7 @@ namespace hgl::math
             float n = 1.0f - std::abs(SimplexNoise2D(pos.x * frequency, pos.y * frequency));
             result += n * amplitude;
             max_value += amplitude;
-            
+
             amplitude *= 0.5f;
             frequency *= 2.0f;
         }
@@ -486,7 +486,7 @@ namespace hgl::math
             float n = 1.0f - std::abs(SimplexNoise3D(pos.x * frequency, pos.y * frequency, pos.z * frequency));
             result += n * amplitude;
             max_value += amplitude;
-            
+
             amplitude *= 0.5f;
             frequency *= 2.0f;
         }
@@ -506,7 +506,7 @@ namespace hgl::math
             float n = SimplexNoise2D(pos.x * frequency, pos.y * frequency);
             result += (n * n) * amplitude;
             max_value += amplitude;
-            
+
             amplitude *= 0.5f;
             frequency *= 2.0f;
         }
@@ -526,7 +526,7 @@ namespace hgl::math
             float n = SimplexNoise3D(pos.x * frequency, pos.y * frequency, pos.z * frequency);
             result += (n * n) * amplitude;
             max_value += amplitude;
-            
+
             amplitude *= 0.5f;
             frequency *= 2.0f;
         }
@@ -541,7 +541,7 @@ namespace hgl::math
         // 使用两个噪声函数扭曲采样位置
         float warp_x = SimplexNoise2D(pos.x, pos.y) * warp_strength;
         float warp_y = SimplexNoise2D(pos.x + 5.2f, pos.y + 1.3f) * warp_strength;
-        
+
         return SimplexNoise2D(pos.x + warp_x, pos.y + warp_y);
     }
 
@@ -551,7 +551,7 @@ namespace hgl::math
         float warp_x = SimplexNoise3D(pos.x, pos.y, pos.z) * warp_strength;
         float warp_y = SimplexNoise3D(pos.x + 5.2f, pos.y + 1.3f, pos.z + 3.7f) * warp_strength;
         float warp_z = SimplexNoise3D(pos.x + 2.8f, pos.y + 7.1f, pos.z + 6.4f) * warp_strength;
-        
+
         return SimplexNoise3D(pos.x + warp_x, pos.y + warp_y, pos.z + warp_z);
     }
 

@@ -1,4 +1,4 @@
-#include<hgl/math/geometry/OBB.h>
+﻿#include<hgl/math/geometry/OBB.h>
 #include<hgl/math/geometry/AABB.h>
 #include<hgl/math/geometry/Ray.h>
 #include<hgl/math/geometry/Triangle.h>
@@ -37,7 +37,7 @@ namespace hgl::math
     const Matrix4f OBB::GetMatrix(const float cube_size)const
     {
         // 这段代码也是正确的，留着做参考吧！
-        {        
+        {
             //Matrix4f translate_matrix   =TranslateMatrix(center);
             //Matrix4f rotate_matrix      =axis;
             //Matrix4f scale_matrix       =ScaleMatrix(half_length*(cube_size/0.5f));
@@ -59,7 +59,7 @@ namespace hgl::math
     }
 
     void OBB::GetCorners(Vector3f out[8])const
-    {        
+    {
         const glm::vec3 ex=axis[0]*half_length.x;
         const glm::vec3 ey=axis[1]*half_length.y;
         const glm::vec3 ez=axis[2]*half_length.z;
@@ -113,14 +113,14 @@ namespace hgl::math
     bool OBB::ContainsPoint(const Vector3f &point) const
     {
         Vector3f d = point - center;
-        
+
         for (int i = 0; i < 3; i++)
         {
             float dist = glm::dot(d, axis[i]);
             if (std::abs(dist) > half_length[i])
                 return false;
         }
-        
+
         return true;
     }
 
@@ -128,14 +128,14 @@ namespace hgl::math
     {
         Vector3f d = point - center;
         Vector3f result = center;
-        
+
         for (int i = 0; i < 3; i++)
         {
             float dist = glm::dot(d, axis[i]);
             dist = glm::clamp(dist, -half_length[i], half_length[i]);
             result += axis[i] * dist;
         }
-        
+
         return result;
     }
 
@@ -209,13 +209,13 @@ namespace hgl::math
         // 检查另一个OBB的所有8个顶点是否都在此OBB内
         Vector3f corners[8];
         other.GetCorners(corners);
-        
+
         for (int i = 0; i < 8; i++)
         {
             if (!ContainsPoint(corners[i]))
                 return false;
         }
-        
+
         return true;
     }
 
@@ -230,7 +230,7 @@ namespace hgl::math
         other.GetCorners(corners2);
 
         float min_dist = FLT_MAX;
-        
+
         // 计算每个角点到另一个 OBB 的距离
         for (int i = 0; i < 8; i++)
         {
@@ -290,7 +290,7 @@ namespace hgl::math
                 Vector3f cross_axis = glm::cross(axis[i], aabb_axes[j]);
                 float len = glm::length(cross_axis);
                 if (len < 1e-6f) continue;  // 平行轴
-                
+
                 cross_axis /= len;
 
                 // 计算投影半径
@@ -397,10 +397,10 @@ namespace hgl::math
     {
         // TODO: 未实现完整的 SAT 测试
         // 目前只做基本检查，可能漏掉某些相交情况
-        
+
         // 检查三角形顶点是否在OBB内
-        if (ContainsPoint(triangle[0]) || 
-            ContainsPoint(triangle[1]) || 
+        if (ContainsPoint(triangle[0]) ||
+            ContainsPoint(triangle[1]) ||
             ContainsPoint(triangle[2]))
             return true;
 
@@ -451,7 +451,7 @@ namespace hgl::math
 
         center = (min_pt + max_pt) * 0.5f;
         half_length = (max_pt - min_pt) * 0.5f;
-        
+
         // 重置为轴对齐
         axis = Matrix3f(1.0f);
 

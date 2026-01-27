@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 /**
  * @file Lerp1D.h

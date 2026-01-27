@@ -1,4 +1,4 @@
-/**
+﻿/**
  * BVH.h - 层次包围盒 (Bounding Volume Hierarchy)
  *
  * 实现 BVH 用于射线追踪和碰撞检测优化

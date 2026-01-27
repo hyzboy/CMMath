@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Geometry.h - Unified geometry library entry point
  *
  * This is the main convenience header that includes all geometry primitives

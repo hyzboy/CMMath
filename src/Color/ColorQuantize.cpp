@@ -1,4 +1,4 @@
-#include<hgl/color/ColorQuantize.h>
+﻿#include<hgl/color/ColorQuantize.h>
 #include<algorithm>
 #include<cmath>
 

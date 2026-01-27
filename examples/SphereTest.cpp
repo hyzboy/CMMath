@@ -1,4 +1,4 @@
-#include<hgl/math/geometry/primitives/Sphere.h>
+﻿#include<hgl/math/geometry/primitives/Sphere.h>
 #include<iostream>
 
 using namespace hgl::math;

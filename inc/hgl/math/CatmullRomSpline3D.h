@@ -1,4 +1,4 @@
-/**
+﻿/**
  * CatmullRomSpline3D.h - 3D Catmull-Rom 样条曲线
  *
  * 通过控制点序列，生成平滑的三维曲线

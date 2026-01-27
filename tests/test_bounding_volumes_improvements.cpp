@@ -1,4 +1,4 @@
-// ²âÊÔ BoundingVolumes ¸Ä½øµÄÊ¾Àı´úÂë
+ï»¿// æµ‹è¯• BoundingVolumes æ”¹è¿›çš„ç¤ºä¾‹ä»£ç 
 #include<hgl/math/geometry/BoundingVolumes.h>
 #include<iostream>
 
@@ -6,54 +6,54 @@ using namespace hgl::math;
 
 void TestIsEmpty()
 {
-    std::cout << "=== ²âÊÔ IsEmpty ĞŞ¸´ ===" << std::endl;
-    
+    std::cout << "=== æµ‹è¯• IsEmpty ä¿®å¤ ===" << std::endl;
+
     BoundingVolumes bv;
-    std::cout << "¿ÕµÄ BoundingVolumes IsEmpty: " << (bv.IsEmpty() ? "true" : "false") << std::endl;
-    
+    std::cout << "ç©ºçš„ BoundingVolumes IsEmpty: " << (bv.IsEmpty() ? "true" : "false") << std::endl;
+
     AABB box;
     box.SetMinMax(Vector3f(0,0,0), Vector3f(1,1,1));
     bv.SetFromAABB(box);
-    std::cout << "ÉèÖÃºó IsEmpty: " << (bv.IsEmpty() ? "true" : "false") << std::endl;
+    std::cout << "è®¾ç½®å IsEmpty: " << (bv.IsEmpty() ? "true" : "false") << std::endl;
     std::cout << std::endl;
 }
 
 void TestSetFromAABB()
 {
-    std::cout << "=== ²âÊÔ SetFromAABB ÇòÌå°ë¾¶ĞŞ¸´ ===" << std::endl;
-    
+    std::cout << "=== æµ‹è¯• SetFromAABB çƒä½“åŠå¾„ä¿®å¤ ===" << std::endl;
+
     AABB box;
     box.SetMinMax(Vector3f(-1,-1,-1), Vector3f(1,1,1));
-    
+
     BoundingVolumes bv;
     bv.SetFromAABB(box);
-    
+
     std::cout << "AABB: min(-1,-1,-1) max(1,1,1)" << std::endl;
-    std::cout << "BoundingSphere center: (" 
+    std::cout << "BoundingSphere center: ("
               << bv.bsphere.center.x << ", "
               << bv.bsphere.center.y << ", "
               << bv.bsphere.center.z << ")" << std::endl;
     std::cout << "BoundingSphere radius: " << bv.bsphere.radius << std::endl;
-    std::cout << "ÆÚÍû°ë¾¶(°ë¶Ô½ÇÏß): " << glm::length(Vector3f(1,1,1)) << std::endl;
+    std::cout << "æœŸæœ›åŠå¾„(åŠå¯¹è§’çº¿): " << glm::length(Vector3f(1,1,1)) << std::endl;
     std::cout << std::endl;
 }
 
 void TestSetFromOBB()
 {
-    std::cout << "=== ²âÊÔĞÂÔöµÄ SetFromOBB ·½·¨ ===" << std::endl;
-    
+    std::cout << "=== æµ‹è¯•æ–°å¢çš„ SetFromOBB æ–¹æ³• ===" << std::endl;
+
     OBB obb;
     obb.Set(Vector3f(0,0,0), Vector3f(2,3,4));
-    
+
     BoundingVolumes bv;
     bv.SetFromOBB(obb);
-    
+
     std::cout << "OBB center: (0,0,0) half_extents: (2,3,4)" << std::endl;
-    std::cout << "Éú³ÉµÄ AABB min: (" 
+    std::cout << "ç”Ÿæˆçš„ AABB min: ("
               << bv.aabb.GetMin().x << ", "
               << bv.aabb.GetMin().y << ", "
               << bv.aabb.GetMin().z << ")" << std::endl;
-    std::cout << "Éú³ÉµÄ AABB max: (" 
+    std::cout << "ç”Ÿæˆçš„ AABB max: ("
               << bv.aabb.GetMax().x << ", "
               << bv.aabb.GetMax().y << ", "
               << bv.aabb.GetMax().z << ")" << std::endl;
@@ -62,114 +62,114 @@ void TestSetFromOBB()
 
 void TestSetFromSphere()
 {
-    std::cout << "=== ²âÊÔĞÂÔöµÄ SetFromSphere ·½·¨ ===" << std::endl;
-    
+    std::cout << "=== æµ‹è¯•æ–°å¢çš„ SetFromSphere æ–¹æ³• ===" << std::endl;
+
     BoundingSphere sphere;
     sphere.center = Vector3f(1,2,3);
     sphere.radius = 5.0f;
-    
+
     BoundingVolumes bv;
     bv.SetFromSphere(sphere);
-    
+
     std::cout << "Sphere center: (1,2,3) radius: 5" << std::endl;
-    std::cout << "Éú³ÉµÄ AABB min: (" 
+    std::cout << "ç”Ÿæˆçš„ AABB min: ("
               << bv.aabb.GetMin().x << ", "
               << bv.aabb.GetMin().y << ", "
               << bv.aabb.GetMin().z << ")" << std::endl;
-    std::cout << "Éú³ÉµÄ AABB max: (" 
+    std::cout << "ç”Ÿæˆçš„ AABB max: ("
               << bv.aabb.GetMax().x << ", "
               << bv.aabb.GetMax().y << ", "
               << bv.aabb.GetMax().z << ")" << std::endl;
-    std::cout << "ÆÚÍû: min(-4,-3,-2) max(6,7,8)" << std::endl;
+    std::cout << "æœŸæœ›: min(-4,-3,-2) max(6,7,8)" << std::endl;
     std::cout << std::endl;
 }
 
 void TestTransformed()
 {
-    std::cout << "=== ²âÊÔĞÂÔöµÄ Transformed ·½·¨ ===" << std::endl;
-    
+    std::cout << "=== æµ‹è¯•æ–°å¢çš„ Transformed æ–¹æ³• ===" << std::endl;
+
     AABB box;
     box.SetMinMax(Vector3f(-1,-1,-1), Vector3f(1,1,1));
-    
+
     BoundingVolumes bv;
     bv.SetFromAABB(box);
-    
-    // Æ½ÒÆ±ä»»
+
+    // å¹³ç§»å˜æ¢
     Matrix4f transform = glm::translate(Matrix4f(1.0f), Vector3f(10, 20, 30));
-    
+
     BoundingVolumes transformed = bv.Transformed(transform);
-    
-    std::cout << "Ô­Ê¼ AABB center: (" 
+
+    std::cout << "åŸå§‹ AABB center: ("
               << bv.aabb.GetCenter().x << ", "
               << bv.aabb.GetCenter().y << ", "
               << bv.aabb.GetCenter().z << ")" << std::endl;
-    std::cout << "±ä»»ºó AABB center: (" 
+    std::cout << "å˜æ¢å AABB center: ("
               << transformed.aabb.GetCenter().x << ", "
               << transformed.aabb.GetCenter().y << ", "
               << transformed.aabb.GetCenter().z << ")" << std::endl;
-    std::cout << "ÆÚÍû center: (10, 20, 30)" << std::endl;
+    std::cout << "æœŸæœ› center: (10, 20, 30)" << std::endl;
     std::cout << std::endl;
 }
 
 void TestIntersectsSphere()
 {
-    std::cout << "=== ²âÊÔĞÂÔöµÄ IntersectsSphere ·½·¨ ===" << std::endl;
-    
+    std::cout << "=== æµ‹è¯•æ–°å¢çš„ IntersectsSphere æ–¹æ³• ===" << std::endl;
+
     AABB box;
     box.SetMinMax(Vector3f(-1,-1,-1), Vector3f(1,1,1));
-    
+
     BoundingVolumes bv;
     bv.SetFromAABB(box);
-    
-    // Ïà½»µÄÇòÌå
+
+    // ç›¸äº¤çš„çƒä½“
     bool intersects1 = bv.IntersectsSphere(Vector3f(2, 0, 0), 1.5f);
-    std::cout << "ÇòÌå(2,0,0,r=1.5)Óë°üÎ§ÌåÏà½»: " << (intersects1 ? "true" : "false") << std::endl;
-    
-    // ²»Ïà½»µÄÇòÌå
+    std::cout << "çƒä½“(2,0,0,r=1.5)ä¸åŒ…å›´ä½“ç›¸äº¤: " << (intersects1 ? "true" : "false") << std::endl;
+
+    // ä¸ç›¸äº¤çš„çƒä½“
     bool intersects2 = bv.IntersectsSphere(Vector3f(10, 0, 0), 1.0f);
-    std::cout << "ÇòÌå(10,0,0,r=1.0)Óë°üÎ§ÌåÏà½»: " << (intersects2 ? "true" : "false") << std::endl;
+    std::cout << "çƒä½“(10,0,0,r=1.0)ä¸åŒ…å›´ä½“ç›¸äº¤: " << (intersects2 ? "true" : "false") << std::endl;
     std::cout << std::endl;
 }
 
 void TestContainsPointAll()
 {
-    std::cout << "=== ²âÊÔĞÂÔöµÄ ContainsPointAll ·½·¨ ===" << std::endl;
-    
+    std::cout << "=== æµ‹è¯•æ–°å¢çš„ ContainsPointAll æ–¹æ³• ===" << std::endl;
+
     AABB box;
     box.SetMinMax(Vector3f(-1,-1,-1), Vector3f(1,1,1));
-    
+
     BoundingVolumes bv;
     bv.SetFromAABB(box);
-    
-    Vector3f point1(0, 0, 0);  // ÖĞĞÄµã
-    Vector3f point2(2, 0, 0);  // Íâ²¿µã
-    
-    std::cout << "µã(0,0,0) ContainsPoint: " << (bv.ContainsPoint(point1) ? "true" : "false") << std::endl;
-    std::cout << "µã(0,0,0) ContainsPointAll: " << (bv.ContainsPointAll(point1) ? "true" : "false") << std::endl;
-    std::cout << "µã(2,0,0) ContainsPoint: " << (bv.ContainsPoint(point2) ? "true" : "false") << std::endl;
-    std::cout << "µã(2,0,0) ContainsPointAll: " << (bv.ContainsPointAll(point2) ? "true" : "false") << std::endl;
+
+    Vector3f point1(0, 0, 0);  // ä¸­å¿ƒç‚¹
+    Vector3f point2(2, 0, 0);  // å¤–éƒ¨ç‚¹
+
+    std::cout << "ç‚¹(0,0,0) ContainsPoint: " << (bv.ContainsPoint(point1) ? "true" : "false") << std::endl;
+    std::cout << "ç‚¹(0,0,0) ContainsPointAll: " << (bv.ContainsPointAll(point1) ? "true" : "false") << std::endl;
+    std::cout << "ç‚¹(2,0,0) ContainsPoint: " << (bv.ContainsPoint(point2) ? "true" : "false") << std::endl;
+    std::cout << "ç‚¹(2,0,0) ContainsPointAll: " << (bv.ContainsPointAll(point2) ? "true" : "false") << std::endl;
     std::cout << std::endl;
 }
 
 void TestGetters()
 {
-    std::cout << "=== ²âÊÔĞÂÔöµÄ Getter ·½·¨ ===" << std::endl;
-    
+    std::cout << "=== æµ‹è¯•æ–°å¢çš„ Getter æ–¹æ³• ===" << std::endl;
+
     AABB box;
     box.SetMinMax(Vector3f(-1,-1,-1), Vector3f(1,1,1));
-    
+
     BoundingVolumes bv;
     bv.SetFromAABB(box);
-    
-    std::cout << "GetCenter (AABB): (" 
+
+    std::cout << "GetCenter (AABB): ("
               << bv.GetCenter().x << ", "
               << bv.GetCenter().y << ", "
               << bv.GetCenter().z << ")" << std::endl;
-    std::cout << "GetSphereCenter: (" 
+    std::cout << "GetSphereCenter: ("
               << bv.GetSphereCenter().x << ", "
               << bv.GetSphereCenter().y << ", "
               << bv.GetSphereCenter().z << ")" << std::endl;
-    std::cout << "GetOBBCenter: (" 
+    std::cout << "GetOBBCenter: ("
               << bv.GetOBBCenter().x << ", "
               << bv.GetOBBCenter().y << ", "
               << bv.GetOBBCenter().z << ")" << std::endl;
@@ -181,10 +181,10 @@ void TestGetters()
 
 int main()
 {
-    std::cout << "BoundingVolumes ¸Ä½ø²âÊÔ" << std::endl;
+    std::cout << "BoundingVolumes æ”¹è¿›æµ‹è¯•" << std::endl;
     std::cout << "=====================================" << std::endl;
     std::cout << std::endl;
-    
+
     TestIsEmpty();
     TestSetFromAABB();
     TestSetFromOBB();
@@ -193,9 +193,9 @@ int main()
     TestIntersectsSphere();
     TestContainsPointAll();
     TestGetters();
-    
+
     std::cout << "=====================================" << std::endl;
-    std::cout << "ËùÓĞ²âÊÔÍê³É£¡" << std::endl;
-    
+    std::cout << "æ‰€æœ‰æµ‹è¯•å®Œæˆï¼" << std::endl;
+
     return 0;
 }

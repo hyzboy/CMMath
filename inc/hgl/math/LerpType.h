@@ -164,18 +164,18 @@ namespace hgl
             {
                 case LerpType::None:
                     return {type, 0, "None", "无插值"};
-                
+
                 case LerpType::Linear:
                 case LerpType::Cos:
                 case LerpType::Cubic:
                 case LerpType::Hermite:
                     return {type, 2, "Linear/Cos/Cubic/Hermite", "2点插值（起点，终点）"};
-                
+
                 case LerpType::Bezier:
                 case LerpType::CatmullRom:
                 case LerpType::BSpline:
                     return {type, 4, "Bezier/CatmullRom/BSpline", "4点插值（p0, p1, p2, p3）"};
-                
+
                 default:
                     return {type, 0, "Unknown", "未知插值类型"};
             }

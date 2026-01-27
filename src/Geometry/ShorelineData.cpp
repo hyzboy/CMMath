@@ -1,4 +1,4 @@
-#include <hgl/math/geometry/ShorelineData.h>
+﻿#include <hgl/math/geometry/ShorelineData.h>
 #include <glm/glm.hpp>
 
 namespace hgl::math

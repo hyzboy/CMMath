@@ -1,4 +1,4 @@
-// BoundingVolumesDataStorage 测试和使用示例
+﻿// BoundingVolumesDataStorage 测试和使用示例
 #include<hgl/math/geometry/BoundingVolumesDataStorage.h>
 #include<iostream>
 #include<chrono>
@@ -220,7 +220,7 @@ void TestPerformance()
 
     // 测试碰撞检测性能
     start = std::chrono::high_resolution_clock::now();
-    
+
     std::vector<size_t> intersecting_indices;
     Vector3f sphere_center(100, 10, 100);
     float sphere_radius = 50.0f;
@@ -301,7 +301,7 @@ void CompareSOAvsAOS()
     {
         BoundingVolumes bv;
         bv.SetFromAABB(Vector3f(i * 2.0f, 0, 0), Vector3f(i * 2.0f + 1, 1, 1));
-        
+
         aos_storage.push_back(bv);
         soa_storage.Add(bv);
     }
@@ -316,25 +316,25 @@ void CompareSOAvsAOS()
 
     // 性能对比：批量访问球体中心
     auto start = std::chrono::high_resolution_clock::now();
-    
+
     Vector3f sum_aos(0);
     for (const auto& bv : aos_storage)
     {
         sum_aos += bv.bsphere.GetCenter();
     }
-    
+
     auto end = std::chrono::high_resolution_clock::now();
     auto aos_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
 
     start = std::chrono::high_resolution_clock::now();
-    
+
     Vector3f sum_soa(0);
     const Vector3f* centers = soa_storage.GetSphereCenters();
     for (size_t i = 0; i < NUM; i++)
     {
         sum_soa += centers[i];
     }
-    
+
     end = std::chrono::high_resolution_clock::now();
     auto soa_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
 

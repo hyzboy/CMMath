@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/math/Vector.h>
 #include<hgl/math/Matrix.h>
@@ -57,7 +57,7 @@ namespace hgl::math
         void Set(const Vector3f &c,const Vector3f &a0,const Vector3f &a1,const Vector3f &a2,const Vector3f &hl);
 
         void SetFromPoints(const float *points,size_t count,uint32_t component_count,float coarseStepDeg=15.0f,float fineStepDeg=3.0f,float ultraStepDeg=0.5f);
-        
+
         /**
          * 清空 OBB，设置为无效状态
          * @note 清空后 IsValid() 返回 false，IsEmpty() 返回 true
@@ -100,8 +100,8 @@ namespace hgl::math
          */
         bool IsValid()const
         {
-            return half_length.x >= 0 && 
-                   half_length.y >= 0 && 
+            return half_length.x >= 0 &&
+                   half_length.y >= 0 &&
                    half_length.z >= 0;
         }
 

@@ -1,9 +1,9 @@
-/**
+﻿/**
  * PerlinNoise.cpp - Perlin 噪声实现
- * 
+ *
  * 基于 Ken Perlin 的改进噪声算法 (2002)
  * 使用梯度向量和置换表实现可重复的伪随机噪声
- * 
+ *
  * 参考：
  * - Ken Perlin: "Improved Noise" reference implementation
  * - https://mrl.cs.nyu.edu/~perlin/noise/
@@ -99,17 +99,17 @@ namespace hgl::math
 
         // 计算单元格坐标
         int X = static_cast<int>(std::floor(x)) & 255;
-        
+
         // 计算单元格内相对位置
         x -= std::floor(x);
-        
+
         // 计算淡入淡出曲线
         float u = Fade(x);
-        
+
         // 获取梯度索引
         int A = p[X];
         int B = p[X + 1];
-        
+
         // 线性插值
         return Lerp(u, Grad1D(A, x), Grad1D(B, x - 1.0f));
     }
@@ -123,19 +123,19 @@ namespace hgl::math
         // 计算单元格坐标
         int X = static_cast<int>(std::floor(x)) & 255;
         int Y = static_cast<int>(std::floor(y)) & 255;
-        
+
         // 计算单元格内相对位置
         x -= std::floor(x);
         y -= std::floor(y);
-        
+
         // 计算淡入淡出曲线
         float u = Fade(x);
         float v = Fade(y);
-        
+
         // 获取梯度索引
         int A = p[X] + Y;
         int B = p[X + 1] + Y;
-        
+
         // 双线性插值
         return Lerp(v,
             Lerp(u, Grad2D(p[A], x, y), Grad2D(p[B], x - 1.0f, y)),
@@ -158,17 +158,17 @@ namespace hgl::math
         int X = static_cast<int>(std::floor(x)) & 255;
         int Y = static_cast<int>(std::floor(y)) & 255;
         int Z = static_cast<int>(std::floor(z)) & 255;
-        
+
         // 计算单元格内相对位置
         x -= std::floor(x);
         y -= std::floor(y);
         z -= std::floor(z);
-        
+
         // 计算淡入淡出曲线
         float u = Fade(x);
         float v = Fade(y);
         float w = Fade(z);
-        
+
         // 获取梯度索引
         int A = p[X] + Y;
         int AA = p[A] + Z;
@@ -176,7 +176,7 @@ namespace hgl::math
         int B = p[X + 1] + Y;
         int BA = p[B] + Z;
         int BB = p[B + 1] + Z;
-        
+
         // 三线性插值
         return Lerp(w,
             Lerp(v,
@@ -208,7 +208,7 @@ namespace hgl::math
         {
             result += PerlinNoise2D(pos.x * frequency, pos.y * frequency) * amplitude;
             max_value += amplitude;
-            
+
             amplitude *= gain;
             frequency *= lacunarity;
         }
@@ -228,7 +228,7 @@ namespace hgl::math
         {
             result += PerlinNoise3D(pos.x * frequency, pos.y * frequency, pos.z * frequency) * amplitude;
             max_value += amplitude;
-            
+
             amplitude *= gain;
             frequency *= lacunarity;
         }

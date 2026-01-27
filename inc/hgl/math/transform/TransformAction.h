@@ -1,4 +1,4 @@
-/**
+﻿/**
  * TransformAction.h - 变换动作系统
  *
  * 注意：本文件依赖 CMCore 库的以下组件：

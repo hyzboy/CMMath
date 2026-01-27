@@ -1,4 +1,4 @@
-#include<hgl/color/ColorDithering.h>
+﻿#include<hgl/color/ColorDithering.h>
 #include<algorithm>
 #include<cmath>
 #include<random>

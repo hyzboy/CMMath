@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<numbers>
 
 #include<hgl/math/VectorTypes.h>

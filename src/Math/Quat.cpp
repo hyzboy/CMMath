@@ -24,5 +24,11 @@ namespace hgl::math
         basis[2] = forward;
         return glm::normalize(glm::quat_cast(basis));
     }
+
+    Vector3f RotationToDirection(const Quatf &rot)
+    {
+        const math::Vector3f forward = glm::normalize(rot * math::AxisVector::Y);
+        return forward;
+    }
 }//namespace hgl::math
 

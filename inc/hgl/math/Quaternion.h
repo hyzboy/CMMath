@@ -101,4 +101,5 @@ namespace hgl::math
     const Quatf GetRotateQuat(const Vector3f &world_position,const Vector3f &old_direction,const Vector3f &new_direction);
 
     Quatf DirectionToRotation(const Vector3f &dir);
+    Vector3f RotationToDirection(const Quatf &rot);
 }//namespace hgl::math

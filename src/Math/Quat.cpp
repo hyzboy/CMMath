@@ -5,9 +5,9 @@ namespace hgl::math
     Quatf DirectionToRotation(const Vector3f &dir)
     {
         const float len2 = glm::dot(dir, dir);
-        const math::Vector3f forward = (len2 > 1e-8f) ? glm::normalize(dir) : math::AxisVector::Z;
+        const math::Vector3f forward = (len2 > 1e-8f) ? glm::normalize(dir) : math::AxisVector::Y;
 
-        const math::Vector3f world_up = math::AxisVector::Y;
+        const math::Vector3f world_up = math::AxisVector::Z;
         math::Vector3f right = glm::cross(world_up, forward);
         if (glm::dot(right, right) < 1e-8f)
         {

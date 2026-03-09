@@ -99,4 +99,6 @@ namespace hgl::math
      * @param new_direction 新方向向量
      */
     const Quatf GetRotateQuat(const Vector3f &world_position,const Vector3f &old_direction,const Vector3f &new_direction);
+
+    Quatf DirectionToRotation(const Vector3f &dir);
 }//namespace hgl::math

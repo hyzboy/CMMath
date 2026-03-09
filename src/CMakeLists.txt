@@ -241,6 +241,7 @@ set(CMMATH_ANIMATION_HEADERS
 set(CMMATH_ANIMATION_SOURCES
     Math/DualQuaternion.cpp
     Math/SkeletonMath.cpp
+    Math/Quat.cpp
 )
 
 ##==================================================================================================

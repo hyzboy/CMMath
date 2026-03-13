@@ -36,6 +36,10 @@ namespace hgl::graph
 
         float znear,zfar;
 
+        // Camera-Relative Rendering: absolute camera position for worldspace reconstruction
+        // shader 中重建绝对世界坐标: worldPosAbsolute = relativePos + cameraPosWorld
+        alignas(16) Vector3f cameraPosWorld;
+
     public:
 
         const Vector4f WorldToViewSpace(const Vector3f &v)const

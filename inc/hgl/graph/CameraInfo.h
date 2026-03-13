@@ -36,6 +36,11 @@ namespace hgl::graph
 
         float znear,zfar;
 
+        uint32_t use_reversed_z;        ///<是否使用 Reversed-Z（0=标准, 1=Reversed-Z）
+        float _pad_ci0;                 ///<对齐填充
+
+        alignas(16) Vector3f camera_world_pos;  ///<绝对世界坐标（Camera-Relative Rendering 时供 fog/terrain 等使用）
+
     public:
 
         const Vector4f WorldToViewSpace(const Vector3f &v)const

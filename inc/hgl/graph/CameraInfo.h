@@ -93,7 +93,7 @@ namespace hgl::graph
     {
         if(!ci) return {};
 
-        return UnProjectToWorld(sp,ci->view,ci->projection,vp_size);
+        return UnProjectToWorld(sp,ci->view,ci->projection,vp_size,ci->use_reversed_z != 0);
     }
 
     /**

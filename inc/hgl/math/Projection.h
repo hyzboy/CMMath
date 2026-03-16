@@ -49,6 +49,13 @@ namespace hgl::math
      */
     Matrix4f OrthoMatrix(float width,float height);
 
+    // ==================== Reversed-Z 正交投影矩阵（Near→1, Far→0） ====================
+
+    /** 与 OrthoMatrix 参数相同，但深度映射翻转（Near→1, Far→0） */
+    Matrix4f OrthoMatrixReversedZ( float left, float right, float bottom, float top, float znear, float zfar );
+    Matrix4f OrthoMatrixReversedZ(float width, float height, float znear, float zfar);
+    Matrix4f OrthoMatrixReversedZ(float width, float height);
+
     // ==================== 透视投影矩阵 ====================
 
     /**
@@ -63,6 +70,11 @@ namespace hgl::math
                                 float znear,
                                 float zfar);
 
+    /** 有限远 Reversed-Z 版本（Near→1, Far→0），与 PerspectiveMatrix 参数相同，深度映射翻转 */
+    Matrix4f PerspectiveMatrixReversedZ( float field_of_view,
+                                         float aspect_ratio,
+                                         float znear,
+                                         float zfar);
 
     /**
      * @brief 构造一个在 z==0 时与正交投影一致，但随 z 引入透视效果的投影矩阵
@@ -113,11 +125,16 @@ namespace hgl::math
      * @param viewport_size 视口大小
      * @return 世界坐标
      */
+    /**
+     * reversed_z=true 时以 NDC.z=1 作为近平面（Reversed-Z 模式），
+     * reversed_z=false（默认）以 NDC.z=0 作为近平面（标准 ZO 模式）。
+     */
     Vector3f UnProjectToWorld(
         const Vector2i &win_pos,
         const Matrix4f &view,
         const Matrix4f &projection,
-        const Vector2u &viewport_size);
+        const Vector2u &viewport_size,
+        bool reversed_z = false);
 
     /**
      * 生成等距视角投影矩阵（Isometric Projection）

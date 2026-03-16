@@ -82,6 +82,52 @@ namespace hgl::math
     }
 
     /**
+     * @brief Reversed-Z 正交投影矩阵（Near→1, Far→0）
+     *
+     * 与 OrthoMatrix(left,right,bottom,top,znear,zfar) 参数相同，深度映射翻转。
+     * 推导：m[2][2]=1/(zfar-znear), m[3][2]=zfar/(zfar-znear)
+     */
+    math::Matrix4f OrthoMatrixReversedZ( float left,
+                    float right,
+                    float bottom,
+                    float top,
+                    float znear,
+                    float zfar )
+    {
+        return Matrix4f(
+          2.0f / (right - left),
+          0.0f,
+          0.0f,
+          0.0f,
+
+          0.0f,
+          2.0f / (bottom - top),
+          0.0f,
+          0.0f,
+
+          0.0f,
+          0.0f,
+          1.0f / (zfar - znear),
+          0.0f,
+
+          -(right + left) / (right - left),
+          -(bottom + top) / (bottom - top),
+          zfar / (zfar - znear),
+          1.0f
+        );
+    }
+
+    math::Matrix4f OrthoMatrixReversedZ(float width, float height, float znear, float zfar)
+    {
+        return OrthoMatrixReversedZ(0.0f, width, height, 0.0f, znear, zfar);
+    }
+
+    math::Matrix4f OrthoMatrixReversedZ(float width, float height)
+    {
+        return OrthoMatrixReversedZ(width, height, 0.0f, 1.0f);
+    }
+
+    /**
      * @brief 生成一个透视投影矩阵（depth 0..1，右手坐标系）
      *
      * 矩阵采用列主序构造，返回的深度映射将近平面映射到 NDC.z=0，远平面映射到 NDC.z=1，
@@ -123,6 +169,48 @@ namespace hgl::math
           0.0f,
           0.0f,
           (znear * zfar) / (znear-zfar),
+          0.0f
+        );
+    }
+
+    /**
+     * @brief 生成有限远 Reversed-Z 透视投影矩阵（Near→1, Far→0）
+     *
+     * 深度映射翻转：近平面映射到 NDC.z=1，远平面映射到 NDC.z=0。
+     * 推导：clip.z/clip.w=1 时 z_view=-znear，=0 时 z_view=-zfar
+     *   → m22 = znear/(zfar-znear), m32 = znear*zfar/(zfar-znear)
+     *
+     * @param field_of_view 垂直 FOV（度）
+     * @param aspect_ratio 宽高比（width/height）
+     * @param znear 近平面（正值）
+     * @param zfar  远平面（正值）
+     */
+    math::Matrix4f PerspectiveMatrixReversedZ( float field_of_view,
+                                float aspect_ratio,
+                                float znear,
+                                float zfar)
+    {
+        float f = 1.0f / std::tan( deg2rad( 0.5f * field_of_view ) );
+
+        return Matrix4f(
+          -f / aspect_ratio,
+          0.0f,
+          0.0f,
+          0.0f,
+
+          0.0f,
+          -f,
+          0.0f,
+          0.0f,
+
+          0.0f,
+          0.0f,
+          znear/(zfar-znear),
+          -1.0f,
+
+          0.0f,
+          0.0f,
+          (znear * zfar) / (zfar-znear),
           0.0f
         );
     }
@@ -271,13 +359,14 @@ namespace hgl::math
         const math::Vector2i &win_pos,
         const math::Matrix4f &view,
         const math::Matrix4f &projection,
-        const math::Vector2u &vp_size)
+        const math::Vector2u &vp_size,
+        bool reversed_z)
     {
         // 1. 归一化到 NDC（[-1, 1]）
         float ndc_x = (2.0f * float(win_pos.x)) / float(vp_size.x) - 1.0f;
         float ndc_y = (2.0f * float(win_pos.y)) / float(vp_size.y) - 1.0f;
-        // 这里假设在近平面（z=0），如需支持深度可加参数
-        float ndc_z = 0.0f;
+        // 近平面 NDC z：标准 ZO → 0，Reversed-Z → 1
+        float ndc_z = reversed_z ? 1.0f : 0.0f;
 
         math::Vector4f ndc_pos(ndc_x, ndc_y, ndc_z, 1.0f);
 

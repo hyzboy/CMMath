@@ -3,6 +3,7 @@
 #include<hgl/math/geometry/AABB.h>
 #include<hgl/math/geometry/OBB.h>
 #include<hgl/graph/CameraInfo.h>
+#include<cmath>
 
 namespace hgl::math
 {
@@ -30,7 +31,7 @@ namespace hgl::math
      * @param Inverse 逆VP矩阵 (inverse(projection * view))
      * @param viewport 视口大小
      */
-    void RayUnProjectZO(Vector3f &origin,Vector3f &direction,const Vector2i &win, const Matrix4f &Inverse, const Vector2u &viewport)
+    void RayUnProjectZO(Vector3f &origin,Vector3f &direction,const Vector2i &win, const Matrix4f &Inverse, const Vector2u &viewport, bool reversed_z)
     {
         Vector4f near_point;
         Vector4f far_point;
@@ -42,25 +43,30 @@ namespace hgl::math
         tmp.x = tmp.x + tmp.x - 1.0;  // [0,1] -> [-1,1]
         tmp.y = tmp.y + tmp.y - 1.0;  // [0,1] -> [-1,1] (Vulkan: y向下)
 
-        // 近平面 (z=0 in Vulkan)
-        tmp.z=0.0;
+        // 近平面: 标准 ZO → NDC.z=0, Reversed-Z → NDC.z=1
+        tmp.z = reversed_z ? 1.0f : 0.0f;
         tmp.w=1.0;
 
         near_point = Inverse * tmp;
         if(near_point.w != 0.0f)
             near_point/=near_point.w;
 
-        // 远平面 (z=1 in Vulkan)
-        tmp.z=1.0;
+        // 远平面: 标准 ZO → NDC.z=1, Reversed-Z → NDC.z=0
+        tmp.z = reversed_z ? 0.0f : 1.0f;
 
         far_point = Inverse * tmp;
-        if(far_point.w != 0.0f)
+        if(std::fabs(far_point.w) > 1e-7f)
             far_point/=far_point.w;
 
         // 生成射线：从近平面点指向远平面点
-        // Vulkan Z-up: 摄像机朝+Y方向
         origin=near_point;
-        direction=glm::normalize(far_point-near_point);
+
+        // 无限远平面（Reversed-Z + Infinite Far）时 far_point.w ≈ 0，
+        // 此时 far_point.xyz 是方向向量而非世界坐标点，直接用作射线方向。
+        if(std::fabs(far_point.w) <= 1e-7f)
+            direction=glm::normalize(Vector3f(far_point));
+        else
+            direction=glm::normalize(Vector3f(far_point-near_point));
     }
 
     /**
@@ -76,8 +82,8 @@ namespace hgl::math
      */
     void Ray::SetFromViewportPoint(const Vector2i &mp,const graph::CameraInfo *ci,const Vector2u &vp_size)
     {
-        // Vulkan专用方案：深度范围[0,1]，Z轴向上，摄像机朝+Y
-        RayUnProjectZO(origin,direction,mp,ci->inverse_vp,vp_size);
+        // 按相机的深度约定选择 NDC near/far z 值
+        RayUnProjectZO(origin,direction,mp,ci->inverse_vp,vp_size,ci->use_reversed_z != 0);
 
         // 注意：不使用glm::unProject，因为它假设OpenGL的深度范围[-1,1]和Y-up坐标系
     }

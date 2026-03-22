@@ -3,14 +3,13 @@
 namespace hgl::math
 {
     /**
-     * 从MVP矩阵提取视锥体六个平面 (Vulkan Z-up)
+     * 从 MVP 矩阵提取视锥体六个平面。
      *
-     * 坐标系约定：
-     * - 世界空间：X右，Y前（摄像机朝向），Z上
-     * - Vulkan NDC：x右，y下，z前（深度[0,1]）
-     *
-     * 平面提取基于：https://github.com/SaschaWillems/Vulkan/base/frustum.hpp
-     * 但需要注意：原实现假设Y-up，我们使用Z-up
+     * 当前矩阵约定：
+     * - 视图矩阵等价于 glm::lookAtRH，摄像机朝向为 -Z
+     * - 投影矩阵使用 Vulkan 深度范围 [0,1]
+     * - 平面提取应基于裁剪空间约束：
+     *   x ∈ [-w, w], y ∈ [-w, w], z ∈ [0, w]
      */
     void GetFrustumPlanes(FrustumPlanes &planes,const math::Matrix4f &mvp)
     {
@@ -25,31 +24,32 @@ namespace hgl::math
         planes[size_t(Frustum::Side::Right  )].z = mvp[2].w - mvp[2].x;
         planes[size_t(Frustum::Side::Right  )].w = mvp[3].w - mvp[3].x;
 
-        planes[size_t(Frustum::Side::Front  )].x = mvp[0].w - mvp[0].y;
-        planes[size_t(Frustum::Side::Front  )].y = mvp[1].w - mvp[1].y;
-        planes[size_t(Frustum::Side::Front  )].z = mvp[2].w - mvp[2].y;
-        planes[size_t(Frustum::Side::Front  )].w = mvp[3].w - mvp[3].y;
+        planes[size_t(Frustum::Side::Top    )].x = mvp[0].w - mvp[0].y;
+        planes[size_t(Frustum::Side::Top    )].y = mvp[1].w - mvp[1].y;
+        planes[size_t(Frustum::Side::Top    )].z = mvp[2].w - mvp[2].y;
+        planes[size_t(Frustum::Side::Top    )].w = mvp[3].w - mvp[3].y;
 
-        planes[size_t(Frustum::Side::Back   )].x = mvp[0].w + mvp[0].y;
-        planes[size_t(Frustum::Side::Back   )].y = mvp[1].w + mvp[1].y;
-        planes[size_t(Frustum::Side::Back   )].z = mvp[2].w + mvp[2].y;
-        planes[size_t(Frustum::Side::Back   )].w = mvp[3].w + mvp[3].y;
+        planes[size_t(Frustum::Side::Bottom )].x = mvp[0].w + mvp[0].y;
+        planes[size_t(Frustum::Side::Bottom )].y = mvp[1].w + mvp[1].y;
+        planes[size_t(Frustum::Side::Bottom )].z = mvp[2].w + mvp[2].y;
+        planes[size_t(Frustum::Side::Bottom )].w = mvp[3].w + mvp[3].y;
 
-        planes[size_t(Frustum::Side::Top    )].x = mvp[0].w + mvp[0].z;
-        planes[size_t(Frustum::Side::Top    )].y = mvp[1].w + mvp[1].z;
-        planes[size_t(Frustum::Side::Top    )].z = mvp[2].w + mvp[2].z;
-        planes[size_t(Frustum::Side::Top    )].w = mvp[3].w + mvp[3].z;
+        planes[size_t(Frustum::Side::Front  )].x = mvp[0].z;
+        planes[size_t(Frustum::Side::Front  )].y = mvp[1].z;
+        planes[size_t(Frustum::Side::Front  )].z = mvp[2].z;
+        planes[size_t(Frustum::Side::Front  )].w = mvp[3].z;
 
-        planes[size_t(Frustum::Side::Bottom )].x = mvp[0].w - mvp[0].z;
-        planes[size_t(Frustum::Side::Bottom )].y = mvp[1].w - mvp[1].z;
-        planes[size_t(Frustum::Side::Bottom )].z = mvp[2].w - mvp[2].z;
-        planes[size_t(Frustum::Side::Bottom )].w = mvp[3].w - mvp[3].z;
+        planes[size_t(Frustum::Side::Back   )].x = mvp[0].w - mvp[0].z;
+        planes[size_t(Frustum::Side::Back   )].y = mvp[1].w - mvp[1].z;
+        planes[size_t(Frustum::Side::Back   )].z = mvp[2].w - mvp[2].z;
+        planes[size_t(Frustum::Side::Back   )].w = mvp[3].w - mvp[3].z;
 
         for(int i=0;i<6;i++)
         {
             float len=sqrtf(planes[i].x * planes[i].x + planes[i].y * planes[i].y + planes[i].z * planes[i].z);
 
-            planes[i] /= len;
+            if(len > 0.0f)
+                planes[i] /= len;
         }
     }
 

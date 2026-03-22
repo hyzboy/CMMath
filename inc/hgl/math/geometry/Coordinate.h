@@ -7,10 +7,13 @@ namespace hgl::math
     /**
      * 坐标系转换函数
      *
-     * 坐标系约定:
-     * - OpenGL标准: X右, Y上, Z后 (右手坐标系, Y-up, 摄像机朝-Z)
-     * - Vulkan标准: X右, Y下, Z前 (右手坐标系, Y-down, 摄像机朝+Z) [NDC空间]
-     * - Vulkan Z-up: X右, Y前, Z上 (右手坐标系, Z-up, 摄像机朝+Y) [世界空间自定义]
+    * 约定分层（请勿混用）：
+    * - 世界空间（引擎约定）：X右, Y前, Z上（右手，Z-up）
+    * - 相机/视图空间（LookAt RH）：前向对应 -Z
+    * - Vulkan NDC：x∈[-1,1], y∈[-1,1]（屏幕最终Y向下）, z∈[0,1]
+    *
+    * 本文件只处理坐标轴重排（例如 Y-up <-> Z-up），
+    * 不负责视图矩阵语义和 NDC 深度映射。
      */
 
     /**
@@ -52,6 +55,6 @@ namespace hgl::math
     [[deprecated("Use vkZUp2glYUp instead")]]
     inline const Vector3f vkZ2vk(const Vector3f &v)
     {
-        return Vector3f(v.x,-v.z,v.y);  // 保持原有行为
+        return vkZUp2glYUp(v);
     }
 }//namespace hgl::math

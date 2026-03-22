@@ -1,17 +1,17 @@
 ﻿/**
  * test_frustum.cpp
  *
- * Comprehensive test cases for Frustum (View Frustum) class
- * Tests frustum construction, plane extraction, and intersection detection.
+ * Frustum tests aligned with current engine conventions:
+ * - world space: Z-up
+ * - view space: LookAt RH (camera forward maps to -Z in view)
+ * - clip depth: Vulkan [0,1]
  */
 
-#include <cassert>
 #include <cmath>
 #include <iostream>
+#include <cstdlib>
 #include <hgl/math/geometry/Frustum.h>
-#include <hgl/math/geometry/primitives/Sphere.h>
-#include <hgl/math/geometry/AABB.h>
-#include <hgl/math/MatrixOperations.h>
+#include <hgl/math/Projection.h>
 
 using namespace hgl::math;
 
@@ -23,456 +23,147 @@ using namespace hgl::math;
 #define ASSERT_TRUE(expr) \
     if (!(expr)) { \
         std::cerr << "FAILED: " << #expr << " at line " << __LINE__ << std::endl; \
-        exit(1); \
+        std::exit(1); \
     }
 
 #define ASSERT_FALSE(expr) ASSERT_TRUE(!(expr))
 
-#define ASSERT_NEAR(a, b, epsilon) \
-    if (std::abs((a) - (b)) > (epsilon)) { \
-        std::cerr << "FAILED: " << #a << " (" << (a) << ") != " << #b << " (" << (b) << ") at line " << __LINE__ << std::endl; \
-        exit(1); \
+namespace
+{
+    constexpr float kPi = 3.14159265358979323846f;
+
+    Matrix4f MakeViewProj(const float aspect = 1.0f,
+                          const float near_z = 1.0f,
+                          const float far_z = 100.0f)
+    {
+        const Matrix4f projection = PerspectiveMatrix(60.0f, aspect, near_z, far_z);
+        const Matrix4f view = LookAtMatrix(Vector3f(0.0f, -10.0f, 0.0f),
+                                           Vector3f(0.0f,   0.0f, 0.0f),
+                                           AxisVector::Z);
+        return projection * view;
     }
+}
 
-// ============================================================================
-// Frustum Plane Extraction Tests
-// ============================================================================
-
-void test_frustum_planes_extraction_identity() {
+void test_frustum_planes_extraction_finite()
+{
     FrustumPlanes planes;
-    Matrix4f identity = IdentityMatrix<4, float>();
+    GetFrustumPlanes(planes, MakeViewProj(16.0f / 9.0f, 0.1f, 500.0f));
 
-    GetFrustumPlanes(planes, identity);
-
-    // Should extract 6 planes without crashing
-    ASSERT_TRUE(true);
+    for (int i = 0; i < 6; ++i)
+    {
+        ASSERT_TRUE(std::isfinite(planes[i].x));
+        ASSERT_TRUE(std::isfinite(planes[i].y));
+        ASSERT_TRUE(std::isfinite(planes[i].z));
+        ASSERT_TRUE(std::isfinite(planes[i].w));
+    }
 }
 
-void test_frustum_planes_extraction_perspective() {
-    FrustumPlanes planes;
+void test_point_in_front_is_inside()
+{
+    Frustum fr;
+    fr.SetMatrix(MakeViewProj());
 
-    // Create a simple perspective projection matrix
-    float fov = pi / 4.0f;  // 45 degrees
-    float aspect = 16.0f / 9.0f;
-    float near = 0.1f;
-    float far = 100.0f;
-
-    Matrix4f projection = PerspectiveMatrix(fov, aspect, near, far);
-
-    GetFrustumPlanes(planes, projection);
-
-    // All 6 planes should be extracted
-    ASSERT_TRUE(true);
+    ASSERT_TRUE(fr.PointIn(Vector3f(0.0f, 0.0f, 0.0f)) != Frustum::Scope::OUTSIDE);
 }
 
-void test_frustum_planes_extraction_orthographic() {
-    FrustumPlanes planes;
+void test_point_behind_camera_is_outside()
+{
+    Frustum fr;
+    fr.SetMatrix(MakeViewProj());
 
-    // Create orthographic projection matrix
-    float left = -10.0f, right = 10.0f;
-    float bottom = -10.0f, top = 10.0f;
-    float near = 0.1f, far = 100.0f;
-
-    Matrix4f projection = OrthographicMatrix(left, right, bottom, top, near, far);
-
-    GetFrustumPlanes(planes, projection);
-
-    // Should extract 6 planes
-    ASSERT_TRUE(true);
+    ASSERT_TRUE(fr.PointIn(Vector3f(0.0f, -20.0f, 0.0f)) == Frustum::Scope::OUTSIDE);
 }
 
-void test_frustum_planes_mvp_matrix() {
-    FrustumPlanes planes;
+void test_sphere_inside()
+{
+    Frustum fr;
+    fr.SetMatrix(MakeViewProj());
 
-    // Create MVP matrix
-    Matrix4f model = IdentityMatrix<4, float>();
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 5), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 16.0f / 9.0f, 0.1f, 100.0f);
-
-    Matrix4f mvp = projection * view * model;
-
-    GetFrustumPlanes(planes, mvp);
-
-    // Should successfully extract planes
-    ASSERT_TRUE(true);
+    ASSERT_TRUE(fr.SphereIn(Vector3f(0.0f, 0.0f, 0.0f), 1.0f) != Frustum::Scope::OUTSIDE);
 }
 
-// ============================================================================
-// Frustum-Sphere Intersection Tests
-// ============================================================================
+void test_sphere_outside_left_right_top_bottom()
+{
+    Frustum fr;
+    fr.SetMatrix(MakeViewProj());
 
-void test_frustum_sphere_inside() {
-    Frustum frustum;
-
-    // Simple frustum setup
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    // Sphere at origin, should be inside
-    Sphere sphere(Vector3f(0, 0, 0), 1.0f);
-
-    ASSERT_TRUE(frustum.Intersects(sphere));
+    ASSERT_TRUE(fr.SphereIn(Vector3f(-100.0f, 0.0f,   0.0f), 1.0f) == Frustum::Scope::OUTSIDE);
+    ASSERT_TRUE(fr.SphereIn(Vector3f( 100.0f, 0.0f,   0.0f), 1.0f) == Frustum::Scope::OUTSIDE);
+    ASSERT_TRUE(fr.SphereIn(Vector3f(   0.0f, 0.0f, 100.0f), 1.0f) == Frustum::Scope::OUTSIDE);
+    ASSERT_TRUE(fr.SphereIn(Vector3f(   0.0f, 0.0f,-100.0f), 1.0f) == Frustum::Scope::OUTSIDE);
 }
 
-void test_frustum_sphere_outside_left() {
-    Frustum frustum;
+void test_sphere_outside_near_far()
+{
+    Frustum fr;
+    fr.SetMatrix(MakeViewProj(1.0f, 1.0f, 100.0f));
 
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
+    // Near plane is about 1 unit ahead of eye at y=-10, so y=-9.5 is before near.
+    ASSERT_TRUE(fr.SphereIn(Vector3f(0.0f, -9.5f, 0.0f), 0.1f) == Frustum::Scope::OUTSIDE);
 
-    frustum.SetFromMatrix(projection * view);
-
-    // Sphere far to the left
-    Sphere sphere(Vector3f(-50, 0, 0), 1.0f);
-
-    ASSERT_FALSE(frustum.Intersects(sphere));
+    // Far plane roughly near y=90 in this setup.
+    ASSERT_TRUE(fr.SphereIn(Vector3f(0.0f, 150.0f, 0.0f), 1.0f) == Frustum::Scope::OUTSIDE);
 }
 
-void test_frustum_sphere_outside_right() {
-    Frustum frustum;
+void test_aabb_inside_and_outside()
+{
+    Frustum fr;
+    fr.SetMatrix(MakeViewProj());
 
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
+    AABB inside_box;
+    inside_box.SetMinMax(Vector3f(-1.0f, -1.0f, -1.0f), Vector3f(1.0f, 1.0f, 1.0f));
 
-    frustum.SetFromMatrix(projection * view);
+    AABB outside_box;
+    outside_box.SetMinMax(Vector3f(50.0f, -20.0f, 50.0f), Vector3f(52.0f, -18.0f, 52.0f));
 
-    // Sphere far to the right
-    Sphere sphere(Vector3f(50, 0, 0), 1.0f);
-
-    ASSERT_FALSE(frustum.Intersects(sphere));
+    ASSERT_TRUE(fr.BoxIn(inside_box) != Frustum::Scope::OUTSIDE);
+    ASSERT_TRUE(fr.BoxIn(outside_box) == Frustum::Scope::OUTSIDE);
 }
 
-void test_frustum_sphere_outside_top() {
-    Frustum frustum;
+void test_orthographic_frustum_basic()
+{
+    Frustum fr;
 
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
+    const Matrix4f projection = OrthoMatrix(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 100.0f);
+    const Matrix4f view = LookAtMatrix(Vector3f(0.0f, -10.0f, 0.0f),
+                                       Vector3f(0.0f,   0.0f, 0.0f),
+                                       AxisVector::Z);
+    fr.SetMatrix(projection * view);
 
-    frustum.SetFromMatrix(projection * view);
-
-    // Sphere far above
-    Sphere sphere(Vector3f(0, 50, 0), 1.0f);
-
-    ASSERT_FALSE(frustum.Intersects(sphere));
+    ASSERT_TRUE(fr.SphereIn(Vector3f(0.0f, 0.0f, 0.0f), 1.0f) != Frustum::Scope::OUTSIDE);
+    ASSERT_TRUE(fr.PointIn(Vector3f(30.0f, 0.0f, 0.0f)) == Frustum::Scope::OUTSIDE);
 }
 
-void test_frustum_sphere_outside_bottom() {
-    Frustum frustum;
+void test_extreme_fov_stability()
+{
+    Frustum fr_narrow;
+    Frustum fr_wide;
 
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
+    const Matrix4f view = LookAtMatrix(Vector3f(0.0f, -10.0f, 0.0f),
+                                       Vector3f(0.0f,   0.0f, 0.0f),
+                                       AxisVector::Z);
 
-    frustum.SetFromMatrix(projection * view);
+    fr_narrow.SetMatrix(PerspectiveMatrix(1.0f, 1.0f, 1.0f, 100.0f) * view);
+    fr_wide.SetMatrix(PerspectiveMatrix(170.0f, 1.0f, 1.0f, 100.0f) * view);
 
-    // Sphere far below
-    Sphere sphere(Vector3f(0, -50, 0), 1.0f);
-
-    ASSERT_FALSE(frustum.Intersects(sphere));
+    ASSERT_TRUE(fr_narrow.SphereIn(Vector3f(0.0f, 0.0f, 0.0f), 0.1f) != Frustum::Scope::OUTSIDE);
+    ASSERT_TRUE(fr_wide.SphereIn(Vector3f(8.0f, 0.0f, 0.0f), 1.0f) != Frustum::Scope::OUTSIDE);
 }
 
-void test_frustum_sphere_outside_near() {
-    Frustum frustum;
-
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    // Sphere before near plane
-    Sphere sphere(Vector3f(0, 0, 15), 1.0f);
-
-    ASSERT_FALSE(frustum.Intersects(sphere));
-}
-
-void test_frustum_sphere_outside_far() {
-    Frustum frustum;
-
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    // Sphere beyond far plane
-    Sphere sphere(Vector3f(0, 0, -150), 1.0f);
-
-    ASSERT_FALSE(frustum.Intersects(sphere));
-}
-
-void test_frustum_sphere_on_edge() {
-    Frustum frustum;
-
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    // Sphere on the edge of frustum
-    Sphere sphere(Vector3f(5, 5, 0), 2.0f);
-
-    bool intersects = frustum.Intersects(sphere);
-    // Behavior may vary at edge - just ensure no crash
-    ASSERT_TRUE(true);
-}
-
-void test_frustum_sphere_large_radius() {
-    Frustum frustum;
-
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    // Very large sphere that encompasses frustum
-    Sphere sphere(Vector3f(0, 0, 0), 200.0f);
-
-    ASSERT_TRUE(frustum.Intersects(sphere));
-}
-
-// ============================================================================
-// Frustum-AABB Intersection Tests
-// ============================================================================
-
-void test_frustum_aabb_inside() {
-    Frustum frustum;
-
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    // Small AABB at origin
-    AABB box;
-    box.SetMinMax(Vector3f(-1, -1, -1), Vector3f(1, 1, 1));
-
-    ASSERT_TRUE(frustum.Intersects(box));
-}
-
-void test_frustum_aabb_outside() {
-    Frustum frustum;
-
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    // AABB far outside frustum
-    AABB box;
-    box.SetMinMax(Vector3f(50, 50, 50), Vector3f(52, 52, 52));
-
-    ASSERT_FALSE(frustum.Intersects(box));
-}
-
-void test_frustum_aabb_partially_inside() {
-    Frustum frustum;
-
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    // Large AABB that partially intersects
-    AABB box;
-    box.SetMinMax(Vector3f(-2, -2, -2), Vector3f(2, 2, 2));
-
-    ASSERT_TRUE(frustum.Intersects(box));
-}
-
-void test_frustum_aabb_behind_camera() {
-    Frustum frustum;
-
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    // AABB behind camera
-    AABB box;
-    box.SetMinMax(Vector3f(-1, -1, 15), Vector3f(1, 1, 17));
-
-    ASSERT_FALSE(frustum.Intersects(box));
-}
-
-// ============================================================================
-// Frustum Point Containment Tests
-// ============================================================================
-
-void test_frustum_contains_point_origin() {
-    Frustum frustum;
-
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    ASSERT_TRUE(frustum.ContainsPoint(Vector3f(0, 0, 0)));
-}
-
-void test_frustum_contains_point_outside() {
-    Frustum frustum;
-
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    ASSERT_FALSE(frustum.ContainsPoint(Vector3f(100, 100, 100)));
-}
-
-// ============================================================================
-// Orthographic Frustum Tests
-// ============================================================================
-
-void test_orthographic_frustum_sphere_inside() {
-    Frustum frustum;
-
-    Matrix4f projection = OrthographicMatrix(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    Sphere sphere(Vector3f(0, 0, 0), 1.0f);
-
-    ASSERT_TRUE(frustum.Intersects(sphere));
-}
-
-void test_orthographic_frustum_aabb_outside() {
-    Frustum frustum;
-
-    Matrix4f projection = OrthographicMatrix(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    AABB box;
-    box.SetMinMax(Vector3f(20, 20, 20), Vector3f(22, 22, 22));
-
-    ASSERT_FALSE(frustum.Intersects(box));
-}
-
-// ============================================================================
-// Frustum Update Tests
-// ============================================================================
-
-void test_frustum_update_different_matrices() {
-    Frustum frustum;
-
-    // First setup
-    Matrix4f proj1 = PerspectiveMatrix(pi / 4.0f, 1.0f, 1.0f, 100.0f);
-    Matrix4f view1 = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-    frustum.SetFromMatrix(proj1 * view1);
-
-    Sphere sphere(Vector3f(0, 0, 0), 1.0f);
-    bool result1 = frustum.Intersects(sphere);
-
-    // Update frustum with different view
-    Matrix4f view2 = LookAtMatrix(Vector3f(0, 0, -10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-    frustum.SetFromMatrix(proj1 * view2);
-
-    bool result2 = frustum.Intersects(sphere);
-
-    // Results should potentially be different
-    ASSERT_TRUE(true);  // Just ensure no crash
-}
-
-// ============================================================================
-// Edge Cases
-// ============================================================================
-
-void test_frustum_very_narrow_fov() {
-    Frustum frustum;
-
-    // Very narrow FOV
-    Matrix4f projection = PerspectiveMatrix(pi / 180.0f, 1.0f, 1.0f, 100.0f);  // 1 degree
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    // Should still work
-    Sphere sphere(Vector3f(0, 0, 0), 0.1f);
-    bool intersects = frustum.Intersects(sphere);
-    ASSERT_TRUE(true);
-}
-
-void test_frustum_very_wide_fov() {
-    Frustum frustum;
-
-    // Very wide FOV
-    Matrix4f projection = PerspectiveMatrix(pi * 0.9f, 1.0f, 1.0f, 100.0f);  // ~162 degrees
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    // Should capture more objects
-    Sphere sphere(Vector3f(8, 0, 0), 1.0f);
-    bool intersects = frustum.Intersects(sphere);
-    ASSERT_TRUE(true);
-}
-
-void test_frustum_extreme_aspect_ratio() {
-    Frustum frustum;
-
-    // Extreme aspect ratio
-    Matrix4f projection = PerspectiveMatrix(pi / 4.0f, 10.0f, 1.0f, 100.0f);
-    Matrix4f view = LookAtMatrix(Vector3f(0, 0, 10), Vector3f(0, 0, 0), Vector3f(0, 1, 0));
-
-    frustum.SetFromMatrix(projection * view);
-
-    // Should still function
-    AABB box;
-    box.SetMinMax(Vector3f(-1, -1, -1), Vector3f(1, 1, 1));
-    bool intersects = frustum.Intersects(box);
-    ASSERT_TRUE(true);
-}
-
-// ============================================================================
-// Main Test Runner
-// ============================================================================
-
-int main() {
-    std::cout << "=== Frustum (View Frustum) Test Suite ===" << std::endl << std::endl;
-
-    std::cout << "--- Frustum Plane Extraction Tests ---" << std::endl;
-    TEST(frustum_planes_extraction_identity);
-    TEST(frustum_planes_extraction_perspective);
-    TEST(frustum_planes_extraction_orthographic);
-    TEST(frustum_planes_mvp_matrix);
-
-    std::cout << std::endl << "--- Frustum-Sphere Intersection Tests ---" << std::endl;
-    TEST(frustum_sphere_inside);
-    TEST(frustum_sphere_outside_left);
-    TEST(frustum_sphere_outside_right);
-    TEST(frustum_sphere_outside_top);
-    TEST(frustum_sphere_outside_bottom);
-    TEST(frustum_sphere_outside_near);
-    TEST(frustum_sphere_outside_far);
-    TEST(frustum_sphere_on_edge);
-    TEST(frustum_sphere_large_radius);
-
-    std::cout << std::endl << "--- Frustum-AABB Intersection Tests ---" << std::endl;
-    TEST(frustum_aabb_inside);
-    TEST(frustum_aabb_outside);
-    TEST(frustum_aabb_partially_inside);
-    TEST(frustum_aabb_behind_camera);
-
-    std::cout << std::endl << "--- Frustum Point Containment Tests ---" << std::endl;
-    TEST(frustum_contains_point_origin);
-    TEST(frustum_contains_point_outside);
-
-    std::cout << std::endl << "--- Orthographic Frustum Tests ---" << std::endl;
-    TEST(orthographic_frustum_sphere_inside);
-    TEST(orthographic_frustum_aabb_outside);
-
-    std::cout << std::endl << "--- Frustum Update Tests ---" << std::endl;
-    TEST(frustum_update_different_matrices);
-
-    std::cout << std::endl << "--- Edge Cases ---" << std::endl;
-    TEST(frustum_very_narrow_fov);
-    TEST(frustum_very_wide_fov);
-    TEST(frustum_extreme_aspect_ratio);
+int main()
+{
+    std::cout << "=== Frustum Test Suite (Z-up world) ===" << std::endl << std::endl;
+
+    TEST(frustum_planes_extraction_finite);
+    TEST(point_in_front_is_inside);
+    TEST(point_behind_camera_is_outside);
+    TEST(sphere_inside);
+    TEST(sphere_outside_left_right_top_bottom);
+    TEST(sphere_outside_near_far);
+    TEST(aabb_inside_and_outside);
+    TEST(orthographic_frustum_basic);
+    TEST(extreme_fov_stability);
 
     std::cout << std::endl << "=== All Frustum Tests Passed! ===" << std::endl;
-
     return 0;
 }

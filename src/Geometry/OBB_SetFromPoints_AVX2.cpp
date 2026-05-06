@@ -55,6 +55,12 @@ namespace hgl::math
                 __m256 Vx=_mm256_set1_ps(V.x); __m256 Vy=_mm256_set1_ps(V.y); __m256 Vz=_mm256_set1_ps(V.z);
                 __m256 Wx=_mm256_set1_ps(W.x); __m256 Wy=_mm256_set1_ps(W.y); __m256 Wz=_mm256_set1_ps(W.z);
 
+            #if defined(__FMA__)
+                #define HGL_MM256_FMADD_PS(a,b,c) _mm256_fmadd_ps((a),(b),(c))
+            #else
+                #define HGL_MM256_FMADD_PS(a,b,c) _mm256_add_ps(_mm256_mul_ps((a),(b)),(c))
+            #endif
+
                 __m256 minU8=_mm256_set1_ps(std::numeric_limits<float>::infinity());
                 __m256 maxU8=_mm256_set1_ps(-std::numeric_limits<float>::infinity());
                 __m256 minV8=minU8,maxV8=maxU8;
@@ -65,13 +71,15 @@ namespace hgl::math
                     __m256 X=_mm256_loadu_ps(xs.data()+i);
                     __m256 Y=_mm256_loadu_ps(ys.data()+i);
                     __m256 Z=_mm256_loadu_ps(zs.data()+i);
-                    __m256 pu=_mm256_fmadd_ps(Uz,Z,_mm256_fmadd_ps(Uy,Y,_mm256_mul_ps(Ux,X)));
-                    __m256 pv=_mm256_fmadd_ps(Vz,Z,_mm256_fmadd_ps(Vy,Y,_mm256_mul_ps(Vx,X)));
-                    __m256 pw=_mm256_fmadd_ps(Wz,Z,_mm256_fmadd_ps(Wy,Y,_mm256_mul_ps(Wx,X)));
+                    __m256 pu=HGL_MM256_FMADD_PS(Uz,Z,HGL_MM256_FMADD_PS(Uy,Y,_mm256_mul_ps(Ux,X)));
+                    __m256 pv=HGL_MM256_FMADD_PS(Vz,Z,HGL_MM256_FMADD_PS(Vy,Y,_mm256_mul_ps(Vx,X)));
+                    __m256 pw=HGL_MM256_FMADD_PS(Wz,Z,HGL_MM256_FMADD_PS(Wy,Y,_mm256_mul_ps(Wx,X)));
                     minU8=_mm256_min_ps(minU8,pu); maxU8=_mm256_max_ps(maxU8,pu);
                     minV8=_mm256_min_ps(minV8,pv); maxV8=_mm256_max_ps(maxV8,pv);
                     minW8=_mm256_min_ps(minW8,pw); maxW8=_mm256_max_ps(maxW8,pw);
                 }
+
+                #undef HGL_MM256_FMADD_PS
                 alignas(32) float buMin[8],buMax[8],bvMin[8],bvMax[8],bwMin[8],bwMax[8];
                 _mm256_store_ps(buMin,minU8); _mm256_store_ps(buMax,maxU8);
                 _mm256_store_ps(bvMin,minV8); _mm256_store_ps(bvMax,maxV8);

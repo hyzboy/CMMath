@@ -31,8 +31,8 @@ namespace hgl::graph
         alignas(16) Vector3f view_line;             ///normalize(target-pos)
         alignas(16) Vector3f world_up;
 
-        alignas(16) Vector3f billboard_up;
-        alignas(16) Vector3f billboard_right;
+        alignas(16) Vector3f camera_facing_up;
+        alignas(16) Vector3f camera_facing_right;
 
         float znear,zfar;
 

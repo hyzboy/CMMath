@@ -123,7 +123,7 @@ namespace hgl
         const Vector2f enc = Normal3to2(input);
         const int8 x = ClampSNorm8(enc.x * 2.0f - 1.0f);
         const int8 y = ClampSNorm8(enc.y * 2.0f - 1.0f);
-        
+
         return uint16(uint8(x)) | (uint16(uint8(y)) << 8);
     }
 

@@ -424,9 +424,13 @@ namespace hgl::math
         constexpr float epsilon = 1e-8f;
 
         // 归一化行向量以提取旋转（使用epsilon避免除零）
-        if (outScale.x > epsilon) Row[0] /= outScale.x;
-        if (outScale.y > epsilon) Row[1] /= outScale.y;
-        if (outScale.z > epsilon) Row[2] /= outScale.z;
+        // 注意：镜像（负缩放）时 outScale.x 为负，这里必须按 fabs 判断——否则该列不被
+        // 归一化，旋转矩阵非正交、quat_cast 结果错（实测 S=(-2,0.5,1)：|q|=0.8815、
+        // 重建误差 2.42；改成 fabs 后 |q|=1.0、重建误差 6e-08。探针见
+        // src/ecs/support/ProbeTransformDiagnostics.cpp 的 [T4] 段）
+        if (std::fabs(outScale.x) > epsilon) Row[0] /= outScale.x;
+        if (std::fabs(outScale.y) > epsilon) Row[1] /= outScale.y;
+        if (std::fabs(outScale.z) > epsilon) Row[2] /= outScale.z;
 
         // 提取旋转
         mat3 RotationMatrix(Row[0], Row[1], Row[2]);

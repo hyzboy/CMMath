@@ -246,7 +246,6 @@ set(CMMATH_ANIMATION_SOURCES
 
 set(CMMATH_TRANSFORM_HEADERS
     ${CMMATH_TRANSFORM_INCLUDE_PATH}/Transform.h
-    ${CMMATH_TRANSFORM_INCLUDE_PATH}/TransformAction.h
 )
 
 set(CMMATH_TRANSFORM_SOURCES
@@ -372,4 +371,3 @@ add_cm_library(CMMath "CM" ${CMMATH_ROOT_INCLUDE_PATH}
 ##==================================================================================================
 
 target_include_directories(CMMath PUBLIC ${CMMATH_ROOT_INCLUDE_PATH})
-
